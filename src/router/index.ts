@@ -1,4 +1,8 @@
 import Home from "@/pages/home/Home.vue";
+import actividades from "@/pages/actividades/actividades.vue";
+import artistas from "@/pages/artistas/artistas.vue";
+import info from "@/pages/info/info.vue";
+import contacto from "@/pages/contacto/contacto.vue";
 import { createRouter, createWebHashHistory } from "vue-router";
 
 
@@ -13,7 +17,27 @@ export const router = createRouter({
       component: Home
     },
     {
-      path: '/:patchMatch(.*)',
+      path: '/actividades',
+      name: 'actividades',
+      component: actividades
+    },
+    {
+      path: '/artistas',
+      name: 'artistas',
+      component: artistas
+    },
+    {
+      path: '/info',
+      name: 'info',
+      component: info
+    },
+    {
+      path: '/contacto',
+      name: 'contacto',
+      component: contacto
+    },
+    {
+      path: '/:pathMatch(.*)*',
       redirect: '/'
     }
   ]
