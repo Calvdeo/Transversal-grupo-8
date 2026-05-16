@@ -71,6 +71,10 @@ const closeMenu = () => {
       <RouterLink to="/contacto" @click="closeMenu">
         Contacto
       </RouterLink>
+
+      <RouterLink to="/entradas" @click="closeMenu">
+        Entradas
+      </RouterLink>
     </nav>
   </aside>
 </template>
