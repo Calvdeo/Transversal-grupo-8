@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
-import { Menu, X } from 'lucide-vue-next'
+import { ChevronDown, Menu, X } from 'lucide-vue-next'
 
 const isMenuOpen = ref(false)
+const isActividadesOpen = ref(false)
 
 const openMenu = () => {
   isMenuOpen.value = true
@@ -11,6 +12,11 @@ const openMenu = () => {
 
 const closeMenu = () => {
   isMenuOpen.value = false
+  isActividadesOpen.value = false
+}
+
+const toggleActividades = () => {
+  isActividadesOpen.value = !isActividadesOpen.value
 }
 </script>
 
@@ -56,9 +62,45 @@ const closeMenu = () => {
         Inicio
       </RouterLink>
 
-      <RouterLink to="/actividades" @click="closeMenu">
-        Actividades
-      </RouterLink>
+      <div class="flex flex-col gap-3">
+        <button
+          class="flex items-center justify-between text-left"
+          @click="toggleActividades"
+        >
+          Actividades
+          <ChevronDown
+            class="h-5 w-5 transition"
+            :class="isActividadesOpen ? 'rotate-180' : ''"
+          />
+        </button>
+
+        <RouterLink
+          v-if="isActividadesOpen"
+          to="/actividades/proyecciones"
+          class="pl-4 text-lg font-medium text-zinc-300 transition hover:text-white"
+          @click="closeMenu"
+        >
+          Proyecciones
+        </RouterLink>
+
+        <RouterLink
+          v-if="isActividadesOpen"
+          to="/actividades/talleres"
+          class="pl-4 text-lg font-medium text-zinc-300 transition hover:text-white"
+          @click="closeMenu"
+        >
+          Talleres
+        </RouterLink>
+
+        <RouterLink
+          v-if="isActividadesOpen"
+          to="/actividades/conversaciones"
+          class="pl-4 text-lg font-medium text-zinc-300 transition hover:text-white"
+          @click="closeMenu"
+        >
+          Conversaciones
+        </RouterLink>
+      </div>
 
       <RouterLink to="/artistas" @click="closeMenu">
         Artistas

@@ -1,5 +1,8 @@
 import Home from "@/pages/home/Home.vue";
 import actividades from "@/pages/actividades/actividades.vue";
+import conversaciones from "@/pages/actividades/conversaciones.vue";
+import proyecciones from "@/pages/actividades/proyecciones.vue";
+import talleres from "@/pages/actividades/talleres.vue";
 import artistas from "@/pages/artistas/artistas.vue";
 import info from "@/pages/info/info.vue";
 import contacto from "@/pages/contacto/contacto.vue";
@@ -21,6 +24,21 @@ export const router = createRouter({
       path: '/actividades',
       name: 'actividades',
       component: actividades
+    },
+    {
+      path: '/actividades/proyecciones',
+      name: 'actividades-proyecciones',
+      component: proyecciones
+    },
+    {
+      path: '/actividades/talleres',
+      name: 'actividades-talleres',
+      component: talleres
+    },
+    {
+      path: '/actividades/conversaciones',
+      name: 'actividades-conversaciones',
+      component: conversaciones
     },
     {
       path: '/artistas',
