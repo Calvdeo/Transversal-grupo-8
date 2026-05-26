@@ -1,5 +1,433 @@
+﻿<script setup lang="ts">
+import { ref } from 'vue'
+
+type Cantante = {
+  id: number
+  nombre: string
+  hora: string
+  escenario: string
+  rutaImagen: string | null
+}
+
+const cantantes = ref<Cantante[]>([
+  {
+    id: 1,
+    nombre: 'Belen Aguilera',
+    hora: 'Dia 24, 17:00',
+    escenario: 'Escenario Norte',
+    rutaImagen: '/src/assets/artistas/art-05.jpg'
+  },
+  {
+    id: 2,
+    nombre: 'Silvana Estrada',
+    hora: 'Dia 25, 19:00',
+    escenario: 'Escenario Norte',
+    rutaImagen: '/src/assets/artistas/art-06.jpg'
+  },
+  {
+    id: 3,
+    nombre: 'El Kanka',
+    hora: 'Dia 24, 21:00',
+    escenario: 'Escenario Central',
+    rutaImagen: '/src/assets/artistas/art-07.jpg'
+  },
+  {
+    id: 4,
+    nombre: 'valeria Castro',
+    hora: 'Dia 25, 20:15',
+    escenario: 'Escenario Central',
+    rutaImagen: '/src/assets/artistas/art-08.jpg'
+  },
+  {
+    id: 5,
+    nombre: 'Figa Flawas',
+    hora: 'Dia 25, 21:00',
+    escenario: 'Escenario Sur',
+    rutaImagen: '/src/assets/artistas/art-19.jpg'
+  },
+  {
+    id: 6,
+    nombre: 'Oques Grasses',
+    hora: 'Dia 25, 21:45',
+    escenario: 'Escenario Sur',
+    rutaImagen: '/src/assets/artistas/art-11.jpg'
+  }
+])
+
+const cantantesSecundarios = ref<Cantante[]>([
+  {
+    id: 112,
+    nombre: 'La Paloma',
+    hora: 'Dia 23, 16:00',
+    escenario: 'Escenario Alternativo',
+    rutaImagen: '/src/assets/artistas/art-12.jpg'
+  },
+  {
+    id: 113,
+    nombre: 'Shego',
+    hora: 'Dia 23, 11:00',
+    escenario: 'Escenario Alternativo',
+    rutaImagen: '/src/assets/artistas/art-13.jpg'
+  },
+  {
+    id: 114,
+    nombre: 'Corte!',
+    hora: 'Dia 23, 19:00',
+    escenario: 'Escenario Alternativo',
+    rutaImagen: '/src/assets/artistas/art-14.jpg'
+  },
+  {
+    id: 115,
+    nombre: 'Escandaloso expósito',
+    hora: 'Dia 23, 12:30',
+    escenario: 'Escenario Alternativo',
+    rutaImagen: '/src/assets/artistas/art-15.jpg'
+  },
+  {
+    id: 116,
+    nombre: 'Mala gestión',
+    hora: 'Dia 24, 16:00',
+    escenario: 'Escenario Alternativo',
+    rutaImagen: '/src/assets/artistas/art-16.jpg'
+  },
+  {
+    id: 117,
+    nombre: 'Aiko el grupo',
+    hora: 'Dia 24, 12:30',
+    escenario: 'Escenario Alternativo',
+    rutaImagen: '/src/assets/artistas/art-17.jpg'
+  },
+  {
+    id: 118,
+    nombre: 'Artista 18',
+    hora: 'Dia 25, 16:00',
+    escenario: 'Escenario Alternativo',
+    rutaImagen: '/src/assets/artistas/art-18.jpg'
+  },
+  {
+    id: 120,
+    nombre: 'Artista 20',
+    hora: 'Dia 25, 17:30',
+    escenario: 'Escenario Alternativo',
+    rutaImagen: '/src/assets/artistas/art-20.jpg'
+  },
+  {
+    id: 121,
+    nombre: 'Artista 21',
+    hora: 'Dia 25, 18:15',
+    escenario: 'Escenario Alternativo',
+    rutaImagen: '/src/assets/artistas/art-21.jpg'
+  },
+  {
+    id: 122,
+    nombre: 'Artista 22',
+    hora: 'Dia 25, 19:00',
+    escenario: 'Escenario Alternativo',
+    rutaImagen: '/src/assets/artistas/art-22.jpg'
+  },
+  {
+    id: 123,
+    nombre: 'Artista 23',
+    hora: 'Dia 25, 19:45',
+    escenario: 'Escenario Alternativo',
+    rutaImagen: '/src/assets/artistas/art-23.jpg'
+  }
+])
+
+const cantanteActivo = ref<Cantante | null>(null)
+
+function activarCantante(cantante: Cantante) {
+  cantanteActivo.value = cantante
+}
+
+function limpiarCantanteActivo() {
+  cantanteActivo.value = null
+}
+</script>
+
 <template>
-  <main>
-    <h1>artistas</h1>
+  <main class="fondo-cantantes min-h-screen px-6 py-24 sm:px-10">
+    <section class="panel-cantantes mx-auto max-w-[1320px] p-8 sm:p-10">
+      <header class="mb-12 flex items-start justify-between gap-4">
+        <h1 class="titulo-cantantes">Cantantes</h1>
+       
+      </header>
+
+      
+      <div class="rejilla-cantantes">
+        <button
+          v-for="cantante in cantantes"
+          :key="cantante.id"
+          class="tarjeta-cantante"
+          @mouseenter="activarCantante(cantante)"
+          @mouseleave="limpiarCantanteActivo"
+        >
+         
+
+          <div
+            v-if="cantante.rutaImagen"
+            class="miniatura-cantante"
+          >
+            <img
+              :src="cantante.rutaImagen"
+              :alt="cantante.nombre"
+              class="imagen-cantante"
+            >
+            <div
+              class="overlay-cantante"
+              :class="{ 'is-visible': cantanteActivo?.id === cantante.id }"
+            >
+              <p class="overlay-nombre">{{ cantante.nombre }}</p>
+              <p>{{ cantante.hora }}</p>
+              <p>{{ cantante.escenario }}</p>
+            </div>
+          </div>
+
+          <div
+            v-else
+            class="hueco-cantante"
+          >
+            Foto pendiente
+          </div>
+        </button>
+      </div>
+
+      <p class="etiqueta-bloque etiqueta-secundaria"></p>
+      <div class="rejilla-secundaria">
+        <button
+          v-for="cantante in cantantesSecundarios"
+          :key="cantante.id"
+          class="tarjeta-secundaria"
+          @mouseenter="activarCantante(cantante)"
+          @mouseleave="limpiarCantanteActivo"
+        >
+          <div class="miniatura-secundaria">
+            <img
+              :src="cantante.rutaImagen!"
+              :alt="cantante.nombre"
+              class="imagen-cantante"
+            >
+            <div
+              class="overlay-cantante"
+              :class="{ 'is-visible': cantanteActivo?.id === cantante.id }"
+            >
+              <p class="overlay-nombre">{{ cantante.nombre }}</p>
+              <p>{{ cantante.hora }}</p>
+              <p>{{ cantante.escenario }}</p>
+            </div>
+          </div>
+        </button>
+      </div>
+    </section>
   </main>
 </template>
+
+<style scoped>
+.fondo-cantantes {
+  background: #ffffff;
+}
+
+.panel-cantantes {
+  background: transparent;
+}
+
+.titulo-cantantes {
+  font-family: "Alte Haas Grotesk", "Helvetica Neue", Arial, sans-serif;
+  font-size: clamp(3rem, 8vw, 5.6rem);
+  letter-spacing: -0.08em;
+  font-weight: 900;
+  line-height: 0.95;
+}
+
+.texto-auxiliar {
+  font-size: 0.92rem;
+  opacity: 0.7;
+}
+
+.etiqueta-bloque {
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  opacity: 0.72;
+  margin-bottom: 0.45rem;
+}
+
+.rejilla-cantantes {
+  display: flex;
+  gap: 0;
+  align-items: flex-end;
+  overflow: hidden;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+}
+
+.tarjeta-cantante {
+  flex: 1 1 0;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  padding: 0;
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+  transition: flex 280ms ease;
+}
+
+.nombre-cantante {
+  font-size: 1.15rem;
+  margin-bottom: 0.35rem;
+}
+
+.miniatura-cantante,
+.hueco-cantante {
+  width: 100%;
+  height: 360px;
+  transition: box-shadow 260ms ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.imagen-cantante {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 280ms ease;
+}
+
+.rejilla-cantantes:hover .tarjeta-cantante {
+  flex: 0.52 1 0;
+}
+
+.tarjeta-cantante:hover {
+  flex: 4.6 1 0;
+}
+
+.tarjeta-cantante:hover .miniatura-cantante,
+.tarjeta-cantante:hover .hueco-cantante {
+  box-shadow: 0 24px 44px rgba(0, 0, 0, 0.24);
+}
+
+.tarjeta-cantante:hover .imagen-cantante {
+  transform: scale(1.2);
+}
+
+.etiqueta-secundaria {
+  margin-top: 2.4rem;
+}
+
+.rejilla-secundaria {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0;
+  width: 100%;
+  overflow: visible;
+}
+
+.tarjeta-secundaria {
+  flex: 0 0 calc(100% / 6);
+  border: 0;
+  background: transparent;
+  text-align: left;
+  padding: 0;
+  overflow: hidden;
+}
+
+.miniatura-secundaria {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  height: auto;
+  transition: box-shadow 220ms ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.tarjeta-secundaria:hover .imagen-cantante {
+  transform: scale(1.16);
+}
+
+.tarjeta-secundaria:hover .miniatura-secundaria {
+  box-shadow: 0 14px 26px rgba(0, 0, 0, 0.18);
+}
+
+.hueco-cantante {
+  border: 1px dashed #777;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: #555;
+  background: #f1f1f1;
+}
+
+.overlay-cantante {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.55);
+  color: #111;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.2rem;
+  padding: 1rem;
+  font-size: 0.82rem;
+  line-height: 1.3;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 220ms ease, transform 220ms ease;
+  pointer-events: none;
+}
+
+.overlay-cantante.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.overlay-nombre {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.texto-ayuda-hover {
+  opacity: 0.75;
+}
+
+@media (max-width: 980px) {
+  .rejilla-cantantes {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    width: 100%;
+    margin-left: 0;
+    overflow: visible;
+  }
+
+  .tarjeta-cantante {
+    flex: unset;
+  }
+
+  .miniatura-cantante,
+  .hueco-cantante {
+    height: 250px;
+  }
+
+  .rejilla-cantantes:hover .tarjeta-cantante,
+  .tarjeta-cantante:hover {
+    flex: unset;
+  }
+
+  .rejilla-secundaria {
+    justify-content: center;
+  }
+
+  .tarjeta-secundaria {
+    flex: 0 0 calc(100% / 3);
+  }
+
+  .miniatura-secundaria {
+    aspect-ratio: 1 / 1;
+    height: auto;
+  }
+}
+</style>
