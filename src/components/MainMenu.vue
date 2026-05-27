@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { ChevronDown, Menu, X } from 'lucide-vue-next'
+import logoCabecera from '@/assets/logo/logoooo.png'
 
 const isMenuOpen = ref(false)
 const isActividadesOpen = ref(false)
@@ -25,9 +26,9 @@ const toggleActividades = () => {
     <nav class="flex items-center justify-between px-6 py-4">
       <RouterLink
         to="/"
-        class="text-2xl font-bold tracking-tight"
+        class="header-brand"
       >
-        ESCLAT
+        <img :src="logoCabecera" alt="Esclat" class="header-brand__img">
       </RouterLink>
 
       <button
@@ -120,3 +121,16 @@ const toggleActividades = () => {
     </nav>
   </aside>
 </template>
+
+<style scoped>
+.header-brand {
+  display: inline-flex;
+  align-items: center;
+}
+
+.header-brand__img {
+  width: clamp(112px, 9vw, 156px);
+  height: auto;
+  display: block;
+}
+</style>
