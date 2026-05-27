@@ -324,6 +324,8 @@ onMounted(() => {
 
 <template>
   <main class="home-page" :style="{ '--fondo-escena': fondoEscena }">
+    <img :src="logoEsclat" alt="Logo ESCLAT" class="home-top-logo">
+
     <section class="studio">
       <h1 class="hero-title">¿Cómo suena ESCLAT para ti?</h1>
 
@@ -377,7 +379,12 @@ onMounted(() => {
 
 <style scoped>
 .home-page {
-  min-height: 100vh;
+  height: calc(100vh - 6rem);
+  height: calc(100dvh - 6rem);
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   background-image: linear-gradient(
       rgba(0, 0, 0, 0.3),
       rgba(0, 0, 0, 0.3)
@@ -386,9 +393,16 @@ onMounted(() => {
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
-  padding: 32px 24px;
+  padding: 10px 24px 520px;
   color: #014fff;
   font-family: "Alte Haas Grotesk", "Helvetica Neue", Arial, sans-serif;
+}
+
+.home-top-logo {
+  display: block;
+  width: clamp(180px, 24vw, 360px);
+  height: auto;
+  margin: 0 auto 16px;
 }
 
 .studio {
