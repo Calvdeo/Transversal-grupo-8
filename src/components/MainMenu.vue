@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
-import { ChevronDown, Menu, X } from 'lucide-vue-next'
-import logoCabecera from '@/assets/logo/logoooo.png'
+import { ChevronDown, X } from 'lucide-vue-next'
+
+import logoCabecera from '@/assets/logo/logoazul.png'
+import texturaMenu from '@/assets/texturas/peques-04.png'
 
 const isMenuOpen = ref(false)
 const isActividadesOpen = ref(false)
@@ -22,85 +24,70 @@ const toggleActividades = () => {
 </script>
 
 <template>
-  <header class="fixed top-0 left-0 z-50 w-full bg-white border-b border-zinc-200">
-    <nav class="flex items-center justify-between px-6 py-4">
-      <RouterLink
-        to="/"
-        class="header-brand"
-      >
+  <header class="header-global">
+    <nav class="header-nav">
+      <RouterLink to="/" class="header-brand">
         <img :src="logoCabecera" alt="Esclat" class="header-brand__img">
       </RouterLink>
 
       <button
-        class="flex items-center gap-2 rounded-full border border-black px-4 py-2 text-sm font-medium transition hover:bg-black hover:text-white"
+        class="menu-texture-button"
+        aria-label="Abrir menú"
         @click="openMenu"
       >
-        <Menu class="h-5 w-5" />
-        Menú
+        <img :src="texturaMenu" alt="" class="menu-texture-img">
       </button>
     </nav>
   </header>
 
   <div
     v-if="isMenuOpen"
-    class="fixed inset-0 z-40 bg-black/40"
+    class="menu-overlay"
     @click="closeMenu"
   ></div>
 
   <aside
     v-if="isMenuOpen"
-    class="fixed right-0 top-0 z-50 flex h-full w-[85%] max-w-sm flex-col bg-zinc-950 px-8 py-8 text-white"
+    class="menu-panel"
   >
     <button
-      class="mb-10 self-end"
+      class="menu-close"
+      aria-label="Cerrar menú"
       @click="closeMenu"
     >
-      <X class="h-7 w-7" />
+      <X class="h-10 w-10" />
     </button>
 
-    <nav class="flex flex-col gap-6 text-2xl font-bold">
+    <nav class="menu-links">
       <RouterLink to="/" @click="closeMenu">
         Inicio
       </RouterLink>
 
-      <div class="flex flex-col gap-3">
+      <div class="menu-group">
         <button
-          class="flex items-center justify-between text-left"
+          class="menu-group-button"
           @click="toggleActividades"
         >
           Actividades
           <ChevronDown
-            class="h-5 w-5 transition"
+            class="h-6 w-6 transition"
             :class="isActividadesOpen ? 'rotate-180' : ''"
           />
         </button>
 
-        <RouterLink
-          v-if="isActividadesOpen"
-          to="/actividades/proyecciones"
-          class="pl-4 text-lg font-medium text-zinc-300 transition hover:text-white"
-          @click="closeMenu"
-        >
-          Proyecciones
-        </RouterLink>
+        <div v-if="isActividadesOpen" class="submenu-links">
+          <RouterLink to="/actividades/proyecciones" @click="closeMenu">
+            Proyecciones
+          </RouterLink>
 
-        <RouterLink
-          v-if="isActividadesOpen"
-          to="/actividades/talleres"
-          class="pl-4 text-lg font-medium text-zinc-300 transition hover:text-white"
-          @click="closeMenu"
-        >
-          Talleres
-        </RouterLink>
+          <RouterLink to="/actividades/talleres" @click="closeMenu">
+            Talleres
+          </RouterLink>
 
-        <RouterLink
-          v-if="isActividadesOpen"
-          to="/actividades/conversaciones"
-          class="pl-4 text-lg font-medium text-zinc-300 transition hover:text-white"
-          @click="closeMenu"
-        >
-          Conversaciones
-        </RouterLink>
+          <RouterLink to="/actividades/conversaciones" @click="closeMenu">
+            Conversaciones
+          </RouterLink>
+        </div>
       </div>
 
       <RouterLink to="/artistas" @click="closeMenu">
@@ -123,14 +110,134 @@ const toggleActividades = () => {
 </template>
 
 <style scoped>
+.header-global {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100%;
+  height: 110px;
+  background: #014fff;
+}
+
+.header-nav {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2.5rem;
+}
+
 .header-brand {
   display: inline-flex;
   align-items: center;
 }
 
 .header-brand__img {
-  width: clamp(112px, 9vw, 156px);
+  width: clamp(130px, 14vw, 220px);
   height: auto;
   display: block;
+  filter: brightness(0) invert(1);
+}
+
+.menu-texture-button {
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.menu-texture-img {
+  width: clamp(110px, 13vw, 190px);
+  height: auto;
+  display: block;
+  filter: brightness(0) invert(1);
+  transition: transform 160ms ease;
+}
+
+.menu-texture-button:hover .menu-texture-img {
+  transform: rotate(-5deg) scale(1.05);
+}
+
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.menu-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1200;
+  height: 100vh;
+  width: min(430px, 88vw);
+  background: #014fff;
+  color: white;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-close {
+  align-self: flex-end;
+  border: none;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  margin-bottom: 2rem;
+}
+
+.menu-links {
+  display: flex;
+  flex-direction: column;
+  gap: 1.45rem;
+  font-size: 2.3rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.menu-links a {
+  color: white;
+  text-decoration: none;
+}
+
+.menu-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.menu-group-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border: none;
+  background: transparent;
+  color: white;
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.submenu-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding-left: 1rem;
+  font-size: 1.35rem;
+  font-weight: 500;
+}
+
+.submenu-links a {
+  opacity: 0.85;
+}
+
+.submenu-links a:hover,
+.menu-links a:hover,
+.menu-group-button:hover {
+  opacity: 0.7;
 }
 </style>
