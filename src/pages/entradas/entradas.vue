@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+
 import entradaAbono from '@/assets/entradas/entrada-1.jpg'
 import entradaDia23 from '@/assets/entradas/entrada-2.jpg'
 import entradaDia24 from '@/assets/entradas/entrada-3.jpg'
@@ -38,6 +40,13 @@ const entradas = [
     color: '#f26a00'
   }
 ]
+
+const cantidades = ref<Record<number, number>>({
+  1: 0,
+  2: 0,
+  3: 0,
+  4: 0
+})
 </script>
 
 <template>
@@ -53,11 +62,27 @@ const entradas = [
           :class="entrada.rotacion"
           :style="{ color: entrada.color }"
         >
-          <img
-            :src="entrada.imagen"
-            :alt="entrada.nombre"
-            class="entrada-imagen"
-          >
+          <div class="entrada-bloque">
+            <img
+              :src="entrada.imagen"
+              :alt="entrada.nombre"
+              class="entrada-imagen"
+            >
+
+            <select
+              v-model.number="cantidades[entrada.id]"
+              class="selector-cantidad"
+            >
+              <option :value="0">Cant.</option>
+              <option
+                v-for="numero in 6"
+                :key="numero"
+                :value="numero"
+              >
+                {{ numero }}
+              </option>
+            </select>
+          </div>
 
           <p class="entrada-descripcion">
             {{ entrada.descripcion }}
@@ -108,9 +133,23 @@ const entradas = [
   z-index: 5;
 }
 
+.entrada-bloque {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
 .entrada-imagen {
   width: 100%;
   display: block;
+}
+
+.selector-cantidad {
+  border: 1px solid currentColor;
+  color: inherit;
+  background: white;
+  font-size: 14px;
+  padding: 4px 6px;
 }
 
 .entrada-descripcion {
