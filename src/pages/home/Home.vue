@@ -8,6 +8,12 @@ import texturaCeraPeque from '@/assets/texturas/peques-06.png'
 import texturaCeraGrande from '@/assets/texturas/ceraazul.png'
 import texturaPixelPeque from '@/assets/texturas/peques-05.png'
 import texturaPixelGrande from '@/assets/texturas/pixelazul.png'
+import texturaCeraNaranja from '@/assets/texturas/ceranaranja.png'
+import texturaCeraRosa from '@/assets/texturas/cerarosa.png'
+import texturaCeraVerde from '@/assets/texturas/ceraverde.png'
+import texturaPixelNaranja from '@/assets/texturas/pixelnaranja.png'
+import texturaPixelRosa from '@/assets/texturas/pixelrosa.png'
+import texturaPixelVerde from '@/assets/texturas/pixelverde.png'
 import texturaPosca from '@/assets/texturas/peques-07.png'
 import texturaMenu from '@/assets/texturas/peques-04.png'
 
@@ -20,6 +26,12 @@ type Pincel = {
 type Punto = {
   x: number
   y: number
+}
+
+type TemaVisual = {
+  color: string
+  texturaCera: string
+  texturaPixel: string
 }
 
 const lienzo = ref<HTMLCanvasElement | null>(null)
@@ -48,6 +60,33 @@ const coloresDisponibles = [
 ] as const
 
 const colorActual = ref<string>(coloresDisponibles[1])
+const colorTema = ref(COLOR_AZUL)
+const texturaCeraHero = ref(texturaCeraGrande)
+const texturaPixelHero = ref(texturaPixelGrande)
+const CLAVE_INDICE_TEMA = 'esclat-theme-index'
+
+const temasVisuales: TemaVisual[] = [
+  {
+    color: '#0040f2',
+    texturaCera: texturaCeraGrande,
+    texturaPixel: texturaPixelGrande
+  },
+  {
+    color: '#fe8507',
+    texturaCera: texturaCeraNaranja,
+    texturaPixel: texturaPixelNaranja
+  },
+  {
+    color: '#fc0299',
+    texturaCera: texturaCeraRosa,
+    texturaPixel: texturaPixelRosa
+  },
+  {
+    color: '#05d181',
+    texturaCera: texturaCeraVerde,
+    texturaPixel: texturaPixelVerde
+  }
+]
 
 const pinceles: Pincel[] = [
   {
@@ -530,8 +569,55 @@ function exportarImagen() {
   enlace.click()
 }
 
+function aplicarTemaSecuencial() {
+  let indiceAnterior = -1
+
+  try {
+    const guardado =
+      window.localStorage.getItem(CLAVE_INDICE_TEMA)
+
+    if (guardado !== null) {
+      const numero = Number.parseInt(guardado, 10)
+
+      if (Number.isFinite(numero)) {
+        indiceAnterior = numero
+      }
+    }
+  } catch {
+    indiceAnterior = -1
+  }
+
+  const siguienteIndice =
+    (indiceAnterior + 1 + temasVisuales.length) %
+    temasVisuales.length
+
+  const tema =
+    temasVisuales[siguienteIndice] ?? temasVisuales[0]
+
+  if (!tema) return
+
+  colorTema.value = tema.color
+  texturaCeraHero.value = tema.texturaCera
+  texturaPixelHero.value = tema.texturaPixel
+
+  document.documentElement.style.setProperty(
+    '--esclat-theme-color',
+    tema.color
+  )
+
+  try {
+    window.localStorage.setItem(
+      CLAVE_INDICE_TEMA,
+      String(siguienteIndice)
+    )
+  } catch {
+    // noop: si falla localStorage seguimos aplicando color en memoria.
+  }
+}
+
 onMounted(() => {
   pincelActual.value = pinceles[0] ?? null
+  aplicarTemaSecuencial()
 
   prepararLienzo()
 })
@@ -540,7 +626,10 @@ onMounted(() => {
 <template>
   <main
     class="home-page"
-    :style="{ '--fondo-escena': fondoEscena }"
+    :style="{
+      '--fondo-escena': fondoEscena,
+      '--color-tema': colorTema
+    }"
   >
     <section class="hero-home">
       <div
@@ -561,13 +650,13 @@ onMounted(() => {
         >
 
         <img
-          :src="texturaCeraGrande"
+          :src="texturaCeraHero"
           alt=""
           class="hero-texture hero-texture-cera"
         >
 
         <img
-          :src="texturaPixelGrande"
+          :src="texturaPixelHero"
           alt=""
           class="hero-texture hero-texture-pixel"
         >
@@ -890,7 +979,7 @@ onMounted(() => {
 
   z-index: 4;
 
-  color: #0040f2;
+  color: var(--color-tema);
 
   font-size: clamp(22px, 2.4vw, 39px);
 
@@ -957,6 +1046,7 @@ onMounted(() => {
     sans-serif;
 
   font-weight: 400;
+  color: var(--color-tema);
 }
 
 .hero-line {
@@ -969,7 +1059,7 @@ onMounted(() => {
 
   height: 6px;
 
-  background: #0040f2;
+  background: var(--color-tema);
 }
 
 .hero-place {
@@ -993,6 +1083,7 @@ onMounted(() => {
     sans-serif;
 
   font-weight: 400;
+  color: var(--color-tema);
 }
 
 .hero-agenda {
@@ -1403,83 +1494,26 @@ onMounted(() => {
 
 @media (max-width: 700px) {
   .hero-poster {
-    min-height: clamp(760px, 170vw, 980px);
-    aspect-ratio: 7 / 10;
-    padding: 22px 14px;
+    height: min(100vh, 720px);
+    height: min(100svh, 720px);
+    min-height: 620px;
+    padding: 28px 18px;
   }
 
   .hero-info {
-    left: 16px;
-    top: 44px;
-    font-size: clamp(14px, 4.2vw, 24px);
-    line-height: 0.96;
+    font-size: clamp(13px, 3.2vw, 18px);
   }
 
   .hero-main-logo {
-    top: 10px;
-    right: 8px;
-    width: clamp(260px, 70vw, 440px);
-  }
-
-  .hero-texture-cera {
-    width: 136vw;
-    left: -34%;
-    top: 13%;
-    transform: rotate(102deg);
-  }
-
-  .hero-texture-pixel {
-    width: 78vw;
-    left: -5%;
-    top: 50%;
+    width: min(68vw, 390px);
   }
 
   .hero-date {
-    left: 16px;
-    bottom: 74px;
-    font-size: clamp(46px, 12vw, 68px);
-    line-height: 0.9;
-  }
-
-  .hero-line {
-    left: 31%;
-    bottom: 166px;
-    width: clamp(64px, 21vw, 120px);
+    font-size: clamp(34px, 8.2vw, 46px);
   }
 
   .hero-place {
-    right: 16px;
-    bottom: 76px;
-    font-size: clamp(34px, 8.6vw, 56px);
-    line-height: 0.95;
-  }
-}
-
-@media (max-width: 430px) {
-  .hero-poster {
-    min-height: 760px;
-    aspect-ratio: 7 / 10;
-  }
-
-  .hero-main-logo {
-    width: 74vw;
-  }
-
-  .hero-texture-cera {
-    width: 142vw;
-    left: -40%;
-    top: 14%;
-  }
-
-  .hero-texture-pixel {
-    width: 82vw;
-    left: -8%;
-    top: 51%;
-  }
-
-  .hero-line {
-    left: 34%;
-    width: 18vw;
+    font-size: clamp(24px, 6.2vw, 34px);
   }
 }
 
@@ -1553,4 +1587,84 @@ onMounted(() => {
     padding: 8px 20px;
   }
 }
+
+@media (orientation: portrait) and (max-width: 430px) {
+  .hero-poster {
+    height: clamp(430px, 69svh, 560px);
+    min-height: 430px;
+    padding: 18px 10px;
+  }
+
+  .hero-info {
+    left: 8px;
+    top: 48px;
+    font-size: 12px;
+    line-height: 0.95;
+  }
+
+  .hero-main-logo {
+    top: 34px;
+    right: 8px;
+    width: min(66vw, 290px);
+  }
+
+  .hero-texture-cera {
+    width: 112vw;
+    left: -14%;
+    top: 24%;
+    transform: rotate(96deg);
+  }
+
+  .hero-texture-pixel {
+    width: 62vw;
+    left: -2%;
+    top: 56%;
+  }
+
+  .hero-date {
+    left: 10px;
+    bottom: 52px;
+    font-size: clamp(26px, 9.4vw, 44px);
+    line-height: 0.9;
+  }
+
+  .hero-line {
+    left: 32%;
+    bottom: 98px;
+    width: 22vw;
+    height: 4px;
+  }
+
+  .hero-place {
+    right: 10px;
+    bottom: 58px;
+    font-size: clamp(18px, 7vw, 34px);
+    line-height: 0.92;
+  }
+
+  .hero-agenda {
+    padding: 14px 10px 16px;
+  }
+
+  .agenda-grid {
+    grid-template-columns: 74px 1fr 48px;
+    gap: 6px;
+  }
+
+  .agenda-grid-head {
+    font-size: 14px;
+  }
+
+  .agenda-row {
+    padding: 6px 0;
+    font-size: 13px;
+  }
+
+  .agenda-row p:nth-child(2),
+  .agenda-time {
+    font-size: 10px;
+    line-height: 1.12;
+  }
+}
+
 </style>

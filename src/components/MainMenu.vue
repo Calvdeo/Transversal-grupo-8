@@ -117,7 +117,7 @@ const toggleActividades = () => {
   z-index: 1000;
   width: 100%;
   height: 110px;
-  background: #0040f2;
+  background: var(--esclat-theme-color, #0040f2);
 }
 
 .header-nav {
@@ -173,7 +173,7 @@ const toggleActividades = () => {
   z-index: 1200;
   height: 100vh;
   width: min(430px, 88vw);
-  background: #0040f2;
+  background: var(--esclat-theme-color, #0040f2);
   color: white;
   padding: 2.5rem;
   display: flex;
