@@ -6,6 +6,7 @@ type Cantante = {
   nombre: string
   hora: string
   escenario: string
+  descripcion: string
   rutaImagen: string | null
 }
 
@@ -22,6 +23,7 @@ const cantantes = ref<Cantante[]>([
     nombre: 'Belen Aguilera',
     hora: 'Dia 24, 17:00',
     escenario: 'Patio 2',
+    descripcion: 'Pop emocional con letras intimas y estribillos potentes.',
     rutaImagen: '/src/assets/artistas/art-05.jpg'
   },
   {
@@ -29,6 +31,7 @@ const cantantes = ref<Cantante[]>([
     nombre: 'Silvana Estrada',
     hora: 'Dia 25, 19:00',
     escenario: 'Patio 2',
+    descripcion: 'Folk latino de voz delicada y arreglos acusticos organicos.',
     rutaImagen: '/src/assets/artistas/art-06.jpg'
   },
   {
@@ -36,6 +39,7 @@ const cantantes = ref<Cantante[]>([
     nombre: 'El Kanka',
     hora: 'Dia 24, 21:00',
     escenario: 'Patio 2',
+    descripcion: 'Cancion de autor con humor, cercania y mucho carisma en directo.',
     rutaImagen: '/src/assets/artistas/art-07.jpg'
   },
   {
@@ -43,6 +47,7 @@ const cantantes = ref<Cantante[]>([
     nombre: 'valeria Castro',
     hora: 'Dia 25, 20:15',
     escenario: 'Patio 2',
+    descripcion: 'Pop de raiz con sensibilidad vocal y atmosfera cinematica.',
     rutaImagen: '/src/assets/artistas/art-08.jpg'
   },
   {
@@ -50,6 +55,7 @@ const cantantes = ref<Cantante[]>([
     nombre: 'Figa Flawas',
     hora: 'Dia 25, 21:00',
     escenario: 'Patio 2',
+    descripcion: 'Ritmos urbanos y fiesta mediterranea con energia joven.',
     rutaImagen: '/src/assets/artistas/art-19.jpg'
   },
   {
@@ -57,6 +63,7 @@ const cantantes = ref<Cantante[]>([
     nombre: 'Oques Grasses',
     hora: 'Dia 25, 21:45',
     escenario: 'Patio 2',
+    descripcion: 'Mestizaje pop y electronica con himnos para cantar en grupo.',
     rutaImagen: '/src/assets/artistas/art-11.jpg'
   }
 ])
@@ -67,6 +74,7 @@ const cantantesSecundarios = ref<Cantante[]>([
     nombre: 'La Paloma',
     hora: 'Dia 23, 16:00',
     escenario: 'Patio 1',
+    descripcion: 'Rock alternativo con guitarras tensas y pulso post punk.',
     rutaImagen: '/src/assets/artistas/art-12.jpg'
   },
   {
@@ -74,6 +82,7 @@ const cantantesSecundarios = ref<Cantante[]>([
     nombre: 'Shego',
     hora: 'Dia 23, 11:00',
     escenario: 'Patio 1',
+    descripcion: 'Garage punk directo, ironico y lleno de actitud.',
     rutaImagen: '/src/assets/artistas/art-13.jpg'
   },
   {
@@ -81,6 +90,7 @@ const cantantesSecundarios = ref<Cantante[]>([
     nombre: 'Corte!',
     hora: 'Dia 23, 19:00',
     escenario: 'Patio 1',
+    descripcion: 'Post punk crudo y melodias rapidas para no parar de saltar.',
     rutaImagen: '/src/assets/artistas/art-14.jpg'
   },
   {
@@ -88,6 +98,7 @@ const cantantesSecundarios = ref<Cantante[]>([
     nombre: 'Escandaloso expósito',
     hora: 'Dia 23, 12:30',
     escenario: 'Patio 1',
+    descripcion: 'Rap narrativo con metales, groove y mucha presencia escenica.',
     rutaImagen: '/src/assets/artistas/art-15.jpg'
   },
   {
@@ -95,6 +106,7 @@ const cantantesSecundarios = ref<Cantante[]>([
     nombre: 'Mala gestión',
     hora: 'Dia 24, 16:00',
     escenario: 'Patio 1',
+    descripcion: 'Indie pop fresco con estribillos pegadizos y actitud DIY.',
     rutaImagen: '/src/assets/artistas/art-16.jpg'
   },
   {
@@ -102,6 +114,7 @@ const cantantesSecundarios = ref<Cantante[]>([
     nombre: 'Aiko el grupo',
     hora: 'Dia 24, 12:30',
     escenario: 'Patio 1',
+    descripcion: 'Punk pop afilado, divertido y sin filtros.',
     rutaImagen: '/src/assets/artistas/art-17.jpg'
   },
   {
@@ -109,6 +122,7 @@ const cantantesSecundarios = ref<Cantante[]>([
     nombre: 'Ariel Pink',
     hora: 'Dia 25, 16:00',
     escenario: 'Patio 1',
+    descripcion: 'Pop lo fi psicodelico con sonidos retro y raros encantadores.',
     rutaImagen: '/src/assets/artistas/art-18.jpg'
   },
   {
@@ -116,6 +130,7 @@ const cantantesSecundarios = ref<Cantante[]>([
     nombre: 'La fúmiga',
     hora: 'Dia 25, 17:30',
     escenario: 'Patio 1',
+    descripcion: 'Brass pop festivo con letras cercanas y ritmo contagioso.',
     rutaImagen: '/src/assets/artistas/art-20.jpg'
   },
   {
@@ -123,6 +138,7 @@ const cantantesSecundarios = ref<Cantante[]>([
     nombre: 'Los Punsetes',
     hora: 'Dia 25, 18:15',
     escenario: 'Patio 1',
+    descripcion: 'Indie rock mordaz con guitarras secas y humor negro.',
     rutaImagen: '/src/assets/artistas/art-21.jpg'
   },
   {
@@ -130,6 +146,7 @@ const cantantesSecundarios = ref<Cantante[]>([
     nombre: 'Las petunias',
     hora: 'Dia 25, 19:00',
     escenario: 'Patio 1',
+    descripcion: 'Punk pop irreverente con melodias simples y mucha chispa.',
     rutaImagen: '/src/assets/artistas/art-22.jpg'
   },
   {
@@ -137,11 +154,13 @@ const cantantesSecundarios = ref<Cantante[]>([
     nombre: 'Amor líquido',
     hora: 'Dia 25, 19:45',
     escenario: 'Patio 1',
+    descripcion: 'Electro pop experimental con capas de voz y texturas densas.',
     rutaImagen: '/src/assets/artistas/art-23.jpg'
   }
 ])
 
 const cantanteActivo = ref<Cantante | null>(null)
+const spotifyEmbedUrl = 'https://open.spotify.com/embed/playlist/6tDLx8XUI6zjXoulHDEHvV?utm_source=generator&theme=0'
 
 function crearMapaColoresSinRepeticion(
   bloques: Cantante[][]
@@ -233,10 +252,8 @@ function limpiarCantanteActivo() {
     <section class="panel-cantantes mx-auto max-w-[1320px] p-8 sm:p-10">
       <header class="mb-12 flex items-start justify-between gap-4">
         <h1 class="titulo-cantantes">Cantantes</h1>
-       
       </header>
 
-      
       <div class="rejilla-cantantes">
         <button
           v-for="cantante in cantantes"
@@ -266,6 +283,7 @@ function limpiarCantanteActivo() {
               <p class="overlay-nombre">{{ cantante.nombre }}</p>
               <p>{{ cantante.hora }}</p>
               <p>{{ cantante.escenario }}</p>
+              <p class="overlay-descripcion">{{ cantante.descripcion }}</p>
             </div>
           </div>
 
@@ -305,10 +323,23 @@ function limpiarCantanteActivo() {
               <p class="overlay-nombre">{{ cantante.nombre }}</p>
               <p>{{ cantante.hora }}</p>
               <p>{{ cantante.escenario }}</p>
+              <p class="overlay-descripcion">{{ cantante.descripcion }}</p>
             </div>
           </div>
         </button>
       </div>
+
+      <section
+        class="spotify-preview"
+        aria-label="Reproductor de Spotify"
+      >
+        <iframe
+          class="spotify-embed"
+          :src="spotifyEmbedUrl"
+          loading="lazy"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        ></iframe>
+      </section>
     </section>
   </main>
 </template>
@@ -329,6 +360,20 @@ function limpiarCantanteActivo() {
   font-weight: 900;
   line-height: 0.95;
   color: #ffffff;
+}
+
+.spotify-preview {
+  margin: 2.4rem auto 0;
+  width: min(100%, 980px);
+}
+
+.spotify-embed {
+  width: 100%;
+  height: 352px;
+  border: 0;
+  border-radius: 16px;
+  display: block;
+  background: #0b0b0b;
 }
 
 .texto-auxiliar {
@@ -504,11 +549,25 @@ function limpiarCantanteActivo() {
   font-weight: 700;
 }
 
+.overlay-descripcion {
+  margin-top: 0.35rem;
+  font-size: 0.76rem;
+  line-height: 1.28;
+}
+
 .texto-ayuda-hover {
   opacity: 0.75;
 }
 
 @media (max-width: 980px) {
+  .spotify-preview {
+    margin: 2rem auto 0;
+  }
+
+  .spotify-embed {
+    height: 300px;
+  }
+
   .rejilla-cantantes {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -543,6 +602,13 @@ function limpiarCantanteActivo() {
   .miniatura-secundaria {
     aspect-ratio: 1 / 1;
     height: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .spotify-embed {
+    height: 232px;
+    border-radius: 12px;
   }
 }
 </style>
