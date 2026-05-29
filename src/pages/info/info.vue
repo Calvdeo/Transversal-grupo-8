@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <section class="mx-auto flex min-h-screen max-w-5xl px-6 py-32">
 
     <div class="max-w-3xl">

@@ -4,8 +4,10 @@ import { onMounted, ref } from 'vue'
 import logoEsclat from '@/assets/logo/logoazul.png'
 import imagenFondo1 from '@/assets/imagenes/imagenfondo1.jpg'
 
-import texturaCera from '@/assets/texturas/peques-06.png'
-import texturaPixel from '@/assets/texturas/peques-05.png'
+import texturaCeraPeque from '@/assets/texturas/peques-06.png'
+import texturaCeraGrande from '@/assets/texturas/ceraazul.png'
+import texturaPixelPeque from '@/assets/texturas/peques-05.png'
+import texturaPixelGrande from '@/assets/texturas/pixelazul.png'
 import texturaPosca from '@/assets/texturas/peques-07.png'
 import texturaMenu from '@/assets/texturas/peques-04.png'
 
@@ -25,7 +27,7 @@ const estaPintando = ref(false)
 const pincelActual = ref<Pincel | null>(null)
 const ultimaPosicion = ref<Punto | null>(null)
 
-const COLOR_AZUL = '#014fff'
+const COLOR_AZUL = '#0040f2'
 const ANCHO_LIENZO = 1700
 const ALTO_LIENZO = 1100
 const MARGEN_MARCO = 44
@@ -33,12 +35,14 @@ const MARGEN_PINTURA = 8
 
 const FUENTE_POSTAL =
   '"Alte Haas Grotesk", "Helvetica Neue", Arial, sans-serif'
+const FUENTE_INTER =
+  '"Inter", "Helvetica Neue", Arial, sans-serif'
 
 const fondoEscena = `url(${imagenFondo1})`
 
 const coloresDisponibles = [
   '#fe8507',
-  '#014fff',
+  '#0040f2',
   '#fc0299',
   '#05d181'
 ] as const
@@ -54,12 +58,12 @@ const pinceles: Pincel[] = [
   {
     nombre: 'Cera',
     valor: 'cera',
-    imagen: texturaCera
+    imagen: texturaCeraPeque
   },
   {
     nombre: 'Pixel',
     valor: 'pixel',
-    imagen: texturaPixel
+    imagen: texturaPixelPeque
   },
   {
     nombre: 'Posca',
@@ -172,7 +176,7 @@ function prepararLienzo() {
   const fechaY1 = baseInferiorY - 136
   const fechaY2 = baseInferiorY - 56
 
-  contexto.font = `700 72px ${FUENTE_POSTAL}`
+  contexto.font = `400 72px ${FUENTE_INTER}`
 
   contexto.fillText(
     '23.10',
@@ -194,7 +198,7 @@ function prepararLienzo() {
   )
 
   contexto.textAlign = 'right'
-  contexto.font = `300 64px ${FUENTE_POSTAL}`
+  contexto.font = `400 64px ${FUENTE_INTER}`
 
   contexto.fillText(
     'LAS NAVES,',
@@ -208,7 +212,7 @@ function prepararLienzo() {
     baseInferiorY - 68
   )
 
-  contexto.font = `300 34px ${FUENTE_POSTAL}`
+  contexto.font = `400 34px ${FUENTE_INTER}`
 
   contexto.fillText(
     'Entradas en: www.esclat.es',
@@ -298,6 +302,17 @@ function pintar(evento: MouseEvent) {
   const posicionAnterior =
     ultimaPosicion.value ??
     posicionActual
+
+  if (pincelActual.value.valor === 'pixel') {
+    const distanciaDesdeUltimaMarca = Math.hypot(
+      posicionActual.x - posicionAnterior.x,
+      posicionActual.y - posicionAnterior.y
+    )
+
+    if (distanciaDesdeUltimaMarca < 18) {
+      return
+    }
+  }
 
   pintarSegmento(
     posicionAnterior,
@@ -443,45 +458,45 @@ function pintarSegmento(
   }
 
   if (pincelActual.value.valor === 'pixel') {
-    const tamanoPixel = 14
-
-    const dx = fin.x - inicio.x
-    const dy = fin.y - inicio.y
-
-    const distancia = Math.hypot(dx, dy)
-
-    const pasos = Math.max(
-      1,
-      Math.ceil(distancia / (tamanoPixel / 2))
-    )
+    const radioBase = 8
+    const irregularidad = 0.35
+    const segmentos = 12
 
     contexto.save()
 
     aplicarRecortePostal(contexto)
 
     contexto.fillStyle = colorActual.value
+    contexto.globalAlpha = 0.95
 
-    for (let i = 0; i <= pasos; i++) {
-      const t = i / pasos
+    contexto.beginPath()
 
-      const x = inicio.x + dx * t
-      const y = inicio.y + dy * t
+    for (let i = 0; i <= segmentos; i++) {
+      const angulo =
+        (i / segmentos) * Math.PI * 2
 
-      const pixelX =
-        Math.round(x / tamanoPixel) *
-        tamanoPixel
+      const factor =
+        1 +
+        (Math.random() * 2 - 1) *
+          irregularidad
 
-      const pixelY =
-        Math.round(y / tamanoPixel) *
-        tamanoPixel
+      const radio = radioBase * factor
 
-      contexto.fillRect(
-        pixelX,
-        pixelY,
-        tamanoPixel,
-        tamanoPixel
-      )
+      const x =
+        fin.x + Math.cos(angulo) * radio
+
+      const y =
+        fin.y + Math.sin(angulo) * radio
+
+      if (i === 0) {
+        contexto.moveTo(x, y)
+      } else {
+        contexto.lineTo(x, y)
+      }
     }
+
+    contexto.closePath()
+    contexto.fill()
 
     contexto.restore()
   }
@@ -533,10 +548,10 @@ onMounted(() => {
         class="hero-poster"
       >
         <div class="hero-info">
-          <p>FESTIVAL DE</p>
-          <p>MÚSICA,</p>
-          <p>PENSAMENT I</p>
-          <p>CREATIVITAT</p>
+          <p>FESTIVAL</p>
+          <p>DE MÚSICA,</p>
+          <p>PENSAMENT</p>
+          <p> I CREATIVITAT</p>
         </div>
 
         <img
@@ -546,13 +561,13 @@ onMounted(() => {
         >
 
         <img
-          :src="texturaCera"
+          :src="texturaCeraGrande"
           alt=""
           class="hero-texture hero-texture-cera"
         >
 
         <img
-          :src="texturaPixel"
+          :src="texturaPixelGrande"
           alt=""
           class="hero-texture hero-texture-pixel"
         >
@@ -569,6 +584,182 @@ onMounted(() => {
           <p>VALÈNCIA</p>
         </div>
       </div>
+
+      <div class="hero-agenda">
+        <div class="agenda-grid agenda-grid-head">
+          <p>fecha</p>
+          <p>Música</p>
+          <p>hora</p>
+        </div>
+
+        <div class="agenda-grid agenda-row">
+          <p class="agenda-date">23.10.26</p>
+          <p>Valeria Castro · Figa Flawas · Shego</p>
+          <p class="agenda-time">18:00</p>
+        </div>
+
+        <div class="agenda-grid agenda-row">
+          <p class="agenda-date"></p>
+          <p>CORTE! · Escandaloso Xpósito · La Paloma</p>
+          <p class="agenda-time">18:00</p>
+        </div>
+
+        <div class="agenda-grid agenda-row">
+          <p class="agenda-date">24.10.26</p>
+          <p>El Kanka · Belén Aguilera · Mala Gestión</p>
+          <p class="agenda-time">18:00</p>
+        </div>
+
+        <div class="agenda-grid agenda-row">
+          <p class="agenda-date"></p>
+          <p>La Fúmiga · Aiko el grupo · Ariel Pink</p>
+          <p class="agenda-time">18:00</p>
+        </div>
+
+        <div class="agenda-grid agenda-row">
+          <p class="agenda-date">25.10.26</p>
+          <p>Silvana Estrada · Oques Grasses · Zoo</p>
+          <p class="agenda-time">18:00</p>
+        </div>
+
+        <div class="agenda-grid agenda-row">
+          <p class="agenda-date"></p>
+          <p>Los Punsetes · Las Petunias · Amor Líquido</p>
+          <p class="agenda-time">18:00</p>
+        </div>
+      </div>
+
+      <div class="hero-agenda hero-agenda-talleres">
+        <div class="agenda-grid agenda-grid-head">
+          <p>fecha</p>
+          <p>Talleres</p>
+          <p>hora</p>
+        </div>
+
+        <div class="agenda-grid agenda-row">
+          <p class="agenda-date">23.10.26</p>
+          <p>Taller de cianotipia</p>
+          <p class="agenda-time">18:00</p>
+        </div>
+
+        <div class="agenda-grid agenda-row">
+          <p class="agenda-date"></p>
+          <p>Cadáver exquisito</p>
+          <p class="agenda-time">18:00</p>
+        </div>
+
+        <div class="agenda-grid agenda-row">
+          <p class="agenda-date">24.10.26</p>
+          <p>Escritura creativa</p>
+          <p class="agenda-time">18:00</p>
+        </div>
+
+        <div class="agenda-grid agenda-row">
+          <p class="agenda-date"></p>
+          <p>Taller de fanzines</p>
+          <p class="agenda-time">18:00</p>
+        </div>
+
+        <div class="agenda-grid agenda-row">
+          <p class="agenda-date">25.10.26</p>
+          <p>Improvisación teatral</p>
+          <p class="agenda-time">18:00</p>
+        </div>
+
+        <div class="agenda-grid agenda-row">
+          <p class="agenda-date"></p>
+          <p>Clase de producción musical</p>
+          <p class="agenda-time">18:00</p>
+        </div>
+      </div>
+
+      <div class="hero-agenda hero-agenda-dialogos">
+        <div class="agenda-grid agenda-grid-head">
+          <p>fecha</p>
+          <p>Diálogos</p>
+          <p>hora</p>
+        </div>
+
+        <div class="agenda-grid agenda-row">
+          <p class="agenda-date">23.10.26</p>
+          <p>Manipulamos o nos manipulan-Diego Álvarez</p>
+          <p class="agenda-time">18:00</p>
+        </div>
+
+        <div class="agenda-grid agenda-row">
+          <p class="agenda-date"></p>
+          <p>Piel de plátano-Miss beige</p>
+          <p class="agenda-time">18:00</p>
+        </div>
+
+        <div class="agenda-grid agenda-row">
+          <p class="agenda-date">24.10.26</p>
+          <p>¿Está todo inventado?-PutoMikel</p>
+          <p class="agenda-time">18:00</p>
+        </div>
+
+        <div class="agenda-grid agenda-row">
+          <p class="agenda-date"></p>
+          <p>La performance-ter</p>
+          <p class="agenda-time">18:00</p>
+        </div>
+
+        <div class="agenda-grid agenda-row">
+          <p class="agenda-date">25.10.26</p>
+          <p>Españul-Lamine Thior</p>
+          <p class="agenda-time">18:00</p>
+        </div>
+
+        <div class="agenda-grid agenda-row">
+          <p class="agenda-date"></p>
+          <p>Trap del terraplanismo-Jaime Altozano</p>
+          <p class="agenda-time">18:00</p>
+        </div>
+      </div>
+
+      <div class="hero-agenda hero-agenda-proyecciones">
+        <div class="agenda-grid agenda-grid-head">
+          <p>fecha</p>
+          <p>Proyecciones</p>
+          <p>hora</p>
+        </div>
+
+        <div class="agenda-grid agenda-row">
+          <p class="agenda-date">23.10.26</p>
+          <p>"Madre"-Rodrigo Sorogoyen</p>
+          <p class="agenda-time">18:00</p>
+        </div>
+
+        <div class="agenda-grid agenda-row">
+          <p class="agenda-date"></p>
+          <p>"Zona Wao"-Nagore Eceiza Mujika</p>
+          <p class="agenda-time">18:00</p>
+        </div>
+
+        <div class="agenda-grid agenda-row">
+          <p class="agenda-date">24.10.26</p>
+          <p>"Utopias y otras especies"-Júlia Izaguirre</p>
+          <p class="agenda-time">18:00</p>
+        </div>
+
+        <div class="agenda-grid agenda-row">
+          <p class="agenda-date"></p>
+          <p>"Me"-Don Hertzfeldtv</p>
+          <p class="agenda-time">18:00</p>
+        </div>
+
+        <div class="agenda-grid agenda-row">
+          <p class="agenda-date">25.10.26</p>
+          <p>"No als poalets"-Laura garcía Andreu</p>
+          <p class="agenda-time">18:00</p>
+        </div>
+
+        <div class="agenda-grid agenda-row">
+          <p class="agenda-date"></p>
+          <p>"Uli"-Mariana Gil</p>
+          <p class="agenda-time">18:00</p>
+        </div>
+      </div>
     </section>
 
     <section
@@ -581,13 +772,11 @@ onMounted(() => {
         </p>
 
         <h1 class="hero-title">
-          Este cartel no está terminado.
+          ¿Cómo suena esclat para ti?
         </h1>
 
         <p class="studio-text">
-          Añade una textura, una forma o
-          un gesto utilizando los
-          pinceles de ESCLAT.
+          Compartelo y disfruta conociendo otras texturas
         </p>
       </div>
 
@@ -659,13 +848,14 @@ onMounted(() => {
 </template>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap');
 .home-page {
   min-height: 100vh;
   overflow-x: hidden;
 
   background: #ffffff;
 
-  color: #014fff;
+  color: #0040f2;
 
   font-family:
     "Alte Haas Grotesk",
@@ -679,13 +869,13 @@ onMounted(() => {
 
   background: #ffffff;
 
-  padding-top: 110px;
+  padding-top: 0;
 }
 
 .hero-poster {
   position: relative;
 
-  min-height: calc(100vh - 110px);
+  min-height: 100vh;
 
   overflow: hidden;
 
@@ -696,11 +886,11 @@ onMounted(() => {
   position: absolute;
 
   left: 36px;
-  top: 42px;
+  top: 80px;
 
   z-index: 4;
 
-  color: #014fff;
+  color: #0040f2;
 
   font-size: clamp(22px, 2.4vw, 39px);
 
@@ -712,8 +902,8 @@ onMounted(() => {
 .hero-main-logo {
   position: absolute;
 
-  top: 70px;
-  right: 58px;
+  top: -5px;
+  right: 10px;
 
   z-index: 4;
 
@@ -733,15 +923,18 @@ onMounted(() => {
 .hero-texture-cera {
   width: clamp(560px, 70vw, 1080px);
 
-  left: 14%;
-  top: 26%;
+  left: 20%;
+  top: -40%;
+
+  transform: rotate(90deg);
+  transform-origin: center;
 }
 
 .hero-texture-pixel {
-  width: clamp(260px, 34vw, 560px);
+  width: clamp(300px, 38vw, 640px);
 
-  left: 8%;
-  top: 48%;
+  left: 15%;
+  top: 5%;
 }
 
 .hero-date {
@@ -755,44 +948,35 @@ onMounted(() => {
   font-size: clamp(54px, 7vw, 112px);
 
   line-height: 0.86;
+  letter-spacing: -0.05em;
 
-  font-weight: 300;
+  font-family:
+    "Inter",
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+
+  font-weight: 400;
 }
 
 .hero-line {
   position: absolute;
 
   left: clamp(220px, 23vw, 420px);
-  bottom: 175px;
+  bottom:250px;
 
   width: clamp(160px, 17vw, 320px);
 
   height: 6px;
 
-  background: #014fff;
-}
-
-.hero-line::after {
-  content: "";
-
-  position: absolute;
-
-  right: -10px;
-  top: -7px;
-
-  width: 20px;
-  height: 20px;
-
-  border-radius: 999px;
-
-  background: #014fff;
+  background: #0040f2;
 }
 
 .hero-place {
   position: absolute;
 
   right: 50px;
-  bottom: 120px;
+  bottom: 90px;
 
   z-index: 5;
 
@@ -800,28 +984,115 @@ onMounted(() => {
 
   font-size: clamp(50px, 6.4vw, 106px);
 
-  line-height: 0.88;
+  line-height: 1.1;
 
-  font-weight: 300;
+  font-family:
+    "Inter",
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+
+  font-weight: 400;
+}
+
+.hero-agenda {
+  width: 100%;
+
+  min-height: auto;
+
+  margin: 0;
+
+  background: #0040f2;
+
+  color: #ffffff;
+
+  padding: 28px clamp(24px, 6vw, 54px) 34px;
+
+  font-family:
+    "Inter",
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+
+  font-weight: 400;
+}
+
+.hero-agenda-proyecciones {
+  background: #fe8507;
+}
+
+.hero-agenda-dialogos {
+  background: #05d181;
+}
+
+.hero-agenda-talleres {
+  background: #fc0299;
+}
+
+.agenda-grid {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 180px)
+    minmax(0, 1fr)
+    minmax(0, 110px);
+
+  gap: 16px;
+
+  align-items: center;
+}
+
+.agenda-grid p {
+  margin: 0;
+}
+
+.agenda-grid-head {
+  margin-bottom: 6px;
+
+  font-size: clamp(30px, 3.6vw, 44px);
+
+  line-height: 1;
+
+  font-weight: 400;
+}
+
+.agenda-row {
+  padding: 10px 0;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+
+  font-size: clamp(26px, 2.6vw, 44px);
+
+  line-height: 1;
+
+  letter-spacing: -0.05em;
+
+  font-weight: 400;
+}
+
+.agenda-row:first-of-type {
+  border-top: none;
+}
+
+.agenda-row p:nth-child(2),
+.agenda-time {
+  font-size: clamp(25px, 2vw, 33px);
+
+  letter-spacing: -0.01em;
+
+  font-weight: 400;
+}
+
+.agenda-time {
+  text-align: right;
 }
 
 .studio {
-  min-height: 100vh;
+  min-height: auto;
 
-  background-image:
-    linear-gradient(
-      rgba(0, 0, 0, 0.34),
-      rgba(0, 0, 0, 0.34)
-    ),
-    var(--fondo-escena);
+  background: #ffffff;
 
-  background-size: cover;
-
-  background-position: center;
-
-  background-attachment: fixed;
-
-  padding: 90px 24px 120px;
+  padding: 64px 24px 88px;
 }
 
 .studio-heading {
@@ -829,11 +1100,11 @@ onMounted(() => {
 
   margin: 0 auto 28px;
 
-  color: #ffffff;
+  color: #0040f2;
 }
 
 .studio-kicker {
-  color: #ffffff;
+  color: #0040f2;
 
   font-size: 18px;
 
@@ -843,7 +1114,7 @@ onMounted(() => {
 }
 
 .hero-title {
-  color: #ffffff;
+  color: #0040f2;
 
   font-size: clamp(38px, 5vw, 86px);
 
@@ -857,7 +1128,7 @@ onMounted(() => {
 .studio-text {
   max-width: 760px;
 
-  color: #ffffff;
+  color: #0040f2;
 
   font-size: clamp(18px, 1.8vw, 28px);
 
@@ -865,7 +1136,7 @@ onMounted(() => {
 }
 
 .workbench {
-  max-width: 1820px;
+  max-width: 1500px;
 
   margin: 0 auto;
 
@@ -889,7 +1160,8 @@ onMounted(() => {
 
   aspect-ratio: 17 / 11;
 
-  min-height: min(78vh, 980px);
+  height: auto;
+  min-height: 0;
 
   display: block;
 
@@ -941,7 +1213,7 @@ onMounted(() => {
 
   filter:
     drop-shadow(
-      0 0 10px rgba(1, 79, 255, 0.45)
+      0 0 10px rgba(0, 64, 242, 0.45)
     );
 }
 
@@ -952,7 +1224,7 @@ onMounted(() => {
 
   filter:
     drop-shadow(
-      0 0 12px rgba(1, 79, 255, 0.55)
+      0 0 12px rgba(0, 64, 242, 0.55)
     );
 }
 
@@ -1001,7 +1273,7 @@ onMounted(() => {
 .color-dot.is-active {
   box-shadow:
     0 0 0 2px #ffffff,
-    0 0 0 4px #014fff;
+    0 0 0 4px #0040f2;
 }
 
 .actions {
@@ -1023,7 +1295,7 @@ onMounted(() => {
 
   color: #ffffff;
 
-  background: #014fff;
+  background: #0040f2;
 
   font-family:
     "Alte Haas Grotesk",
@@ -1051,13 +1323,13 @@ onMounted(() => {
 
 @media (max-width: 1120px) {
   .hero-main-logo {
-    top: 125px;
+    top: -42px;
     right: 28px;
   }
 
   .hero-texture-cera {
-    left: -4%;
-    top: 34%;
+    left: -3%;
+    top: 28%;
   }
 
   .hero-texture-pixel {
@@ -1067,6 +1339,36 @@ onMounted(() => {
 
   .hero-place {
     right: 28px;
+  }
+
+  .hero-agenda {
+    width: 100%;
+
+    min-height: auto;
+
+    padding: 20px 16px 24px;
+  }
+
+  .agenda-grid {
+    grid-template-columns:
+      minmax(0, 104px)
+      minmax(0, 1fr)
+      minmax(0, 70px);
+
+    gap: 10px;
+  }
+
+  .agenda-grid-head {
+    font-size: clamp(24px, 6.1vw, 32px);
+  }
+
+  .agenda-row {
+    font-size: clamp(20px, 5.4vw, 30px);
+  }
+
+  .agenda-row p:nth-child(2),
+  .agenda-time {
+    font-size: clamp(16px, 4.3vw, 22px);
   }
 
   .workbench {
@@ -1096,6 +1398,159 @@ onMounted(() => {
 
   .stamp-button {
     font-size: 42px;
+  }
+}
+
+@media (max-width: 700px) {
+  .hero-poster {
+    min-height: clamp(760px, 170vw, 980px);
+    aspect-ratio: 7 / 10;
+    padding: 22px 14px;
+  }
+
+  .hero-info {
+    left: 16px;
+    top: 44px;
+    font-size: clamp(14px, 4.2vw, 24px);
+    line-height: 0.96;
+  }
+
+  .hero-main-logo {
+    top: 10px;
+    right: 8px;
+    width: clamp(260px, 70vw, 440px);
+  }
+
+  .hero-texture-cera {
+    width: 136vw;
+    left: -34%;
+    top: 13%;
+    transform: rotate(102deg);
+  }
+
+  .hero-texture-pixel {
+    width: 78vw;
+    left: -5%;
+    top: 50%;
+  }
+
+  .hero-date {
+    left: 16px;
+    bottom: 74px;
+    font-size: clamp(46px, 12vw, 68px);
+    line-height: 0.9;
+  }
+
+  .hero-line {
+    left: 31%;
+    bottom: 166px;
+    width: clamp(64px, 21vw, 120px);
+  }
+
+  .hero-place {
+    right: 16px;
+    bottom: 76px;
+    font-size: clamp(34px, 8.6vw, 56px);
+    line-height: 0.95;
+  }
+}
+
+@media (max-width: 430px) {
+  .hero-poster {
+    min-height: 760px;
+    aspect-ratio: 7 / 10;
+  }
+
+  .hero-main-logo {
+    width: 74vw;
+  }
+
+  .hero-texture-cera {
+    width: 142vw;
+    left: -40%;
+    top: 14%;
+  }
+
+  .hero-texture-pixel {
+    width: 82vw;
+    left: -8%;
+    top: 51%;
+  }
+
+  .hero-line {
+    left: 34%;
+    width: 18vw;
+  }
+}
+
+@media (max-width: 700px) {
+  .hero-agenda {
+    padding: 18px 14px 22px;
+  }
+
+  .agenda-grid {
+    grid-template-columns: 82px 1fr 52px;
+    gap: 8px;
+  }
+
+  .agenda-grid-head {
+    font-size: 22px;
+  }
+
+  .agenda-row {
+    padding: 8px 0;
+    font-size: 18px;
+  }
+
+  .agenda-row p:nth-child(2),
+  .agenda-time {
+    font-size: 15px;
+    line-height: 1.1;
+  }
+
+  .studio {
+    padding: 48px 14px 72px;
+  }
+
+  .hero-title {
+    font-size: 42px;
+  }
+
+  .studio-text {
+    font-size: 18px;
+  }
+
+  .poster-canvas {
+    min-height: auto;
+    aspect-ratio: 17 / 11;
+  }
+
+  .brush-list {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .brush-thumb {
+    height: 82px;
+  }
+
+  .color-list {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .color-dot {
+    width: 40px;
+    height: 40px;
+  }
+
+  .actions {
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .stamp-button {
+    font-size: 30px;
+    padding: 8px 20px;
   }
 }
 </style>

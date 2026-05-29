@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { RouterLink } from 'vue-router'
 </script>
 
@@ -22,7 +22,7 @@ import { RouterLink } from 'vue-router'
 <style scoped>
 .site-footer {
   width: 100%;
-  background: linear-gradient(90deg, #014fff 0%, #0037b4 100%);
+  background: linear-gradient(90deg, #0040f2 0%, #0040f2 100%);
   border-top: 4px solid #ffffff;
 }
 
@@ -74,7 +74,7 @@ import { RouterLink } from 'vue-router'
 
 .site-footer__socials a:hover {
   background: #ffffff;
-  color: #014fff;
+  color: #0040f2;
 }
 
 @media (max-width: 860px) {
@@ -94,3 +94,4 @@ import { RouterLink } from 'vue-router'
   }
 }
 </style>
+
