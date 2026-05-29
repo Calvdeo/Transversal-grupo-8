@@ -1,15 +1,26 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 import entradaAbono from '@/assets/entradas/entrada-1.jpg'
 import entradaDia23 from '@/assets/entradas/entrada-2.jpg'
 import entradaDia24 from '@/assets/entradas/entrada-3.jpg'
 import entradaDia25 from '@/assets/entradas/entrada-4.jpg'
 
-const entradas = [
+type Entrada = {
+  id: number
+  nombre: string
+  precio: number
+  imagen: string
+  descripcion: string
+  rotacion: string
+  color: string
+}
+
+const entradas = ref<Entrada[]>([
   {
     id: 1,
     nombre: 'Abono general 3 días',
+    precio: 75,
     imagen: entradaAbono,
     descripcion: 'Esta entrada incluye acceso a todas las actividades de los tres días.',
     rotacion: '-rotate-6',
@@ -18,6 +29,7 @@ const entradas = [
   {
     id: 2,
     nombre: 'Entrada día 23.10.26',
+    precio: 40,
     imagen: entradaDia23,
     descripcion: 'Esta entrada incluye acceso a todas las actividades del día 23.10.26.',
     rotacion: 'rotate-6',
@@ -26,6 +38,7 @@ const entradas = [
   {
     id: 3,
     nombre: 'Entrada día 24.10.26',
+    precio: 40,
     imagen: entradaDia24,
     descripcion: 'Esta entrada incluye acceso a todas las actividades del día 24.10.26.',
     rotacion: 'rotate-3',
@@ -34,12 +47,13 @@ const entradas = [
   {
     id: 4,
     nombre: 'Entrada día 25.10.26',
+    precio: 40,
     imagen: entradaDia25,
     descripcion: 'Esta entrada incluye acceso a todas las actividades del día 25.10.26.',
     rotacion: '-rotate-6',
     color: '#f26a00'
   }
-]
+])
 
 const cantidades = ref<Record<number, number>>({
   1: 0,
@@ -47,6 +61,14 @@ const cantidades = ref<Record<number, number>>({
   3: 0,
   4: 0
 })
+
+const total = computed(() => {
+  return entradas.value.reduce((suma, entrada) => {
+    return suma + entrada.precio * (cantidades.value[entrada.id] ?? 0)
+  }, 0)
+})
+
+const hayCompra = computed(() => total.value > 0)
 </script>
 
 <template>
@@ -89,6 +111,21 @@ const cantidades = ref<Record<number, number>>({
           </p>
         </article>
       </div>
+
+      <section class="resumen-compra">
+        <div></div>
+
+        <div
+          v-if="hayCompra"
+          class="precio"
+        >
+          <p>{{ total.toFixed(2) }}€</p>
+
+          <button class="boton-comprar">
+            Comprar
+          </button>
+        </div>
+      </section>
     </section>
   </main>
 </template>
@@ -162,5 +199,33 @@ const cantidades = ref<Record<number, number>>({
 
 .entrada-item:hover .entrada-descripcion {
   opacity: 1;
+}
+
+.resumen-compra {
+  margin: 90px auto 0;
+  max-width: 760px;
+  border-top: 8px solid #0040f2;
+  padding-top: 20px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: end;
+}
+
+.precio {
+  text-align: right;
+  font-size: 42px;
+  line-height: 1;
+}
+
+.boton-comprar {
+  margin-top: 16px;
+  background: #0040f2;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  font-size: 42px;
+  font-weight: 700;
+  cursor: pointer;
 }
 </style>
