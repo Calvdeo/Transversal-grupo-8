@@ -16,6 +16,8 @@ type Entrada = {
   color: string
 }
 
+const codigoPromocional = ref('')
+
 const entradas = ref<Entrada[]>([
   {
     id: 1,
@@ -62,17 +64,88 @@ const cantidades = ref<Record<number, number>>({
   4: 0
 })
 
-const total = computed(() => {
+const subtotal = computed(() => {
   return entradas.value.reduce((suma, entrada) => {
     return suma + entrada.precio * (cantidades.value[entrada.id] ?? 0)
   }, 0)
 })
 
+const descuento = computed(() => {
+  if (codigoPromocional.value.trim().toLowerCase() === 'esclat') {
+    return subtotal.value * 0.25
+  }
+
+  return 0
+})
+
+const total = computed(() => {
+  return subtotal.value - descuento.value
+})
+
 const hayCompra = computed(() => total.value > 0)
+
+const entradasSeleccionadas = computed(() => {
+  return entradas.value.filter((entrada) => {
+    return (cantidades.value[entrada.id] ?? 0) > 0
+  })
+})
+
+function descargarImagen(url: string, nombreArchivo: string) {
+  const enlace = document.createElement('a')
+
+  enlace.href = url
+  enlace.download = nombreArchivo
+
+  enlace.click()
+}
+
+function comprarEntradas() {
+  entradasSeleccionadas.value.forEach((entrada) => {
+    const cantidad = cantidades.value[entrada.id] ?? 0
+
+    for (let i = 1; i <= cantidad; i++) {
+      descargarImagen(
+        entrada.imagen,
+        `${entrada.nombre}-${i}.jpg`
+      )
+    }
+  })
+
+  cantidades.value = {
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0
+  }
+
+  codigoPromocional.value = ''
+}
 </script>
 
 <template>
   <main class="entradas-page">
+    <section
+      class="cinta-descuento"
+      aria-label="Aviso de descuento"
+    >
+      <div class="cinta-descuento-pista">
+        <div class="cinta-descuento-grupo">
+          <span>Con el código ESCLAT consigue un 25% de descuento en tus entradas.</span>
+          <span>Con el código ESCLAT consigue un 25% de descuento en tus entradas.</span>
+          <span>Con el código ESCLAT consigue un 25% de descuento en tus entradas.</span>
+        </div>
+
+        <div
+          class="cinta-descuento-grupo"
+          aria-hidden="true"
+        >
+          <span>Con el código ESCLAT consigue un 25% de descuento en tus entradas.</span>
+          <span>Con el código ESCLAT consigue un 25% de descuento en tus entradas.</span>
+          <span>Con el código ESCLAT consigue un 25% de descuento en tus entradas.</span>
+        </div>
+      </div>
+    </section>
+
     <section class="entradas-contenido">
       <h1 class="titulo">Entradas</h1>
 
@@ -96,6 +169,7 @@ const hayCompra = computed(() => total.value > 0)
               class="selector-cantidad"
             >
               <option :value="0">Cant.</option>
+
               <option
                 v-for="numero in 6"
                 :key="numero"
@@ -113,15 +187,34 @@ const hayCompra = computed(() => total.value > 0)
       </div>
 
       <section class="resumen-compra">
-        <div></div>
+        <div class="codigo">
+          <label for="codigo">Código promocional</label>
+
+          <input
+            id="codigo"
+            v-model="codigoPromocional"
+            type="text"
+            placeholder="Código"
+          >
+        </div>
 
         <div
           v-if="hayCompra"
           class="precio"
         >
+          <p
+            v-if="descuento > 0"
+            class="descuento"
+          >
+            Descuento aplicado: -{{ descuento.toFixed(2) }}€
+          </p>
+
           <p>{{ total.toFixed(2) }}€</p>
 
-          <button class="boton-comprar">
+          <button
+            class="boton-comprar"
+            @click="comprarEntradas"
+          >
             Comprar
           </button>
         </div>
@@ -133,9 +226,42 @@ const hayCompra = computed(() => total.value > 0)
 <style scoped>
 .entradas-page {
   min-height: 100vh;
+  padding-top: 110px;
+  overflow-x: hidden;
   background: white;
   color: #0040f2;
   font-family: "Alte Haas Grotesk", "Helvetica Neue", Arial, sans-serif;
+}
+
+.cinta-descuento {
+  width: 100%;
+  overflow: hidden;
+  border-top: 2px solid #0040f2;
+  border-bottom: 2px solid #0040f2;
+  background: #ffffff;
+}
+
+.cinta-descuento-pista {
+  display: flex;
+  width: max-content;
+  white-space: nowrap;
+  animation: deslizar-cinta 30s linear infinite;
+}
+
+.cinta-descuento-grupo {
+  display: flex;
+  align-items: center;
+  gap: 96px;
+  padding-right: 96px;
+}
+
+.cinta-descuento-pista span {
+  padding: 8px 0;
+  color: #0040f2;
+  font-size: clamp(24px, 2.8vw, 40px);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .entradas-contenido {
@@ -145,12 +271,13 @@ const hayCompra = computed(() => total.value > 0)
 }
 
 .titulo {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-bottom: 50px;
   font-size: clamp(72px, 16vw, 180px);
   line-height: 0.8;
   font-weight: 700;
-  margin-bottom: 50px;
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
+  text-align: left;
 }
 
 .lista-entradas {
@@ -174,14 +301,18 @@ const hayCompra = computed(() => total.value > 0)
   display: flex;
   align-items: flex-start;
   gap: 12px;
+  width: 100%;
 }
 
 .entrada-imagen {
-  width: 100%;
+  flex: 1 1 auto;
+  min-width: 0;
+  width: auto;
   display: block;
 }
 
 .selector-cantidad {
+  flex: 0 0 auto;
   border: 1px solid currentColor;
   color: inherit;
   background: white;
@@ -212,10 +343,33 @@ const hayCompra = computed(() => total.value > 0)
   align-items: end;
 }
 
+.codigo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.codigo label {
+  font-size: 16px;
+}
+
+.codigo input {
+  width: 180px;
+  border: 2px solid #0040f2;
+  color: #0040f2;
+  padding: 6px 8px;
+  outline: none;
+}
+
 .precio {
   text-align: right;
   font-size: 42px;
   line-height: 1;
+}
+
+.descuento {
+  margin-bottom: 8px;
+  font-size: 16px;
 }
 
 .boton-comprar {
@@ -227,5 +381,109 @@ const hayCompra = computed(() => total.value > 0)
   font-size: 42px;
   font-weight: 700;
   cursor: pointer;
+}
+
+@keyframes deslizar-cinta {
+  from {
+    transform: translateX(100vw);
+  }
+
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@media (max-width: 1024px) {
+  .cinta-descuento-grupo {
+    gap: 64px;
+    padding-right: 64px;
+  }
+
+  .cinta-descuento-pista span {
+    font-size: clamp(20px, 3.5vw, 30px);
+  }
+
+  .titulo {
+    margin-bottom: 36px;
+    font-size: clamp(60px, 15vw, 120px);
+  }
+
+  .entrada-item {
+    width: min(560px, 90vw);
+  }
+
+  .resumen-compra {
+    margin-top: 72px;
+    gap: 18px;
+  }
+
+  .precio {
+    font-size: 36px;
+  }
+
+  .boton-comprar {
+    font-size: 34px;
+  }
+}
+
+@media (max-width: 700px) {
+  .entradas-contenido {
+    padding: 16px 12px 64px;
+  }
+
+  .titulo {
+    width: 100%;
+    margin-left: 0;
+    margin-bottom: 26px;
+    font-size: clamp(54px, 20vw, 88px);
+    line-height: 0.86;
+  }
+
+  .lista-entradas {
+    gap: 36px;
+  }
+
+  .entrada-item {
+    width: min(100%, 520px);
+  }
+
+  .entrada-bloque {
+    gap: 8px;
+  }
+
+  .selector-cantidad {
+    font-size: 12px;
+    padding: 3px;
+  }
+
+  .entrada-item:hover {
+    transform: none;
+  }
+
+  .entrada-descripcion {
+    opacity: 1;
+    font-size: 12px;
+  }
+
+  .resumen-compra {
+    grid-template-columns: 1fr;
+    margin-top: 48px;
+    gap: 16px;
+    align-items: start;
+  }
+
+  .codigo input {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .precio {
+    text-align: left;
+    font-size: 30px;
+  }
+
+  .boton-comprar {
+    font-size: 26px;
+  }
 }
 </style>
