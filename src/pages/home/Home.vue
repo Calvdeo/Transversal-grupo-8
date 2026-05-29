@@ -1,5 +1,6 @@
 ﻿<script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue'
+import { Eraser, Save } from 'lucide-vue-next'
 
 import logoEsclat from '@/assets/logo/logoazul.png'
 import imagenFondo1 from '@/assets/imagenes/imagenfondo1.jpg'
@@ -906,6 +907,30 @@ onMounted(() => {
       </div>
 
       <div class="workbench">
+        <div class="actions actions-side">
+          <button
+            class="icon-action"
+            aria-label="Borrar pizarra"
+            @click="limpiarLienzo"
+          >
+            <Eraser
+              :size="44"
+              class="stamp-icon"
+            />
+          </button>
+
+          <button
+            class="icon-action"
+            aria-label="Guardar imagen"
+            @click="exportarImagen"
+          >
+            <Save
+              :size="44"
+              class="stamp-icon"
+            />
+          </button>
+        </div>
+
         <div class="canvas-wrap">
           <canvas
             ref="lienzo"
@@ -951,22 +976,6 @@ onMounted(() => {
             ></button>
           </div>
         </aside>
-      </div>
-
-      <div class="actions">
-        <button
-          class="stamp-button"
-          @click="limpiarLienzo"
-        >
-          Borrar
-        </button>
-
-        <button
-          class="stamp-button"
-          @click="exportarImagen"
-        >
-          Guardar
-        </button>
       </div>
     </section>
   </main>
@@ -1280,12 +1289,22 @@ onMounted(() => {
   display: grid;
 
   grid-template-columns:
+    84px
     minmax(0, 1fr)
     340px;
 
   gap: 16px;
 
   align-items: stretch;
+}
+
+.actions-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  padding-bottom: 8px;
 }
 
 .canvas-wrap {
@@ -1407,49 +1426,31 @@ onMounted(() => {
     0 0 0 4px var(--color-tema);
 }
 
-.actions {
-  max-width: 1820px;
-
-  margin: 18px auto 0;
-
-  display: flex;
-
-  gap: 22px;
-
-  padding-left: 24px;
+.stamp-icon {
+  color: var(--color-tema);
+  stroke-width: 2.1;
 }
 
-.stamp-button {
+.icon-action {
   border: none;
-
-  padding: 10px 26px;
-
-  color: #ffffff;
-
-  background: var(--color-tema);
-
-  font-family:
-    "Alte Haas Grotesk",
-    "Helvetica Neue",
-    Arial,
-    sans-serif;
-
-  font-size: 50px;
-
-  font-weight: 700;
-
-  line-height: 1;
-
+  padding: 0;
+  background: transparent;
+  color: var(--color-tema);
   cursor: pointer;
+  line-height: 0;
+  transition:
+    transform 120ms ease,
+    filter 120ms ease,
+    opacity 120ms ease;
+}
 
-  clip-path: polygon(
-    6% 0,
-    94% 0,
-    100% 20%,
-    95% 100%,
-    5% 100%,
-    0 18%
-  );
+.icon-action:hover {
+  transform: scale(1.08);
+  filter: drop-shadow(0 0 10px var(--color-tema));
+}
+
+.icon-action:active {
+  transform: scale(0.96);
 }
 
 @media (max-width: 1120px) {
@@ -1516,6 +1517,13 @@ onMounted(() => {
     gap: 16px;
   }
 
+  .actions-side {
+    order: 3;
+    flex-direction: row;
+    justify-content: center;
+    padding-bottom: 0;
+  }
+
   .brush-list {
     display: grid;
 
@@ -1525,17 +1533,6 @@ onMounted(() => {
     gap: 10px;
   }
 
-  .actions {
-    padding-left: 0;
-
-    justify-content: flex-start;
-
-    flex-wrap: wrap;
-  }
-
-  .stamp-button {
-    font-size: 42px;
-  }
 }
 
 @media (max-width: 700px) {
@@ -1627,14 +1624,13 @@ onMounted(() => {
     height: 40px;
   }
 
-  .actions {
-    justify-content: center;
-    gap: 12px;
+  .actions-side {
+    gap: 16px;
   }
 
-  .stamp-button {
-    font-size: 30px;
-    padding: 8px 20px;
+  .stamp-icon {
+    width: 34px;
+    height: 34px;
   }
 }
 
