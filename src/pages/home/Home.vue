@@ -1,12 +1,10 @@
 ﻿<script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 import logoEsclat from '@/assets/logo/logoazul.png'
 import imagenFondo1 from '@/assets/imagenes/imagenfondo1.jpg'
 
-import texturaCeraPeque from '@/assets/texturas/peques-06.png'
 import texturaCeraGrande from '@/assets/texturas/ceraazul.png'
-import texturaPixelPeque from '@/assets/texturas/peques-05.png'
 import texturaPixelGrande from '@/assets/texturas/pixelazul.png'
 import texturaCeraNaranja from '@/assets/texturas/ceranaranja.png'
 import texturaCeraRosa from '@/assets/texturas/cerarosa.png'
@@ -17,8 +15,22 @@ import texturaPixelVerde from '@/assets/texturas/pixelverde.png'
 import logoNaranja from '@/assets/logo/logonaranja.png'
 import logoRosa from '@/assets/logo/logorosa.png'
 import logoVerde from '@/assets/logo/logoverde.png'
-import texturaPosca from '@/assets/texturas/peques-07.png'
-import texturaMenu from '@/assets/texturas/peques-04.png'
+import pequesAzul04 from '@/assets/texturas/peques-04.png'
+import pequesAzul05 from '@/assets/texturas/peques-05.png'
+import pequesAzul06 from '@/assets/texturas/peques-06.png'
+import pequesAzul07 from '@/assets/texturas/peques-07.png'
+import pequesNaranja04 from '@/assets/texturas/pequesnaranja (2).png'
+import pequesNaranja05 from '@/assets/texturas/pequesnaranja (3).png'
+import pequesNaranja06 from '@/assets/texturas/pequesnaranja (4).png'
+import pequesNaranja07 from '@/assets/texturas/pequesnaranja (1).png'
+import pequesRosa04 from '@/assets/texturas/pequesrosa-04.png'
+import pequesRosa05 from '@/assets/texturas/pequesrosa-05.png'
+import pequesRosa06 from '@/assets/texturas/pequesrosa-06.png'
+import pequesRosa07 from '@/assets/texturas/pequesrosa-07.png'
+import pequesVerde04 from '@/assets/texturas/pequesverde-04.png'
+import pequesVerde05 from '@/assets/texturas/pequesverde-05.png'
+import pequesVerde06 from '@/assets/texturas/pequesverde-06.png'
+import pequesVerde07 from '@/assets/texturas/pequesverde-07.png'
 
 type Pincel = {
   nombre: string
@@ -36,6 +48,10 @@ type TemaVisual = {
   logo: string
   texturaCera: string
   texturaPixel: string
+  pequesSubrayador: string
+  pequesPixel: string
+  pequesCera: string
+  pequesPosca: string
 }
 
 const lienzo = ref<HTMLCanvasElement | null>(null)
@@ -68,6 +84,7 @@ const colorTema = ref(COLOR_AZUL)
 const logoHeroTema = ref(logoEsclat)
 const texturaCeraHero = ref(texturaCeraGrande)
 const texturaPixelHero = ref(texturaPixelGrande)
+const indiceTemaActual = ref(0)
 const CLAVE_INDICE_TEMA = 'esclat-theme-index'
 
 const temasVisuales: TemaVisual[] = [
@@ -75,50 +92,74 @@ const temasVisuales: TemaVisual[] = [
     color: '#0040f2',
     logo: logoEsclat,
     texturaCera: texturaCeraGrande,
-    texturaPixel: texturaPixelGrande
+    texturaPixel: texturaPixelGrande,
+    pequesSubrayador: pequesAzul04,
+    pequesPixel: pequesAzul05,
+    pequesCera: pequesAzul06,
+    pequesPosca: pequesAzul07
   },
   {
     color: '#fe8507',
     logo: logoNaranja,
     texturaCera: texturaCeraNaranja,
-    texturaPixel: texturaPixelNaranja
+    texturaPixel: texturaPixelNaranja,
+    pequesSubrayador: pequesNaranja04,
+    pequesPixel: pequesNaranja05,
+    pequesCera: pequesNaranja06,
+    pequesPosca: pequesNaranja07
   },
   {
     color: '#fc0299',
     logo: logoRosa,
     texturaCera: texturaCeraRosa,
-    texturaPixel: texturaPixelRosa
+    texturaPixel: texturaPixelRosa,
+    pequesSubrayador: pequesRosa04,
+    pequesPixel: pequesRosa05,
+    pequesCera: pequesRosa06,
+    pequesPosca: pequesRosa07
   },
   {
     color: '#05d181',
     logo: logoVerde,
     texturaCera: texturaCeraVerde,
-    texturaPixel: texturaPixelVerde
+    texturaPixel: texturaPixelVerde,
+    pequesSubrayador: pequesVerde04,
+    pequesPixel: pequesVerde05,
+    pequesCera: pequesVerde06,
+    pequesPosca: pequesVerde07
   }
 ]
 
-const pinceles: Pincel[] = [
-  {
-    nombre: 'Subrayador',
-    valor: 'subrayador',
-    imagen: texturaMenu
-  },
-  {
-    nombre: 'Cera',
-    valor: 'cera',
-    imagen: texturaCeraPeque
-  },
-  {
-    nombre: 'Pixel',
-    valor: 'pixel',
-    imagen: texturaPixelPeque
-  },
-  {
-    nombre: 'Posca',
-    valor: 'posca',
-    imagen: texturaPosca
-  }
-]
+const pinceles = computed<Pincel[]>(() => {
+  const tema =
+    temasVisuales[indiceTemaActual.value] ??
+    temasVisuales[0]
+
+  if (!tema) return []
+
+  return [
+    {
+      nombre: 'Subrayador',
+      valor: 'subrayador',
+      imagen: tema.pequesSubrayador
+    },
+    {
+      nombre: 'Cera',
+      valor: 'cera',
+      imagen: tema.pequesCera
+    },
+    {
+      nombre: 'Pixel',
+      valor: 'pixel',
+      imagen: tema.pequesPixel
+    },
+    {
+      nombre: 'Posca',
+      valor: 'posca',
+      imagen: tema.pequesPosca
+    }
+  ]
+})
 
 function obtenerMarcoPostal() {
   return {
@@ -168,6 +209,8 @@ function prepararLienzo() {
 
   if (!contexto) return
 
+  const colorPostal = colorTema.value || COLOR_AZUL
+
   canvas.width = ANCHO_LIENZO
   canvas.height = ALTO_LIENZO
 
@@ -176,7 +219,7 @@ function prepararLienzo() {
   contexto.fillStyle = '#ffffff'
   contexto.fillRect(0, 0, canvas.width, canvas.height)
 
-  contexto.strokeStyle = COLOR_AZUL
+  contexto.strokeStyle = colorPostal
   contexto.lineWidth = 5
 
   contexto.strokeRect(
@@ -191,7 +234,7 @@ function prepararLienzo() {
   const textoDerechaX = marco.x + marco.ancho - 38
   const baseInferiorY = marco.y + marco.alto - 64
 
-  contexto.fillStyle = COLOR_AZUL
+  contexto.fillStyle = colorPostal
   contexto.textBaseline = 'top'
 
   contexto.font = `300 46px ${FUENTE_POSTAL}`
@@ -269,8 +312,7 @@ function prepararLienzo() {
   )
 
   const logo = new Image()
-
-  logo.src = logoEsclat
+  logo.src = logoHeroTema.value
 
   logo.onload = () => {
     const logoAncho = Math.round(marco.ancho * 0.49)
@@ -603,6 +645,7 @@ function aplicarTemaActual() {
 
   if (!tema) return
 
+  indiceTemaActual.value = indiceTema
   colorTema.value = tema.color
   logoHeroTema.value = tema.logo
   texturaCeraHero.value = tema.texturaCera
@@ -616,8 +659,8 @@ function aplicarTemaActual() {
 }
 
 onMounted(() => {
-  pincelActual.value = pinceles[0] ?? null
   aplicarTemaActual()
+  pincelActual.value = pinceles.value[0] ?? null
 
   prepararLienzo()
 })
@@ -674,47 +717,40 @@ onMounted(() => {
         </div>
       </div>
 
-      <div class="hero-agenda">
+      <div class="hero-agenda hero-agenda-artistas">
         <div class="agenda-grid agenda-grid-head">
           <p>fecha</p>
           <p>Música</p>
-          <p>hora</p>
         </div>
 
         <div class="agenda-grid agenda-row">
           <p class="agenda-date">23.10.26</p>
           <p>Valeria Castro · Figa Flawas · Shego</p>
-          <p class="agenda-time">18:00</p>
         </div>
 
         <div class="agenda-grid agenda-row">
           <p class="agenda-date"></p>
           <p>CORTE! · Escandaloso Xpósito · La Paloma</p>
-          <p class="agenda-time">18:00</p>
         </div>
 
         <div class="agenda-grid agenda-row">
           <p class="agenda-date">24.10.26</p>
           <p>El Kanka · Belén Aguilera · Mala Gestión</p>
-          <p class="agenda-time">18:00</p>
         </div>
 
         <div class="agenda-grid agenda-row">
           <p class="agenda-date"></p>
           <p>La Fúmiga · Aiko el grupo · Ariel Pink</p>
-          <p class="agenda-time">18:00</p>
         </div>
 
         <div class="agenda-grid agenda-row">
           <p class="agenda-date">25.10.26</p>
           <p>Silvana Estrada · Oques Grasses · Zoo</p>
-          <p class="agenda-time">18:00</p>
         </div>
 
         <div class="agenda-grid agenda-row">
           <p class="agenda-date"></p>
           <p>Los Punsetes · Las Petunias · Amor Líquido</p>
-          <p class="agenda-time">18:00</p>
         </div>
       </div>
 
@@ -728,31 +764,31 @@ onMounted(() => {
         <div class="agenda-grid agenda-row">
           <p class="agenda-date">23.10.26</p>
           <p>Taller de cianotipia</p>
-          <p class="agenda-time">18:00</p>
+          <p class="agenda-time">12:30</p>
         </div>
 
         <div class="agenda-grid agenda-row">
           <p class="agenda-date"></p>
           <p>Cadáver exquisito</p>
-          <p class="agenda-time">18:00</p>
+          <p class="agenda-time">17:30</p>
         </div>
 
         <div class="agenda-grid agenda-row">
           <p class="agenda-date">24.10.26</p>
           <p>Escritura creativa</p>
-          <p class="agenda-time">18:00</p>
+          <p class="agenda-time">12:30</p>
         </div>
 
         <div class="agenda-grid agenda-row">
           <p class="agenda-date"></p>
-          <p>Taller de fanzines</p>
-          <p class="agenda-time">18:00</p>
+          <p>Improvisación teatral</p>
+          <p class="agenda-time">17:30</p>
         </div>
 
         <div class="agenda-grid agenda-row">
           <p class="agenda-date">25.10.26</p>
-          <p>Improvisación teatral</p>
-          <p class="agenda-time">18:00</p>
+          <p>Taller de fanzines</p>
+          <p class="agenda-time">12:30</p>
         </div>
 
         <div class="agenda-grid agenda-row">
@@ -772,31 +808,31 @@ onMounted(() => {
         <div class="agenda-grid agenda-row">
           <p class="agenda-date">23.10.26</p>
           <p>Manipulamos o nos manipulan-Diego Álvarez</p>
-          <p class="agenda-time">18:00</p>
+          <p class="agenda-time">11:00</p>
         </div>
 
         <div class="agenda-grid agenda-row">
           <p class="agenda-date"></p>
           <p>Piel de plátano-Miss beige</p>
-          <p class="agenda-time">18:00</p>
+          <p class="agenda-time">16:00</p>
         </div>
 
         <div class="agenda-grid agenda-row">
           <p class="agenda-date">24.10.26</p>
           <p>¿Está todo inventado?-PutoMikel</p>
-          <p class="agenda-time">18:00</p>
+          <p class="agenda-time">11:00</p>
         </div>
 
         <div class="agenda-grid agenda-row">
           <p class="agenda-date"></p>
           <p>La performance-ter</p>
-          <p class="agenda-time">18:00</p>
+          <p class="agenda-time">16:00</p>
         </div>
 
         <div class="agenda-grid agenda-row">
           <p class="agenda-date">25.10.26</p>
           <p>Españul-Lamine Thior</p>
-          <p class="agenda-time">18:00</p>
+          <p class="agenda-time">11:00</p>
         </div>
 
         <div class="agenda-grid agenda-row">
@@ -816,31 +852,31 @@ onMounted(() => {
         <div class="agenda-grid agenda-row">
           <p class="agenda-date">23.10.26</p>
           <p>"Madre"-Rodrigo Sorogoyen</p>
-          <p class="agenda-time">18:00</p>
+          <p class="agenda-time">12:00</p>
         </div>
 
         <div class="agenda-grid agenda-row">
           <p class="agenda-date"></p>
           <p>"Zona Wao"-Nagore Eceiza Mujika</p>
-          <p class="agenda-time">18:00</p>
+          <p class="agenda-time">18:30</p>
         </div>
 
         <div class="agenda-grid agenda-row">
           <p class="agenda-date">24.10.26</p>
           <p>"Utopias y otras especies"-Júlia Izaguirre</p>
-          <p class="agenda-time">18:00</p>
+          <p class="agenda-time">12:00</p>
         </div>
 
         <div class="agenda-grid agenda-row">
           <p class="agenda-date"></p>
           <p>"Me"-Don Hertzfeldtv</p>
-          <p class="agenda-time">18:00</p>
+          <p class="agenda-time">18:30</p>
         </div>
 
         <div class="agenda-grid agenda-row">
           <p class="agenda-date">25.10.26</p>
           <p>"No als poalets"-Laura garcía Andreu</p>
-          <p class="agenda-time">18:00</p>
+          <p class="agenda-time">12:00</p>
         </div>
 
         <div class="agenda-grid agenda-row">
@@ -944,7 +980,7 @@ onMounted(() => {
 
   background: #ffffff;
 
-  color: #0040f2;
+  color: var(--color-tema);
 
   font-family:
     "Alte Haas Grotesk",
@@ -1120,6 +1156,16 @@ onMounted(() => {
   background: #fc0299;
 }
 
+.hero-agenda-artistas .agenda-grid {
+  grid-template-columns:
+    minmax(0, 180px)
+    minmax(0, 1fr);
+}
+
+.hero-agenda-artistas .agenda-grid p:nth-child(2) {
+  padding-left: clamp(24px, 4vw, 56px);
+}
+
 .agenda-grid {
   display: grid;
 
@@ -1191,11 +1237,11 @@ onMounted(() => {
 
   margin: 0 auto 28px;
 
-  color: #0040f2;
+  color: var(--color-tema);
 }
 
 .studio-kicker {
-  color: #0040f2;
+  color: var(--color-tema);
 
   font-size: 18px;
 
@@ -1205,7 +1251,7 @@ onMounted(() => {
 }
 
 .hero-title {
-  color: #0040f2;
+  color: var(--color-tema);
 
   font-size: clamp(38px, 5vw, 86px);
 
@@ -1219,7 +1265,7 @@ onMounted(() => {
 .studio-text {
   max-width: 760px;
 
-  color: #0040f2;
+  color: var(--color-tema);
 
   font-size: clamp(18px, 1.8vw, 28px);
 
@@ -1302,10 +1348,7 @@ onMounted(() => {
     scale(1.08)
     translateX(-12px);
 
-  filter:
-    drop-shadow(
-      0 0 10px rgba(0, 64, 242, 0.45)
-    );
+  filter: drop-shadow(0 0 10px var(--color-tema));
 }
 
 .brush-chip.is-active {
@@ -1313,10 +1356,7 @@ onMounted(() => {
     translateX(-22px)
     scale(1.07);
 
-  filter:
-    drop-shadow(
-      0 0 12px rgba(0, 64, 242, 0.55)
-    );
+  filter: drop-shadow(0 0 12px var(--color-tema));
 }
 
 .brush-thumb {
@@ -1364,7 +1404,7 @@ onMounted(() => {
 .color-dot.is-active {
   box-shadow:
     0 0 0 2px #ffffff,
-    0 0 0 4px #0040f2;
+    0 0 0 4px var(--color-tema);
 }
 
 .actions {
@@ -1386,7 +1426,7 @@ onMounted(() => {
 
   color: #ffffff;
 
-  background: #0040f2;
+  background: var(--color-tema);
 
   font-family:
     "Alte Haas Grotesk",
@@ -1451,6 +1491,12 @@ onMounted(() => {
 
   .agenda-grid-head {
     font-size: clamp(24px, 6.1vw, 32px);
+  }
+
+  .hero-agenda-artistas .agenda-grid {
+    grid-template-columns:
+      minmax(0, 104px)
+      minmax(0, 1fr);
   }
 
   .agenda-row {
@@ -1525,6 +1571,10 @@ onMounted(() => {
   .agenda-grid {
     grid-template-columns: 82px 1fr 52px;
     gap: 8px;
+  }
+
+  .hero-agenda-artistas .agenda-grid {
+    grid-template-columns: 82px 1fr;
   }
 
   .agenda-grid-head {
@@ -1649,6 +1699,10 @@ onMounted(() => {
   .agenda-grid {
     grid-template-columns: 74px 1fr 48px;
     gap: 6px;
+  }
+
+  .hero-agenda-artistas .agenda-grid {
+    grid-template-columns: 74px 1fr;
   }
 
   .agenda-grid-head {
