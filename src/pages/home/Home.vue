@@ -929,6 +929,21 @@ onMounted(() => {
               class="stamp-icon"
             />
           </button>
+
+          <div class="color-list color-list-side">
+            <button
+              v-for="color in coloresDisponibles"
+              :key="color"
+              class="color-dot"
+              :class="colorActual === color
+                ? 'is-active'
+                : ''"
+              :style="{
+                backgroundColor: color
+              }"
+              @click="seleccionarColor(color)"
+            ></button>
+          </div>
         </div>
 
         <div class="canvas-wrap">
@@ -961,20 +976,6 @@ onMounted(() => {
             </button>
           </div>
 
-          <div class="color-list">
-            <button
-              v-for="color in coloresDisponibles"
-              :key="color"
-              class="color-dot"
-              :class="colorActual === color
-                ? 'is-active'
-                : ''"
-              :style="{
-                backgroundColor: color
-              }"
-              @click="seleccionarColor(color)"
-            ></button>
-          </div>
         </aside>
       </div>
     </section>
@@ -1291,7 +1292,7 @@ onMounted(() => {
   grid-template-columns:
     84px
     minmax(0, 1fr)
-    340px;
+    300px;
 
   gap: 16px;
 
@@ -1302,9 +1303,9 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
-  gap: 16px;
-  padding-bottom: 8px;
+  justify-content: flex-start;
+  gap: 14px;
+  padding-top: 20px;
 }
 
 .canvas-wrap {
@@ -1333,9 +1334,11 @@ onMounted(() => {
 
   justify-content: flex-start;
 
-  gap: 22px;
+  gap: 12px;
 
   min-height: 100%;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .brush-list {
@@ -1344,6 +1347,7 @@ onMounted(() => {
   flex-direction: column;
 
   justify-content: space-between;
+  gap: 0;
 
   flex: 1;
 }
@@ -1381,7 +1385,7 @@ onMounted(() => {
 .brush-thumb {
   width: 100%;
 
-  height: 190px;
+  height: 158px;
 
   object-fit: contain;
 
@@ -1401,6 +1405,14 @@ onMounted(() => {
 
   padding-left: 2px;
   padding-bottom: 4px;
+}
+
+.color-list-side {
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 12px;
+  padding-left: 0;
+  padding-bottom: 0;
 }
 
 .color-dot {
@@ -1515,6 +1527,7 @@ onMounted(() => {
 
   .tools-panel {
     gap: 16px;
+    padding-top: 0;
   }
 
   .actions-side {
@@ -1522,6 +1535,7 @@ onMounted(() => {
     flex-direction: row;
     justify-content: center;
     padding-bottom: 0;
+    padding-top: 0;
   }
 
   .brush-list {
@@ -1611,7 +1625,7 @@ onMounted(() => {
   }
 
   .brush-thumb {
-    height: 82px;
+    height: 72px;
   }
 
   .color-list {
@@ -1625,7 +1639,12 @@ onMounted(() => {
   }
 
   .actions-side {
-    gap: 16px;
+    gap: 14px;
+  }
+
+  .color-list-side {
+    flex-direction: row;
+    gap: 10px;
   }
 
   .stamp-icon {
