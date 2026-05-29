@@ -1,9 +1,11 @@
 ﻿<template>
-  <main class="mx-auto mt-24 max-w-5xl px-6 pb-16">
-    <h1 class="mb-4 text-4xl font-black uppercase tracking-tight">Conversaciones</h1>
-    <p class="text-zinc-700">
-      Aquí puedes mostrar toda la información de conversaciones.
-    </p>
+  <main class="mt-24 min-h-screen w-full bg-[#05d181] text-white">
+    <section class="mx-auto max-w-5xl px-6 pb-16 pt-6">
+      <h1 class="mb-4 text-4xl font-black uppercase tracking-tight">Conversaciones</h1>
+      <p class="text-white/85">
+        Aquí puedes mostrar toda la información de conversaciones.
+      </p>
+    </section>
   </main>
 </template>
 

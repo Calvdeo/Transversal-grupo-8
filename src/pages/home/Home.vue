@@ -14,6 +14,9 @@ import texturaCeraVerde from '@/assets/texturas/ceraverde.png'
 import texturaPixelNaranja from '@/assets/texturas/pixelnaranja.png'
 import texturaPixelRosa from '@/assets/texturas/pixelrosa.png'
 import texturaPixelVerde from '@/assets/texturas/pixelverde.png'
+import logoNaranja from '@/assets/logo/logonaranja.png'
+import logoRosa from '@/assets/logo/logorosa.png'
+import logoVerde from '@/assets/logo/logoverde.png'
 import texturaPosca from '@/assets/texturas/peques-07.png'
 import texturaMenu from '@/assets/texturas/peques-04.png'
 
@@ -30,6 +33,7 @@ type Punto = {
 
 type TemaVisual = {
   color: string
+  logo: string
   texturaCera: string
   texturaPixel: string
 }
@@ -61,6 +65,7 @@ const coloresDisponibles = [
 
 const colorActual = ref<string>(coloresDisponibles[1])
 const colorTema = ref(COLOR_AZUL)
+const logoHeroTema = ref(logoEsclat)
 const texturaCeraHero = ref(texturaCeraGrande)
 const texturaPixelHero = ref(texturaPixelGrande)
 const CLAVE_INDICE_TEMA = 'esclat-theme-index'
@@ -68,21 +73,25 @@ const CLAVE_INDICE_TEMA = 'esclat-theme-index'
 const temasVisuales: TemaVisual[] = [
   {
     color: '#0040f2',
+    logo: logoEsclat,
     texturaCera: texturaCeraGrande,
     texturaPixel: texturaPixelGrande
   },
   {
     color: '#fe8507',
+    logo: logoNaranja,
     texturaCera: texturaCeraNaranja,
     texturaPixel: texturaPixelNaranja
   },
   {
     color: '#fc0299',
+    logo: logoRosa,
     texturaCera: texturaCeraRosa,
     texturaPixel: texturaPixelRosa
   },
   {
     color: '#05d181',
+    logo: logoVerde,
     texturaCera: texturaCeraVerde,
     texturaPixel: texturaPixelVerde
   }
@@ -569,8 +578,8 @@ function exportarImagen() {
   enlace.click()
 }
 
-function aplicarTemaSecuencial() {
-  let indiceAnterior = -1
+function aplicarTemaActual() {
+  let indiceTema = 0
 
   try {
     const guardado =
@@ -580,44 +589,35 @@ function aplicarTemaSecuencial() {
       const numero = Number.parseInt(guardado, 10)
 
       if (Number.isFinite(numero)) {
-        indiceAnterior = numero
+        indiceTema =
+          (numero + temasVisuales.length) %
+          temasVisuales.length
       }
     }
   } catch {
-    indiceAnterior = -1
+    indiceTema = 0
   }
 
-  const siguienteIndice =
-    (indiceAnterior + 1 + temasVisuales.length) %
-    temasVisuales.length
-
   const tema =
-    temasVisuales[siguienteIndice] ?? temasVisuales[0]
+    temasVisuales[indiceTema] ?? temasVisuales[0]
 
   if (!tema) return
 
   colorTema.value = tema.color
+  logoHeroTema.value = tema.logo
   texturaCeraHero.value = tema.texturaCera
   texturaPixelHero.value = tema.texturaPixel
+  colorActual.value = tema.color
 
   document.documentElement.style.setProperty(
     '--esclat-theme-color',
     tema.color
   )
-
-  try {
-    window.localStorage.setItem(
-      CLAVE_INDICE_TEMA,
-      String(siguienteIndice)
-    )
-  } catch {
-    // noop: si falla localStorage seguimos aplicando color en memoria.
-  }
 }
 
 onMounted(() => {
   pincelActual.value = pinceles[0] ?? null
-  aplicarTemaSecuencial()
+  aplicarTemaActual()
 
   prepararLienzo()
 })
@@ -644,7 +644,7 @@ onMounted(() => {
         </div>
 
         <img
-          :src="logoEsclat"
+          :src="logoHeroTema"
           alt="ESCLAT"
           class="hero-main-logo"
         >

@@ -9,47 +9,54 @@ type Cantante = {
   rutaImagen: string | null
 }
 
+const COLORES_ARTISTAS = [
+  '#0040f2',
+  '#fe8507',
+  '#fc0299',
+  '#05d181'
+] as const
+
 const cantantes = ref<Cantante[]>([
   {
     id: 1,
     nombre: 'Belen Aguilera',
     hora: 'Dia 24, 17:00',
-    escenario: 'Escenario Norte',
+    escenario: 'Patio 2',
     rutaImagen: '/src/assets/artistas/art-05.jpg'
   },
   {
     id: 2,
     nombre: 'Silvana Estrada',
     hora: 'Dia 25, 19:00',
-    escenario: 'Escenario Norte',
+    escenario: 'Patio 2',
     rutaImagen: '/src/assets/artistas/art-06.jpg'
   },
   {
     id: 3,
     nombre: 'El Kanka',
     hora: 'Dia 24, 21:00',
-    escenario: 'Escenario Central',
+    escenario: 'Patio 2',
     rutaImagen: '/src/assets/artistas/art-07.jpg'
   },
   {
     id: 4,
     nombre: 'valeria Castro',
     hora: 'Dia 25, 20:15',
-    escenario: 'Escenario Central',
+    escenario: 'Patio 2',
     rutaImagen: '/src/assets/artistas/art-08.jpg'
   },
   {
     id: 5,
     nombre: 'Figa Flawas',
     hora: 'Dia 25, 21:00',
-    escenario: 'Escenario Sur',
+    escenario: 'Patio 2',
     rutaImagen: '/src/assets/artistas/art-19.jpg'
   },
   {
     id: 6,
     nombre: 'Oques Grasses',
     hora: 'Dia 25, 21:45',
-    escenario: 'Escenario Sur',
+    escenario: 'Patio 2',
     rutaImagen: '/src/assets/artistas/art-11.jpg'
   }
 ])
@@ -59,85 +66,161 @@ const cantantesSecundarios = ref<Cantante[]>([
     id: 112,
     nombre: 'La Paloma',
     hora: 'Dia 23, 16:00',
-    escenario: 'Escenario Alternativo',
+    escenario: 'Patio 1',
     rutaImagen: '/src/assets/artistas/art-12.jpg'
   },
   {
     id: 113,
     nombre: 'Shego',
     hora: 'Dia 23, 11:00',
-    escenario: 'Escenario Alternativo',
+    escenario: 'Patio 1',
     rutaImagen: '/src/assets/artistas/art-13.jpg'
   },
   {
     id: 114,
     nombre: 'Corte!',
     hora: 'Dia 23, 19:00',
-    escenario: 'Escenario Alternativo',
+    escenario: 'Patio 1',
     rutaImagen: '/src/assets/artistas/art-14.jpg'
   },
   {
     id: 115,
     nombre: 'Escandaloso expósito',
     hora: 'Dia 23, 12:30',
-    escenario: 'Escenario Alternativo',
+    escenario: 'Patio 1',
     rutaImagen: '/src/assets/artistas/art-15.jpg'
   },
   {
     id: 116,
     nombre: 'Mala gestión',
     hora: 'Dia 24, 16:00',
-    escenario: 'Escenario Alternativo',
+    escenario: 'Patio 1',
     rutaImagen: '/src/assets/artistas/art-16.jpg'
   },
   {
     id: 117,
     nombre: 'Aiko el grupo',
     hora: 'Dia 24, 12:30',
-    escenario: 'Escenario Alternativo',
+    escenario: 'Patio 1',
     rutaImagen: '/src/assets/artistas/art-17.jpg'
   },
   {
     id: 118,
-    nombre: 'Artista 18',
+    nombre: 'Ariel Pink',
     hora: 'Dia 25, 16:00',
-    escenario: 'Escenario Alternativo',
+    escenario: 'Patio 1',
     rutaImagen: '/src/assets/artistas/art-18.jpg'
   },
   {
     id: 120,
-    nombre: 'Artista 20',
+    nombre: 'La fúmiga',
     hora: 'Dia 25, 17:30',
-    escenario: 'Escenario Alternativo',
+    escenario: 'Patio 1',
     rutaImagen: '/src/assets/artistas/art-20.jpg'
   },
   {
     id: 121,
-    nombre: 'Artista 21',
+    nombre: 'Los Punsetes',
     hora: 'Dia 25, 18:15',
-    escenario: 'Escenario Alternativo',
+    escenario: 'Patio 1',
     rutaImagen: '/src/assets/artistas/art-21.jpg'
   },
   {
     id: 122,
-    nombre: 'Artista 22',
+    nombre: 'Las petunias',
     hora: 'Dia 25, 19:00',
-    escenario: 'Escenario Alternativo',
+    escenario: 'Patio 1',
     rutaImagen: '/src/assets/artistas/art-22.jpg'
   },
   {
     id: 123,
-    nombre: 'Artista 23',
+    nombre: 'Amor líquido',
     hora: 'Dia 25, 19:45',
-    escenario: 'Escenario Alternativo',
+    escenario: 'Patio 1',
     rutaImagen: '/src/assets/artistas/art-23.jpg'
   }
 ])
 
 const cantanteActivo = ref<Cantante | null>(null)
 
+function crearMapaColoresSinRepeticion(
+  bloques: Cantante[][]
+) {
+  const mapa = new Map<number, string>()
+  let indiceAnterior = -1
+
+  for (const bloque of bloques) {
+    for (const cantante of bloque) {
+      const indicesDisponibles =
+        COLORES_ARTISTAS
+          .map((_, indice) => indice)
+          .filter(
+            (indice) =>
+              indice !== indiceAnterior
+          )
+
+      const indiceElegido =
+        indicesDisponibles[
+          Math.floor(
+            Math.random() *
+              indicesDisponibles.length
+          )
+        ] ?? 0
+
+      const colorSeleccionado =
+        COLORES_ARTISTAS[indiceElegido] ??
+        COLORES_ARTISTAS[0]
+
+      mapa.set(cantante.id, colorSeleccionado)
+      indiceAnterior = indiceElegido
+    }
+  }
+
+  return mapa
+}
+
+const mapaColorPorCantante =
+  crearMapaColoresSinRepeticion([
+    cantantes.value,
+    cantantesSecundarios.value
+  ])
+
+function asignarColorAleatorioNuevo(id: number) {
+  const colorActual =
+    mapaColorPorCantante.get(id) ??
+    COLORES_ARTISTAS[0]
+
+  const opciones =
+    COLORES_ARTISTAS.filter(
+      (color) => color !== colorActual
+    )
+
+  const colorNuevo =
+    opciones[
+      Math.floor(
+        Math.random() * opciones.length
+      )
+    ] ?? COLORES_ARTISTAS[0]
+
+  mapaColorPorCantante.set(id, colorNuevo)
+}
+
+function obtenerColorCantante(id: number) {
+  return (
+    mapaColorPorCantante.get(id) ??
+    COLORES_ARTISTAS[0]
+  )
+}
+
 function activarCantante(cantante: Cantante) {
   cantanteActivo.value = cantante
+}
+
+function manejarHoverCantante(
+  cantante: Cantante
+) {
+  asignarColorAleatorioNuevo(cantante.id)
+  activarCantante(cantante)
 }
 
 function limpiarCantanteActivo() {
@@ -159,7 +242,7 @@ function limpiarCantanteActivo() {
           v-for="cantante in cantantes"
           :key="cantante.id"
           class="tarjeta-cantante"
-          @mouseenter="activarCantante(cantante)"
+          @mouseenter="manejarHoverCantante(cantante)"
           @mouseleave="limpiarCantanteActivo"
         >
          
@@ -167,6 +250,9 @@ function limpiarCantanteActivo() {
           <div
             v-if="cantante.rutaImagen"
             class="miniatura-cantante"
+            :style="{
+              '--tinte-cantante': obtenerColorCantante(cantante.id)
+            }"
           >
             <img
               :src="cantante.rutaImagen"
@@ -198,10 +284,15 @@ function limpiarCantanteActivo() {
           v-for="cantante in cantantesSecundarios"
           :key="cantante.id"
           class="tarjeta-secundaria"
-          @mouseenter="activarCantante(cantante)"
+          @mouseenter="manejarHoverCantante(cantante)"
           @mouseleave="limpiarCantanteActivo"
         >
-          <div class="miniatura-secundaria">
+          <div
+            class="miniatura-secundaria"
+            :style="{
+              '--tinte-cantante': obtenerColorCantante(cantante.id)
+            }"
+          >
             <img
               :src="cantante.rutaImagen!"
               :alt="cantante.nombre"
@@ -224,7 +315,7 @@ function limpiarCantanteActivo() {
 
 <style scoped>
 .fondo-cantantes {
-  background: #ffffff;
+  background: #0040f2;
 }
 
 .panel-cantantes {
@@ -237,6 +328,7 @@ function limpiarCantanteActivo() {
   letter-spacing: -0.08em;
   font-weight: 900;
   line-height: 0.95;
+  color: #ffffff;
 }
 
 .texto-auxiliar {
@@ -285,6 +377,25 @@ function limpiarCantanteActivo() {
   transition: box-shadow 260ms ease;
   position: relative;
   overflow: hidden;
+  isolation: isolate;
+}
+
+.miniatura-cantante::after,
+.miniatura-secundaria::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--tinte-cantante, #0040f2);
+  mix-blend-mode: multiply;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms ease;
+}
+
+.tarjeta-cantante:hover .miniatura-cantante::after,
+.tarjeta-secundaria:hover .miniatura-secundaria::after {
+  opacity: 0.86;
 }
 
 .imagen-cantante {
@@ -292,6 +403,8 @@ function limpiarCantanteActivo() {
   height: 100%;
   object-fit: cover;
   display: block;
+  position: relative;
+  z-index: 0;
   transition: transform 280ms ease;
 }
 
@@ -341,6 +454,7 @@ function limpiarCantanteActivo() {
   transition: box-shadow 220ms ease;
   position: relative;
   overflow: hidden;
+  isolation: isolate;
 }
 
 .tarjeta-secundaria:hover .imagen-cantante {
@@ -364,6 +478,7 @@ function limpiarCantanteActivo() {
 .overlay-cantante {
   position: absolute;
   inset: 0;
+  z-index: 2;
   background: rgba(255, 255, 255, 0.55);
   color: #111;
   display: flex;

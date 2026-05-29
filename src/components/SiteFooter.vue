@@ -1,19 +1,28 @@
-﻿<script setup lang="ts">
+<script setup lang="ts">
 import { RouterLink } from 'vue-router'
+import { Instagram, Music2 } from 'lucide-vue-next'
+import { Button } from '@/components/ui/button'
 </script>
 
 <template>
   <footer class="site-footer">
     <div class="site-footer__content">
-      <RouterLink to="/entradas" class="site-footer__cta">
-        CONSIGUE TUS ENTRADAS
-      </RouterLink>
+      <Button
+        as-child
+        class="site-footer__cta"
+      >
+        <RouterLink to="/entradas">
+          CONSIGUE TUS ENTRADAS
+        </RouterLink>
+      </Button>
 
       <div class="site-footer__socials">
-        <span class="site-footer__label">Redes sociales</span>
-        <a href="#" aria-label="Instagram">Instagram</a>
-        <a href="#" aria-label="TikTok">TikTok</a>
-        <a href="#" aria-label="YouTube">YouTube</a>
+        <a href="#" aria-label="Instagram" class="site-footer__social-link">
+          <Instagram :size="24" />
+        </a>
+        <a href="#" aria-label="TikTok" class="site-footer__social-link">
+          <Music2 :size="24" />
+        </a>
       </div>
     </div>
   </footer>
@@ -38,43 +47,42 @@ import { RouterLink } from 'vue-router'
 }
 
 .site-footer__cta {
-  color: #ffffff;
-  text-decoration: none;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  color: #ffffff !important;
   font-family: "Alte Haas Grotesk", "Helvetica Neue", Arial, sans-serif;
-  font-size: clamp(34px, 6.5vw, 92px);
+  font-size: clamp(26px, 5vw, 58px);
   font-weight: 700;
   line-height: 0.95;
+  letter-spacing: 0.01em;
+  padding: 14px 24px;
+  border-radius: 0;
 }
 
 .site-footer__socials {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   flex-wrap: wrap;
-  color: #ffffff;
-  font-family: "Alte Haas Grotesk", "Helvetica Neue", Arial, sans-serif;
+  justify-content: flex-end;
 }
 
-.site-footer__label {
-  font-size: 22px;
-  font-weight: 700;
-  margin-right: 8px;
-}
-
-.site-footer__socials a {
+.site-footer__social-link {
   color: #ffffff;
-  text-decoration: none;
   border: 2px solid rgba(255, 255, 255, 0.9);
-  padding: 8px 14px;
-  font-size: 20px;
-  font-weight: 700;
-  line-height: 1;
-  transition: background-color 150ms ease, color 150ms ease;
+  width: 50px;
+  height: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: background-color 150ms ease, color 150ms ease, transform 120ms ease;
 }
 
-.site-footer__socials a:hover {
+.site-footer__social-link:hover {
   background: #ffffff;
   color: #0040f2;
+  transform: translateY(-2px);
 }
 
 @media (max-width: 860px) {
@@ -83,15 +91,14 @@ import { RouterLink } from 'vue-router'
     gap: 18px;
   }
 
-  .site-footer__label {
+  .site-footer__cta {
     width: 100%;
-    margin-right: 0;
-    font-size: 20px;
+    justify-content: center;
   }
 
-  .site-footer__socials a {
-    font-size: 18px;
+  .site-footer__social-link {
+    width: 46px;
+    height: 46px;
   }
 }
 </style>
-

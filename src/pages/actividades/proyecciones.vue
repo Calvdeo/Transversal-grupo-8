@@ -199,7 +199,7 @@ function moverCarruselIzquierda() {
 }
 
 .proyecciones-page {
-  background: #ffffff;
+  background: #fe8507;
   position: relative;
   overflow: hidden;
 }
