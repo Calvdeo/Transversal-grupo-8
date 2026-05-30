@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import texturaPoscaAzul from '@/assets/texturas/peques-07.png'
+import texturaCeraRosa from '@/assets/texturas/pequesrosa-06.png'
+import texturaSubrayadorVerde from '@/assets/texturas/pequesverde-04.png'
+import texturaPixelNaranja from '@/assets/texturas/pixelnaranja.png'
 
 type Dia = 'todos' | 'viernes' | 'sabado' | 'domingo'
 type Categoria = 'musica' | 'taller' | 'charla' | 'corto'
@@ -342,13 +346,51 @@ const eventosFiltrados = computed(() => {
 
   return resultado
 })
+
+const claseTemaUI = computed(() => {
+  if (categoriaActiva.value === 'taller') return 'tema-taller'
+  if (categoriaActiva.value === 'charla') return 'tema-charla'
+  if (categoriaActiva.value === 'corto') return 'tema-corto'
+  return 'tema-musica'
+})
+
+const texturaActiva = computed(() => {
+  if (categoriaActiva.value === 'taller') {
+    return {
+      imagen: texturaCeraRosa,
+      alt: 'Textura cera rosa'
+    }
+  }
+
+  if (categoriaActiva.value === 'charla') {
+    return {
+      imagen: texturaSubrayadorVerde,
+      alt: 'Textura verde para charlas'
+    }
+  }
+
+  if (categoriaActiva.value === 'corto') {
+    return {
+      imagen: texturaPixelNaranja,
+      alt: 'Textura pixel naranja'
+    }
+  }
+
+  return {
+    imagen: texturaPoscaAzul,
+    alt: 'Textura posca azul'
+  }
+})
 </script>
 
 <template>
-  <main class="programa-page">
+  <main class="programa-page" :class="claseTemaUI">
     <section class="programa-header">
       <p class="programa-kicker">ESCLAT 2026</p>
       <h1>Programa</h1>
+      <div class="textura-esquina">
+        <img :src="texturaActiva.imagen" :alt="texturaActiva.alt">
+      </div>
     </section>
 
     <section class="programa-filtros">
@@ -383,6 +425,7 @@ const eventosFiltrados = computed(() => {
         v-for="evento in eventosFiltrados"
         :key="claveEvento(evento)"
         class="tabla-fila"
+        :class="`categoria-${evento.categoria}`"
       >
         <p>{{ evento.fecha }}</p>
 
@@ -445,15 +488,34 @@ const eventosFiltrados = computed(() => {
 
 <style scoped>
 .programa-page {
+  --ui-color: #0040f2;
   min-height: 100vh;
   padding: 140px 32px 90px;
   background: #f7f7f4;
-  color: #0040f2;
+  color: var(--ui-color);
   font-family: "Alte Haas Grotesk", "Helvetica Neue", Arial, sans-serif;
 }
 
+.programa-page.tema-musica {
+  --ui-color: #0040f2;
+}
+
+.programa-page.tema-taller {
+  --ui-color: #ff3f9e;
+}
+
+.programa-page.tema-charla {
+  --ui-color: #1f9f47;
+}
+
+.programa-page.tema-corto {
+  --ui-color: #ff7a00;
+}
+
 .programa-header {
+  position: relative;
   margin-bottom: 70px;
+  padding-right: clamp(80px, 16vw, 260px);
 }
 
 .programa-kicker {
@@ -464,10 +526,26 @@ const eventosFiltrados = computed(() => {
 
 .programa-header h1 {
   max-width: 900px;
-  color: #0040f2;
+  color: var(--ui-color);
   font-size: clamp(76px, 15vw, 190px);
   line-height: 0.78;
   font-weight: 700;
+}
+
+.textura-esquina {
+  position: absolute;
+  top: -360px;
+  right: 0;
+  width: clamp(220px, 50vw, 780px);
+  aspect-ratio: 1 / 1;
+  pointer-events: none;
+}
+
+.textura-esquina img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0.95;
 }
 
 .programa-filtros {
@@ -475,8 +553,8 @@ const eventosFiltrados = computed(() => {
   grid-template-columns: 1fr 2fr;
   gap: 32px;
   margin-bottom: 60px;
-  border-top: 2px solid #0040f2;
-  border-bottom: 2px solid #0040f2;
+  border-top: 2px solid var(--ui-color);
+  border-bottom: 2px solid var(--ui-color);
   padding: 18px 0;
 }
 
@@ -488,22 +566,22 @@ const eventosFiltrados = computed(() => {
 
 .programa-filtros button {
   margin: 0 8px 8px 0;
-  border: 1px solid #0040f2;
+  border: 1px solid var(--ui-color);
   border-radius: 999px;
   background: transparent;
-  color: #0040f2;
+  color: var(--ui-color);
   padding: 5px 12px;
   text-transform: uppercase;
   cursor: pointer;
 }
 
 .programa-filtros button.activo {
-  background: #0040f2;
+  background: var(--ui-color);
   color: #ffffff;
 }
 
 .programa-tabla {
-  border-top: 2px solid #0040f2;
+  border-top: 2px solid var(--ui-color);
   overflow-x: auto;
 }
 
@@ -518,15 +596,18 @@ const eventosFiltrados = computed(() => {
 
 .tabla-cabecera {
   padding: 10px 0;
-  border-bottom: 1px solid #0040f2;
+  color: var(--ui-color);
+  border-bottom: 1px solid var(--ui-color);
   text-transform: uppercase;
   font-size: 14px;
 }
 
 .tabla-fila {
+  --categoria-color: #0040f2;
   min-height: 105px;
   padding: 16px 0;
-  border-bottom: 1px solid #0040f2;
+  color: var(--categoria-color);
+  border-bottom: 1px solid var(--categoria-color);
 }
 
 .tabla-fila h2 {
@@ -543,6 +624,22 @@ const eventosFiltrados = computed(() => {
   text-transform: uppercase;
 }
 
+.tabla-fila.categoria-musica {
+  --categoria-color: #0040f2;
+}
+
+.tabla-fila.categoria-taller {
+  --categoria-color: #ff3f9e;
+}
+
+.tabla-fila.categoria-charla {
+  --categoria-color: #1f9f47;
+}
+
+.tabla-fila.categoria-corto {
+  --categoria-color: #ff7a00;
+}
+
 .actividad-celda-expandible {
   cursor: pointer;
 }
@@ -556,7 +653,7 @@ const eventosFiltrados = computed(() => {
 .hora-toggle {
   border: 0;
   background: none;
-  color: #0040f2;
+  color: currentColor;
   width: auto;
   height: auto;
   padding: 0;
@@ -576,7 +673,7 @@ const eventosFiltrados = computed(() => {
 .detalle-expandido {
   grid-column: 1 / -1;
   margin-top: 8px;
-  border-top: 1px solid #0040f2;
+  border-top: 1px solid currentColor;
 }
 
 .detalle-expandido-fila {
@@ -591,7 +688,7 @@ const eventosFiltrados = computed(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  border-bottom: 1px solid #0040f2;
+  border-bottom: 1px solid currentColor;
 }
 
 .detalle-expandido-fila p {
@@ -611,6 +708,10 @@ const eventosFiltrados = computed(() => {
 @media (max-width: 900px) {
   .programa-page {
     padding-inline: 18px;
+  }
+
+  .programa-header {
+    padding-right: clamp(70px, 20vw, 120px);
   }
 
   .programa-filtros {
