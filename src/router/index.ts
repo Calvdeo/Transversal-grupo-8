@@ -5,6 +5,7 @@ import info from "@/pages/info/info.vue";
 import contacto from "@/pages/contacto/contacto.vue";
 import { createRouter, createWebHashHistory } from "vue-router";
 import Entradas from "@/pages/entradas/entradas.vue";
+import PreguntasFrecuentes from "@/pages/preguntas-frecuentes/preguntasFrecuentes.vue";
 
 
 
@@ -41,6 +42,11 @@ export const router = createRouter({
       path: '/entradas',
       name: 'entradas',
       component: Entradas
+    },
+    {
+      path: '/preguntas-frecuentes',
+      name: 'preguntas-frecuentes',
+      component: PreguntasFrecuentes
     },
     {
       path: '/:pathMatch(.*)*',

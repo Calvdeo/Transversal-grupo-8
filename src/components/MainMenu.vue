@@ -24,57 +24,52 @@ const closeMenu = () => {
         <img :src="logoCabecera" alt="Esclat" class="header-brand__img">
       </RouterLink>
 
-      <button
-        class="menu-texture-button"
-        aria-label="Abrir menú"
-        @click="openMenu"
-      >
+      <button class="menu-texture-button" aria-label="Abrir menú" @click="openMenu">
         <img :src="texturaMenu" alt="" class="menu-texture-img">
       </button>
     </nav>
   </header>
 
-  <div
-    v-if="isMenuOpen"
-    class="menu-overlay"
-    @click="closeMenu"
-  ></div>
+  <div v-if="isMenuOpen" class="menu-overlay" @click="closeMenu"></div>
 
-  <aside
-    v-if="isMenuOpen"
-    class="menu-panel"
-  >
-    <button
-      class="menu-close"
-      aria-label="Cerrar menú"
-      @click="closeMenu"
-    >
-      <X class="h-10 w-10" />
+  <aside v-if="isMenuOpen" class="menu-panel">
+    <button class="menu-close" aria-label="Cerrar menú" @click="closeMenu">
+      <X class="menu-close-icon" />
     </button>
 
     <nav class="menu-links">
-      <RouterLink to="/" @click="closeMenu">
+      <RouterLink to="/" class="menu-link menu-link-principal" @click="closeMenu">
         Inicio
       </RouterLink>
 
-      <RouterLink to="/programa" @click="closeMenu">
-        Programa
+      <RouterLink to="/info" class="menu-link menu-link-secundario" @click="closeMenu">
+        info
       </RouterLink>
 
-      <RouterLink to="/artistas" @click="closeMenu">
+      <RouterLink to="/artistas" class="menu-link menu-link-secundario" @click="closeMenu">
         Artistas
       </RouterLink>
 
-      <RouterLink to="/info" @click="closeMenu">
-        Información
+      <RouterLink to="/programa" class="menu-link menu-link-secundario" @click="closeMenu">
+        Programa
       </RouterLink>
 
-      <RouterLink to="/contacto" @click="closeMenu">
-        Contacto
-      </RouterLink>
-
-      <RouterLink to="/entradas" @click="closeMenu">
+      <RouterLink to="/entradas" class="menu-link menu-link-destacado" @click="closeMenu">
         Entradas
+      </RouterLink>
+    </nav>
+
+    <nav class="menu-links-bottom">
+      <RouterLink
+        to="/preguntas-frecuentes"
+        class="menu-link menu-link-mini"
+        @click="closeMenu"
+      >
+       FAQs
+      </RouterLink>
+
+      <RouterLink to="/contacto" class="menu-link menu-link-mini" @click="closeMenu">
+        contacto
       </RouterLink>
     </nav>
   </aside>
@@ -134,7 +129,7 @@ const closeMenu = () => {
   position: fixed;
   inset: 0;
   z-index: 1100;
-  background: rgba(0, 0, 0, 0.35);
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .menu-panel {
@@ -143,10 +138,12 @@ const closeMenu = () => {
   right: 0;
   z-index: 1200;
   height: 100vh;
-  width: min(430px, 88vw);
+  width: min(380px, 92vw);
   background: var(--esclat-theme-color, #0040f2);
   color: white;
-  padding: 2.5rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.34);
+  border-top: 1px solid rgba(255, 255, 255, 0.34);
+  padding: 1.35rem 1.25rem 1.2rem;
   display: flex;
   flex-direction: column;
 }
@@ -154,27 +151,62 @@ const closeMenu = () => {
 .menu-close {
   align-self: flex-end;
   border: none;
-  background: transparent;
+  background: none;
   color: white;
   cursor: pointer;
-  margin-bottom: 2rem;
+  margin-bottom: 1.8rem;
+  padding: 0;
+}
+
+.menu-close-icon {
+  width: 42px;
+  height: 42px;
 }
 
 .menu-links {
   display: flex;
   flex-direction: column;
-  gap: 1.45rem;
-  font-size: 2.3rem;
-  font-weight: 700;
-  line-height: 1;
+  gap: 0.2rem;
+  margin-top: 0.35rem;
 }
 
-.menu-links a {
+.menu-links-bottom {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.menu-link {
   color: white;
   text-decoration: none;
+  line-height: 1;
+  font-family: "Alte Haas Grotesk", "Helvetica Neue", Arial, sans-serif;
 }
 
-.menu-links a:hover {
+.menu-link-principal {
+  font-size: clamp(2rem, 6.3vw, 3.25rem);
+  font-weight: 700;
+}
+
+.menu-link-secundario {
+  font-size: clamp(1.65rem, 4.2vw, 2.4rem);
+  font-weight: 600;
+}
+
+.menu-link-destacado {
+  font-size: clamp(2.2rem, 8.4vw, 4.2rem);
+  font-weight: 700;
+  margin-top: 0.85rem;
+}
+
+.menu-link-mini {
+  font-size: clamp(1.05rem, 2.8vw, 1.35rem);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.menu-link:hover {
   opacity: 0.7;
 }
 </style>
