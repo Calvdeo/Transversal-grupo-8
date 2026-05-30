@@ -1,13 +1,12 @@
 ﻿<script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
-import { ChevronDown, X } from 'lucide-vue-next'
+import { X } from 'lucide-vue-next'
 
 import logoCabecera from '@/assets/logo/logoazul.png'
 import texturaMenu from '@/assets/texturas/peques-04.png'
 
 const isMenuOpen = ref(false)
-const isActividadesOpen = ref(false)
 
 const openMenu = () => {
   isMenuOpen.value = true
@@ -15,11 +14,6 @@ const openMenu = () => {
 
 const closeMenu = () => {
   isMenuOpen.value = false
-  isActividadesOpen.value = false
-}
-
-const toggleActividades = () => {
-  isActividadesOpen.value = !isActividadesOpen.value
 }
 </script>
 
@@ -63,32 +57,9 @@ const toggleActividades = () => {
         Inicio
       </RouterLink>
 
-      <div class="menu-group">
-        <button
-          class="menu-group-button"
-          @click="toggleActividades"
-        >
-          Actividades
-          <ChevronDown
-            class="h-6 w-6 transition"
-            :class="isActividadesOpen ? 'rotate-180' : ''"
-          />
-        </button>
-
-        <div v-if="isActividadesOpen" class="submenu-links">
-          <RouterLink to="/actividades/proyecciones" @click="closeMenu">
-            Proyecciones
-          </RouterLink>
-
-          <RouterLink to="/actividades/talleres" @click="closeMenu">
-            Talleres
-          </RouterLink>
-
-          <RouterLink to="/actividades/conversaciones" @click="closeMenu">
-            Conversaciones
-          </RouterLink>
-        </div>
-      </div>
+      <RouterLink to="/programa" @click="closeMenu">
+        Programa
+      </RouterLink>
 
       <RouterLink to="/artistas" @click="closeMenu">
         Artistas
@@ -203,41 +174,7 @@ const toggleActividades = () => {
   text-decoration: none;
 }
 
-.menu-group {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.menu-group-button {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  border: none;
-  background: transparent;
-  color: white;
-  font: inherit;
-  cursor: pointer;
-  text-align: left;
-}
-
-.submenu-links {
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
-  padding-left: 1rem;
-  font-size: 1.35rem;
-  font-weight: 500;
-}
-
-.submenu-links a {
-  opacity: 0.85;
-}
-
-.submenu-links a:hover,
-.menu-links a:hover,
-.menu-group-button:hover {
+.menu-links a:hover {
   opacity: 0.7;
 }
 </style>
