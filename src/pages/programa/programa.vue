@@ -4,6 +4,11 @@ import { computed, ref } from 'vue'
 type Dia = 'todos' | 'viernes' | 'sabado' | 'domingo'
 type Categoria = 'musica' | 'taller' | 'charla' | 'corto'
 
+type Actuacion = {
+  hora: string
+  artista: string
+}
+
 type Evento = {
   dia: Exclude<Dia, 'todos'>
   fecha: string
@@ -12,10 +17,12 @@ type Evento = {
   descripcion: string
   categoria: Categoria
   espacio: string
+  actuaciones?: Actuacion[]
 }
 
 const diaActivo = ref<Dia>('todos')
 const categoriaActiva = ref<Categoria | 'todas'>('todas')
+const bloquesAbiertos = ref<Record<string, boolean>>({})
 
 const etiquetaCategoria: Record<Categoria, string> = {
   musica: 'artista',
@@ -24,222 +31,301 @@ const etiquetaCategoria: Record<Categoria, string> = {
   corto: 'corto'
 }
 
+const artistasDestacados = new Set([
+  'valeria castro',
+  'figa flawas',
+  'el kanka',
+  'belen aguilera',
+  'silvana estrada',
+  'oques grasses'
+])
+
+function normalizarTexto(valor: string): string {
+  return valor
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim()
+}
+
+function esArtistaDestacado(nombre: string): boolean {
+  return artistasDestacados.has(normalizarTexto(nombre))
+}
+
+function actuacionesDe(evento: Evento): Actuacion[] {
+  return evento.actuaciones ?? []
+}
+
+function claveEvento(evento: Evento): string {
+  return `${evento.fecha}-${evento.categoria}-${evento.titulo}`
+}
+
+function esBloqueArtistas(evento: Evento): boolean {
+  return evento.categoria === 'musica' && Boolean(evento.actuaciones?.length)
+}
+
+function alternarBloque(evento: Evento) {
+  const clave = claveEvento(evento)
+  bloquesAbiertos.value[clave] = !bloquesAbiertos.value[clave]
+}
+
+function bloqueAbierto(evento: Evento): boolean {
+  return Boolean(bloquesAbiertos.value[claveEvento(evento)])
+}
+
 const eventos: Evento[] = [
   {
     dia: 'viernes',
     fecha: '23.10.26',
     hora: '--:--',
-    titulo: 'Valeria Castro · Figa Flawas · Shego',
-    descripcion: 'Bloque de conciertos.',
+    titulo: 'Valeria Castro/ Figa flawas',
+    descripcion: 'Pulsa para ver horario.',
     categoria: 'musica',
-    espacio: 'Escenario principal'
+    espacio: 'Patio 2',
+    actuaciones: [
+      { hora: '18:00', artista: 'Figa Flawas' },
+      { hora: '21:00', artista: 'Valeria Castro' }
+      
+    ]
   },
   {
     dia: 'viernes',
     fecha: '23.10.26',
     hora: '--:--',
-    titulo: 'CORTE! · Escandaloso Xposito · La Paloma',
-    descripcion: 'Bloque de conciertos.',
+    titulo: 'CORTE! / Escandaloso Xposito / La Paloma / Shego',
+    descripcion: 'Pulsa para ver horario.',
     categoria: 'musica',
-    espacio: 'Escenario principal'
+    espacio: 'Patio 1',
+    actuaciones: [
+      { hora: '11:00', artista: 'Shego' },
+      { hora: '12:30', artista: 'Escandaloso Xposito' },
+      { hora: '16:00', artista: 'La Paloma' },
+       { hora: '19:00', artista: 'CORTE!' }
+    ]
   },
   {
     dia: 'sabado',
     fecha: '24.10.26',
     hora: '--:--',
-    titulo: 'El Kanka · Belen Aguilera · Mala Gestion',
-    descripcion: 'Bloque de conciertos.',
+    titulo: 'El Kanka / Belen Aguilera',
+    descripcion: 'Pulsa para ver horario.',
     categoria: 'musica',
-    espacio: 'Escenario principal'
+    espacio: 'Patio 2',
+    actuaciones: [
+      { hora: '18:00', artista: 'Belen Aguilera' },
+      { hora: '21:00', artista: 'El Kanka' },
+      
+    
+    ]
   },
   {
     dia: 'sabado',
     fecha: '24.10.26',
     hora: '--:--',
-    titulo: 'La Fumiga · Aiko el grupo · Ariel Pink',
-    descripcion: 'Bloque de conciertos.',
+    titulo: 'La Fúmiga / Aiko el grupo / Ariel Pink / Mala gestión',
+    descripcion: 'Pulsa para ver horario.',
     categoria: 'musica',
-    espacio: 'Escenario principal'
+    espacio: 'Patio 1',
+    actuaciones: [
+      { hora: '11:00', artista: 'Ariel Pink' },
+      { hora: '12:30', artista: 'Aiko el grupo' },
+      { hora: '16:00', artista: 'Mala Gestión' },
+      { hora: '19:00', artista: 'La fúmiga' }
+    
+    ]
   },
   {
     dia: 'domingo',
     fecha: '25.10.26',
     hora: '--:--',
-    titulo: 'Silvana Estrada · Oques Grasses · Zoo',
-    descripcion: 'Bloque de conciertos.',
+    titulo: 'Silvana Estrada / Oques Grasses',
+    descripcion: 'Pulsa para ver horario.',
     categoria: 'musica',
-    espacio: 'Escenario principal'
+    espacio: 'Patio 2',
+    actuaciones: [
+      { hora: '19:00', artista: 'Silvana Estrada' },
+      { hora: '21:00', artista: 'Oques Grasses' }
+   
+    ]
   },
   {
     dia: 'domingo',
     fecha: '25.10.26',
     hora: '--:--',
-    titulo: 'Los Punsetes · Las Petunias · Amor Liquido',
-    descripcion: 'Bloque de conciertos.',
+    titulo: 'Los Punsetes / Las Petunias / Amor Liquido/ zoo',
+    descripcion: 'Pulsa para ver horario.',
     categoria: 'musica',
-    espacio: 'Escenario principal'
+    espacio: 'Patio 1',
+    actuaciones: [
+      { hora: '11:00', artista: 'Amor Liquido' },
+      { hora: '12:30', artista: 'Las Petunias' },
+      { hora: '16:00', artista: 'Zoo' },
+      { hora: '16:00', artista: 'Los Punsetes' }
+      
+      
+    ]
   },
   {
     dia: 'viernes',
     fecha: '23.10.26',
-    hora: '12:30',
+    hora: '13:00',
     titulo: 'Taller de cianotipia',
-    descripcion: 'Actividad practica.',
+    descripcion: 'Pintar con luz y revelar accidentes felices.',
     categoria: 'taller',
-    espacio: 'Aula taller'
+    espacio: 'Visual Room'
   },
   {
     dia: 'viernes',
     fecha: '23.10.26',
-    hora: '17:30',
+    hora: '18:30',
     titulo: 'Cadaver exquisito',
-    descripcion: 'Actividad practica.',
+    descripcion: 'Crear juntos sin saber adónde vamos',
     categoria: 'taller',
-    espacio: 'Aula taller'
+    espacio: 'Factoría'
   },
   {
     dia: 'sabado',
     fecha: '24.10.26',
-    hora: '12:30',
+    hora: '13:30',
     titulo: 'Escritura creativa',
-    descripcion: 'Actividad practica.',
+    descripcion: 'Encontrar historias donde parecía que no había nada.',
     categoria: 'taller',
-    espacio: 'Aula taller'
+    espacio: 'Factoría'
   },
   {
     dia: 'sabado',
     fecha: '24.10.26',
-    hora: '17:30',
+    hora: '18:30',
     titulo: 'Improvisacion teatral',
-    descripcion: 'Actividad practica.',
+    descripcion: 'Menos control. Más juego.',
     categoria: 'taller',
-    espacio: 'Aula taller'
+    espacio: 'Factoría'
   },
   {
     dia: 'domingo',
     fecha: '25.10.26',
-    hora: '12:30',
+    hora: '13:30',
     titulo: 'Taller de fanzines',
-    descripcion: 'Actividad practica.',
+    descripcion: 'Hazlo tú mismo antes de que alguien te diga cómo.',
     categoria: 'taller',
-    espacio: 'Aula taller'
+    espacio: 'Visual Room'
   },
   {
     dia: 'domingo',
     fecha: '25.10.26',
-    hora: '18:00',
+    hora: '18:30',
     titulo: 'Clase de produccion musical',
-    descripcion: 'Actividad practica.',
+    descripcion: 'Convertir una idea en algo que realmente suceda.',
     categoria: 'taller',
-    espacio: 'Aula taller'
+    espacio: 'Factoría'
   },
   {
     dia: 'viernes',
     fecha: '23.10.26',
     hora: '11:00',
     titulo: 'Manipulamos o nos manipulan - Diego Alvarez',
-    descripcion: 'Encuentro en formato charla.',
+    descripcion: 'Quien manipula y quien es manipulado.',
     categoria: 'charla',
-    espacio: 'Foro'
+    espacio: 'Sala de Exposiciones'
   },
   {
     dia: 'viernes',
     fecha: '23.10.26',
     hora: '16:00',
     titulo: 'Piel de platano - Miss Beige',
-    descripcion: 'Encuentro en formato charla.',
+    descripcion: 'Este encuentro es un intento de poner el centro las prácticas artísticas cómicas. La risa nos libera de tensiones, y eso es un asunto serio.',
     categoria: 'charla',
-    espacio: 'Foro'
+    espacio: 'Factoría'
   },
   {
     dia: 'sabado',
     fecha: '24.10.26',
     hora: '11:00',
-    titulo: 'Esta todo inventado? - PutoMikel',
-    descripcion: 'Encuentro en formato charla.',
+    titulo: '¿Esta todo inventado? - PutoMikel',
+    descripcion: 'Crear después de internet: una conversación incómodamente necesaria.',
     categoria: 'charla',
-    espacio: 'Foro'
+    espacio: 'Sala de Exposiciones'
   },
   {
     dia: 'sabado',
     fecha: '24.10.26',
     hora: '16:00',
     titulo: 'La performance - TER',
-    descripcion: 'Encuentro en formato charla.',
+    descripcion: 'Cuando el cuerpo deja de explicar y empieza a decir.',
     categoria: 'charla',
-    espacio: 'Foro'
+    espacio: 'Factoría'
   },
   {
     dia: 'domingo',
     fecha: '25.10.26',
     hora: '11:00',
     titulo: 'Espanul - Lamine Thior',
-    descripcion: 'Encuentro en formato charla.',
+    descripcion: 'Entre idiomas, fronteras y etiquetas que nunca terminan de encajar.',
     categoria: 'charla',
-    espacio: 'Foro'
+    espacio: 'Sala de Exposiciones'
   },
   {
     dia: 'domingo',
     fecha: '25.10.26',
     hora: '18:00',
-    titulo: 'Trap del terraplanismo - Jaime Altozano',
-    descripcion: 'Encuentro en formato charla.',
+    titulo: 'Qué nos dice la música - Jaime Altozano',
+    descripcion: 'Escuchar más allá de las canciones.',
     categoria: 'charla',
-    espacio: 'Foro'
+    espacio: 'Sala de Exposiciones'
   },
   {
     dia: 'viernes',
     fecha: '23.10.26',
     hora: '12:00',
     titulo: '"Madre" - Rodrigo Sorogoyen',
-    descripcion: 'Proyeccion de cortometraje.',
+    descripcion: 'La cotidiana conversación entre Marta y su madre se convierte en una trágica situación contrarreloj cuando reciben una llamada de su hijo de 6 años desde una playa francesa perdido sin su padre .',
     categoria: 'corto',
-    espacio: 'Sala proyecciones'
+    espacio: 'La Polivalent'
   },
   {
     dia: 'viernes',
     fecha: '23.10.26',
     hora: '18:30',
     titulo: '"Zona Wao" - Nagore Eceiza Mujika',
-    descripcion: 'Proyeccion de cortometraje.',
+    descripcion: 'Nominado al Goya a Mejor Corto Documental. Desde hace más de 50 años, empresas petroleras extraen petróleo de la Amazonía con mayor biodiversidad del planeta.',
     categoria: 'corto',
-    espacio: 'Sala proyecciones'
+    espacio: 'La Polivalent'
   },
   {
     dia: 'sabado',
     fecha: '24.10.26',
     hora: '12:00',
     titulo: '"Utopias y otras especies" - Julia Izaguirre',
-    descripcion: 'Proyeccion de cortometraje.',
+    descripcion: 'Cercado por nuevos edificios en Vitoria, el barrio ocupado Errekaleor resiste el desalojo en red, entablando un diálogo entre la comunidad y su huerto.',
     categoria: 'corto',
-    espacio: 'Sala proyecciones'
+    espacio: 'La Polivalent'
   },
   {
     dia: 'sabado',
     fecha: '24.10.26',
     hora: '18:30',
     titulo: '"Me" - Don Hertzfeldt',
-    descripcion: 'Proyeccion de cortometraje.',
+    descripcion: 'Preseleccionado para los Oscar a mejor cortometraje de animación, el aclamado maestro de la animación Don Hertzfeldt ("World of Tomorrow") vuelve con esta odisea musical.',
     categoria: 'corto',
-    espacio: 'Sala proyecciones'
+    espacio: 'La Polivalent'
   },
   {
     dia: 'domingo',
     fecha: '25.10.26',
     hora: '12:00',
     titulo: '"No als poalets" - Laura Garcia Andreu',
-    descripcion: 'Proyeccion de cortometraje.',
+    descripcion: 'Los poalets, unos cubos de reciclaje, polarizan a un pueblo entero. Entre masivas protestas, las urnas decidirán si este delirante conflicto cambia su destino.',
     categoria: 'corto',
-    espacio: 'Sala proyecciones'
+    espacio: 'La Polivalent'
   },
   {
     dia: 'domingo',
     fecha: '25.10.26',
-    hora: '18:00',
+    hora: '18:30',
     titulo: '"Uli" - Mariana Gil',
-    descripcion: 'Proyeccion de cortometraje.',
+    descripcion: 'Una historia que aborda las metamorfosis ocurridas entre la niñez y la adolescencia, desde la imaginación de una zona donde construir nuevas formas de vincularse diversamente.',
     categoria: 'corto',
-    espacio: 'Sala proyecciones'
+    espacio: 'La Polivalent'
   }
 ]
 
@@ -268,64 +354,19 @@ const eventosFiltrados = computed(() => {
     <section class="programa-filtros">
       <div>
         <p>Dias</p>
-        <button
-          :class="diaActivo === 'todos' ? 'activo' : ''"
-          @click="diaActivo = 'todos'"
-        >
-          Todo
-        </button>
-        <button
-          :class="diaActivo === 'viernes' ? 'activo' : ''"
-          @click="diaActivo = 'viernes'"
-        >
-          Viernes
-        </button>
-        <button
-          :class="diaActivo === 'sabado' ? 'activo' : ''"
-          @click="diaActivo = 'sabado'"
-        >
-          Sabado
-        </button>
-        <button
-          :class="diaActivo === 'domingo' ? 'activo' : ''"
-          @click="diaActivo = 'domingo'"
-        >
-          Domingo
-        </button>
+        <button :class="diaActivo === 'todos' ? 'activo' : ''" @click="diaActivo = 'todos'">Todo</button>
+        <button :class="diaActivo === 'viernes' ? 'activo' : ''" @click="diaActivo = 'viernes'">Viernes</button>
+        <button :class="diaActivo === 'sabado' ? 'activo' : ''" @click="diaActivo = 'sabado'">Sabado</button>
+        <button :class="diaActivo === 'domingo' ? 'activo' : ''" @click="diaActivo = 'domingo'">Domingo</button>
       </div>
 
       <div>
         <p>Categorias</p>
-        <button
-          :class="categoriaActiva === 'todas' ? 'activo' : ''"
-          @click="categoriaActiva = 'todas'"
-        >
-          Todas
-        </button>
-        <button
-          :class="categoriaActiva === 'musica' ? 'activo' : ''"
-          @click="categoriaActiva = 'musica'"
-        >
-          Artista
-        </button>
-        <button
-          :class="categoriaActiva === 'taller' ? 'activo' : ''"
-          @click="categoriaActiva = 'taller'"
-        >
-          Taller
-        </button>
-        <button
-          :class="categoriaActiva === 'charla' ? 'activo' : ''"
-          @click="categoriaActiva = 'charla'"
-        >
-          Charlas
-        </button>
-        <button
-          :class="categoriaActiva === 'corto' ? 'activo' : ''"
-          @click="categoriaActiva = 'corto'"
-        >
-          Cortos
-        </button>
+        <button :class="categoriaActiva === 'todas' ? 'activo' : ''" @click="categoriaActiva = 'todas'">Todas</button>
+        <button :class="categoriaActiva === 'musica' ? 'activo' : ''" @click="categoriaActiva = 'musica'">Artista</button>
+        <button :class="categoriaActiva === 'taller' ? 'activo' : ''" @click="categoriaActiva = 'taller'">Taller</button>
+        <button :class="categoriaActiva === 'charla' ? 'activo' : ''" @click="categoriaActiva = 'charla'">Charlas</button>
+        <button :class="categoriaActiva === 'corto' ? 'activo' : ''" @click="categoriaActiva = 'corto'">Cortos</button>
       </div>
     </section>
 
@@ -337,19 +378,66 @@ const eventosFiltrados = computed(() => {
         <p>Categoria</p>
         <p>Espacio</p>
       </div>
+
       <article
         v-for="evento in eventosFiltrados"
-        :key="`${evento.fecha}-${evento.hora}-${evento.titulo}`"
+        :key="claveEvento(evento)"
         class="tabla-fila"
       >
         <p>{{ evento.fecha }}</p>
-        <p>{{ evento.hora }}</p>
-        <div>
-          <h2>{{ evento.titulo }}</h2>
+
+        <div class="hora-celda">
+          <button
+            v-if="esBloqueArtistas(evento)"
+            type="button"
+            class="hora-toggle"
+            :aria-expanded="bloqueAbierto(evento)"
+            @click.stop="alternarBloque(evento)"
+          >
+            {{ bloqueAbierto(evento) ? 'v' : '>' }}
+          </button>
+          <p v-else>{{ evento.hora }}</p>
+        </div>
+
+        <div
+          class="actividad-celda"
+          :class="{ 'actividad-celda-expandible': esBloqueArtistas(evento) }"
+          @click="esBloqueArtistas(evento) && alternarBloque(evento)"
+        >
+          <h2 v-if="esBloqueArtistas(evento)">
+            <template
+              v-for="(actuacion, index) in actuacionesDe(evento)"
+              :key="`${evento.titulo}-principal-${actuacion.artista}`"
+            >
+              <span :class="{ 'artista-destacado': esArtistaDestacado(actuacion.artista) }">
+                {{ actuacion.artista }}
+              </span>
+              <span v-if="index < actuacionesDe(evento).length - 1"> / </span>
+            </template>
+          </h2>
+          <h2 v-else>{{ evento.titulo }}</h2>
           <p>{{ evento.descripcion }}</p>
         </div>
+
         <p>{{ etiquetaCategoria[evento.categoria] }}</p>
-        <p>{{ evento.espacio }}</p>
+        <p class="espacio-celda">{{ evento.espacio }}</p>
+
+        <div
+          v-if="esBloqueArtistas(evento) && bloqueAbierto(evento)"
+          class="detalle-expandido"
+        >
+          <div
+            v-for="actuacion in evento.actuaciones"
+            :key="`${evento.titulo}-${actuacion.hora}-${actuacion.artista}`"
+            class="detalle-expandido-fila"
+          >
+            <p></p>
+            <p class="detalle-hora">{{ actuacion.hora }}</p>
+            <p>{{ actuacion.artista }}</p>
+            <p></p>
+            <p></p>
+          </div>
+        </div>
       </article>
     </section>
   </main>
@@ -420,7 +508,8 @@ const eventosFiltrados = computed(() => {
 }
 
 .tabla-cabecera,
-.tabla-fila {
+.tabla-fila,
+.detalle-expandido-fila {
   display: grid;
   grid-template-columns: 110px 90px minmax(0, 1fr) 160px 180px;
   gap: 18px;
@@ -452,6 +541,71 @@ const eventosFiltrados = computed(() => {
 
 .tabla-fila > p {
   text-transform: uppercase;
+}
+
+.actividad-celda-expandible {
+  cursor: pointer;
+}
+
+.hora-celda {
+  display: flex;
+  align-items: center;
+  min-height: 24px;
+}
+
+.hora-toggle {
+  border: 0;
+  background: none;
+  color: #0040f2;
+  width: auto;
+  height: auto;
+  padding: 0;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.espacio-celda {
+  text-transform: none !important;
+}
+
+.detalle-expandido {
+  grid-column: 1 / -1;
+  margin-top: 8px;
+  border-top: 1px solid #0040f2;
+}
+
+.detalle-expandido-fila {
+  position: relative;
+  padding: 8px 0;
+  font-size: 14px;
+}
+
+.detalle-expandido-fila::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-bottom: 1px solid #0040f2;
+}
+
+.detalle-expandido-fila p {
+  margin: 0;
+}
+
+.detalle-hora {
+  font-weight: 700;
+}
+
+.artista-destacado {
+  font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.01em;
 }
 
 @media (max-width: 900px) {
