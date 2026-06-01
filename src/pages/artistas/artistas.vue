@@ -251,7 +251,7 @@ function limpiarCantanteActivo() {
   <main class="fondo-cantantes min-h-screen px-6 py-24 sm:px-10">
     <section class="panel-cantantes mx-auto max-w-[1320px] p-8 sm:p-10">
       <header class="mb-12 flex items-start justify-between gap-4">
-        <h1 class="titulo-cantantes">Cantantes</h1>
+        <h1 class="titulo-cantantes">Artistas</h1>
       </header>
 
       <div class="rejilla-cantantes">
@@ -346,7 +346,8 @@ function limpiarCantanteActivo() {
 
 <style scoped>
 .fondo-cantantes {
-  background: #0040f2;
+  background-color: #ffffff !important;
+  background-image: none;
 }
 
 .panel-cantantes {
@@ -355,11 +356,14 @@ function limpiarCantanteActivo() {
 
 .titulo-cantantes {
   font-family: "Alte Haas Grotesk", "Helvetica Neue", Arial, sans-serif;
-  font-size: clamp(3rem, 8vw, 5.6rem);
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  text-align: left;
+  font-size: clamp(72px, 16vw, 180px);
   letter-spacing: -0.08em;
-  font-weight: 900;
-  line-height: 0.95;
-  color: #ffffff;
+  font-weight: 700;
+  line-height: 0.8;
+  color: #0040f2;
 }
 
 .spotify-preview {

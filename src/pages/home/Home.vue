@@ -4,6 +4,7 @@ import { Eraser, Save } from 'lucide-vue-next'
 
 import logoEsclat from '@/assets/logo/logoazul.png'
 import imagenFondo1 from '@/assets/imagenes/imagenfondo1.jpg'
+import videoCartelera from '@/assets/vídeos/animación.MOV'
 
 import texturaCeraGrande from '@/assets/texturas/ceraazul.png'
 import texturaPixelGrande from '@/assets/texturas/pixelazul.png'
@@ -718,174 +719,17 @@ onMounted(() => {
         </div>
       </div>
 
-      <div class="hero-agenda hero-agenda-artistas">
-        <div class="agenda-grid agenda-grid-head">
-          <p>fecha</p>
-          <p>Música</p>
+      <section class="hero-video">
+        <div class="hero-video-inner">
+          <video
+            class="hero-video-player"
+            :src="videoCartelera"
+            controls
+            playsinline
+            preload="metadata"
+          ></video>
         </div>
-
-        <div class="agenda-grid agenda-row">
-          <p class="agenda-date">23.10.26</p>
-          <p>Valeria Castro · Figa Flawas · Shego</p>
-        </div>
-
-        <div class="agenda-grid agenda-row">
-          <p class="agenda-date"></p>
-          <p>CORTE! · Escandaloso Xpósito · La Paloma</p>
-        </div>
-
-        <div class="agenda-grid agenda-row">
-          <p class="agenda-date">24.10.26</p>
-          <p>El Kanka · Belén Aguilera · Mala Gestión</p>
-        </div>
-
-        <div class="agenda-grid agenda-row">
-          <p class="agenda-date"></p>
-          <p>La Fúmiga · Aiko el grupo · Ariel Pink</p>
-        </div>
-
-        <div class="agenda-grid agenda-row">
-          <p class="agenda-date">25.10.26</p>
-          <p>Silvana Estrada · Oques Grasses · Zoo</p>
-        </div>
-
-        <div class="agenda-grid agenda-row">
-          <p class="agenda-date"></p>
-          <p>Los Punsetes · Las Petunias · Amor Líquido</p>
-        </div>
-      </div>
-
-      <div class="hero-agenda hero-agenda-talleres">
-        <div class="agenda-grid agenda-grid-head">
-          <p>fecha</p>
-          <p>Talleres</p>
-          <p>hora</p>
-        </div>
-
-        <div class="agenda-grid agenda-row">
-          <p class="agenda-date">23.10.26</p>
-          <p>Taller de cianotipia</p>
-          <p class="agenda-time">12:30</p>
-        </div>
-
-        <div class="agenda-grid agenda-row">
-          <p class="agenda-date"></p>
-          <p>Cadáver exquisito</p>
-          <p class="agenda-time">17:30</p>
-        </div>
-
-        <div class="agenda-grid agenda-row">
-          <p class="agenda-date">24.10.26</p>
-          <p>Escritura creativa</p>
-          <p class="agenda-time">12:30</p>
-        </div>
-
-        <div class="agenda-grid agenda-row">
-          <p class="agenda-date"></p>
-          <p>Improvisación teatral</p>
-          <p class="agenda-time">17:30</p>
-        </div>
-
-        <div class="agenda-grid agenda-row">
-          <p class="agenda-date">25.10.26</p>
-          <p>Taller de fanzines</p>
-          <p class="agenda-time">12:30</p>
-        </div>
-
-        <div class="agenda-grid agenda-row">
-          <p class="agenda-date"></p>
-          <p>Clase de producción musical</p>
-          <p class="agenda-time">18:00</p>
-        </div>
-      </div>
-
-      <div class="hero-agenda hero-agenda-dialogos">
-        <div class="agenda-grid agenda-grid-head">
-          <p>fecha</p>
-          <p>Diálogos</p>
-          <p>hora</p>
-        </div>
-
-        <div class="agenda-grid agenda-row">
-          <p class="agenda-date">23.10.26</p>
-          <p>Manipulamos o nos manipulan-Diego Álvarez</p>
-          <p class="agenda-time">11:00</p>
-        </div>
-
-        <div class="agenda-grid agenda-row">
-          <p class="agenda-date"></p>
-          <p>Piel de plátano-Miss beige</p>
-          <p class="agenda-time">16:00</p>
-        </div>
-
-        <div class="agenda-grid agenda-row">
-          <p class="agenda-date">24.10.26</p>
-          <p>¿Está todo inventado?-PutoMikel</p>
-          <p class="agenda-time">11:00</p>
-        </div>
-
-        <div class="agenda-grid agenda-row">
-          <p class="agenda-date"></p>
-          <p>La performance-ter</p>
-          <p class="agenda-time">16:00</p>
-        </div>
-
-        <div class="agenda-grid agenda-row">
-          <p class="agenda-date">25.10.26</p>
-          <p>Españul-Lamine Thior</p>
-          <p class="agenda-time">11:00</p>
-        </div>
-
-        <div class="agenda-grid agenda-row">
-          <p class="agenda-date"></p>
-          <p>Trap del terraplanismo-Jaime Altozano</p>
-          <p class="agenda-time">18:00</p>
-        </div>
-      </div>
-
-      <div class="hero-agenda hero-agenda-proyecciones">
-        <div class="agenda-grid agenda-grid-head">
-          <p>fecha</p>
-          <p>Proyecciones</p>
-          <p>hora</p>
-        </div>
-
-        <div class="agenda-grid agenda-row">
-          <p class="agenda-date">23.10.26</p>
-          <p>"Madre"-Rodrigo Sorogoyen</p>
-          <p class="agenda-time">12:00</p>
-        </div>
-
-        <div class="agenda-grid agenda-row">
-          <p class="agenda-date"></p>
-          <p>"Zona Wao"-Nagore Eceiza Mujika</p>
-          <p class="agenda-time">18:30</p>
-        </div>
-
-        <div class="agenda-grid agenda-row">
-          <p class="agenda-date">24.10.26</p>
-          <p>"Utopias y otras especies"-Júlia Izaguirre</p>
-          <p class="agenda-time">12:00</p>
-        </div>
-
-        <div class="agenda-grid agenda-row">
-          <p class="agenda-date"></p>
-          <p>"Me"-Don Hertzfeldtv</p>
-          <p class="agenda-time">18:30</p>
-        </div>
-
-        <div class="agenda-grid agenda-row">
-          <p class="agenda-date">25.10.26</p>
-          <p>"No als poalets"-Laura garcía Andreu</p>
-          <p class="agenda-time">12:00</p>
-        </div>
-
-        <div class="agenda-grid agenda-row">
-          <p class="agenda-date"></p>
-          <p>"Uli"-Mariana Gil</p>
-          <p class="agenda-time">18:00</p>
-        </div>
-      </div>
+      </section>
     </section>
 
     <section
@@ -1152,6 +996,24 @@ onMounted(() => {
     sans-serif;
 
   font-weight: 400;
+}
+
+.hero-video {
+  width: 100%;
+  background: #ffffff;
+  padding: 20px 16px 24px;
+}
+
+.hero-video-inner {
+  width: min(100%, 1280px);
+  margin: 0 auto;
+}
+
+.hero-video-player {
+  width: 100%;
+  display: block;
+  border: 0;
+  background: #000000;
 }
 
 .hero-agenda-proyecciones {
