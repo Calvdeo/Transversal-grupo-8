@@ -2,9 +2,8 @@
 import { computed, onMounted, ref } from 'vue'
 import { Eraser, Save } from 'lucide-vue-next'
 
-import logoEsclat from '@/assets/logo/logoazul.png'
+import logoSubAzul from '@/assets/logo/logosubazul.png'
 import imagenFondo1 from '@/assets/imagenes/imagenfondo1.jpg'
-import videoCartelera from '@/assets/vídeos/animación.MOV'
 
 import texturaCeraGrande from '@/assets/texturas/ceraazul.png'
 import texturaPixelGrande from '@/assets/texturas/pixelazul.png'
@@ -14,9 +13,9 @@ import texturaCeraVerde from '@/assets/texturas/ceraverde.png'
 import texturaPixelNaranja from '@/assets/texturas/pixelnaranja.png'
 import texturaPixelRosa from '@/assets/texturas/pixelrosa.png'
 import texturaPixelVerde from '@/assets/texturas/pixelverde.png'
-import logoNaranja from '@/assets/logo/logonaranja.png'
-import logoRosa from '@/assets/logo/logorosa.png'
-import logoVerde from '@/assets/logo/logoverde.png'
+import logoSubNaranja from '@/assets/logo/logosubnaranja.png'
+import logoSubRosa from '@/assets/logo/logosubrosa.png'
+import logoSubVerde from '@/assets/logo/logosubverde.png'
 import pequesAzul04 from '@/assets/texturas/peques-04.png'
 import pequesAzul05 from '@/assets/texturas/peques-05.png'
 import pequesAzul06 from '@/assets/texturas/peques-06.png'
@@ -47,7 +46,7 @@ type Punto = {
 
 type TemaVisual = {
   color: string
-  logo: string
+  logoSub: string
   texturaCera: string
   texturaPixel: string
   pequesSubrayador: string
@@ -67,12 +66,11 @@ const ALTO_LIENZO = 1100
 const MARGEN_MARCO = 44
 const MARGEN_PINTURA = 8
 
-const FUENTE_POSTAL =
-  '"Alte Haas Grotesk", "Helvetica Neue", Arial, sans-serif'
 const FUENTE_INTER =
   '"Inter", "Helvetica Neue", Arial, sans-serif'
 
 const fondoEscena = `url(${imagenFondo1})`
+const videoInicioUrl = '/videos/inicio.mp4'
 
 const coloresDisponibles = [
   '#fe8507',
@@ -83,7 +81,7 @@ const coloresDisponibles = [
 
 const colorActual = ref<string>(coloresDisponibles[1])
 const colorTema = ref(COLOR_AZUL)
-const logoHeroTema = ref(logoEsclat)
+const logoSubTema = ref(logoSubAzul)
 const texturaCeraHero = ref(texturaCeraGrande)
 const texturaPixelHero = ref(texturaPixelGrande)
 const indiceTemaActual = ref(0)
@@ -92,7 +90,7 @@ const CLAVE_INDICE_TEMA = 'esclat-theme-index'
 const temasVisuales: TemaVisual[] = [
   {
     color: '#0040f2',
-    logo: logoEsclat,
+    logoSub: logoSubAzul,
     texturaCera: texturaCeraGrande,
     texturaPixel: texturaPixelGrande,
     pequesSubrayador: pequesAzul04,
@@ -102,7 +100,7 @@ const temasVisuales: TemaVisual[] = [
   },
   {
     color: '#fe8507',
-    logo: logoNaranja,
+    logoSub: logoSubNaranja,
     texturaCera: texturaCeraNaranja,
     texturaPixel: texturaPixelNaranja,
     pequesSubrayador: pequesNaranja04,
@@ -112,7 +110,7 @@ const temasVisuales: TemaVisual[] = [
   },
   {
     color: '#fc0299',
-    logo: logoRosa,
+    logoSub: logoSubRosa,
     texturaCera: texturaCeraRosa,
     texturaPixel: texturaPixelRosa,
     pequesSubrayador: pequesRosa04,
@@ -122,7 +120,7 @@ const temasVisuales: TemaVisual[] = [
   },
   {
     color: '#05d181',
-    logo: logoVerde,
+    logoSub: logoSubVerde,
     texturaCera: texturaCeraVerde,
     texturaPixel: texturaPixelVerde,
     pequesSubrayador: pequesVerde04,
@@ -238,33 +236,7 @@ function prepararLienzo() {
 
   contexto.fillStyle = colorPostal
   contexto.textBaseline = 'top'
-
-  contexto.font = `300 46px ${FUENTE_POSTAL}`
   contexto.textAlign = 'left'
-
-  contexto.fillText(
-    'FESTIVAL DE',
-    textoIzquierdaX,
-    textoSuperiorY
-  )
-
-  contexto.fillText(
-    'MÚSICA,',
-    textoIzquierdaX,
-    textoSuperiorY + 50
-  )
-
-  contexto.fillText(
-    'PENSAMENT I',
-    textoIzquierdaX,
-    textoSuperiorY + 100
-  )
-
-  contexto.fillText(
-    'CREATIVITAT',
-    textoIzquierdaX,
-    textoSuperiorY + 150
-  )
 
   const fechaY1 = baseInferiorY - 136
   const fechaY2 = baseInferiorY - 56
@@ -313,28 +285,25 @@ function prepararLienzo() {
     marco.y + marco.alto - 72
   )
 
-  const logo = new Image()
-  logo.src = logoHeroTema.value
+  const logoSub = new Image()
+  logoSub.src = logoSubTema.value
 
-  logo.onload = () => {
-    const logoAncho = Math.round(marco.ancho * 0.49)
-
+  logoSub.onload = () => {
+    const logoSubAncho = Math.round(marco.ancho * 0.4)
     const proporcionOriginal =
-      logo.height / logo.width
-
-    const logoAlto = Math.round(
-      logoAncho * proporcionOriginal
+      logoSub.height / logoSub.width
+    const logoSubAlto = Math.round(
+      logoSubAncho * proporcionOriginal
     )
-
-    const logoX = textoDerechaX - logoAncho
-    const logoY = marco.y - 8
+    const logoSubX = textoIzquierdaX
+    const logoSubY = textoSuperiorY - 6
 
     contexto.drawImage(
-      logo,
-      logoX,
-      logoY,
-      logoAncho,
-      logoAlto
+      logoSub,
+      logoSubX,
+      logoSubY,
+      logoSubAncho,
+      logoSubAlto
     )
   }
 }
@@ -649,7 +618,7 @@ function aplicarTemaActual() {
 
   indiceTemaActual.value = indiceTema
   colorTema.value = tema.color
-  logoHeroTema.value = tema.logo
+  logoSubTema.value = tema.logoSub
   texturaCeraHero.value = tema.texturaCera
   texturaPixelHero.value = tema.texturaPixel
   colorActual.value = tema.color
@@ -681,17 +650,10 @@ onMounted(() => {
         id="inicio"
         class="hero-poster"
       >
-        <div class="hero-info">
-          <p>FESTIVAL</p>
-          <p>DE MÚSICA,</p>
-          <p>PENSAMENT</p>
-          <p> I CREATIVITAT</p>
-        </div>
-
         <img
-          :src="logoHeroTema"
-          alt="ESCLAT"
-          class="hero-main-logo"
+          :src="logoSubTema"
+          alt="Esclat subtítulo"
+          class="hero-sub-logo"
         >
 
         <img
@@ -723,11 +685,16 @@ onMounted(() => {
         <div class="hero-video-inner">
           <video
             class="hero-video-player"
-            :src="videoCartelera"
             controls
             playsinline
             preload="metadata"
-          ></video>
+          >
+            <source
+              :src="videoInicioUrl"
+              type="video/mp4"
+            >
+            Tu navegador no soporta vídeo HTML5.
+          </video>
         </div>
       </section>
     </section>
@@ -861,33 +828,12 @@ onMounted(() => {
   padding: 42px 36px;
 }
 
-.hero-info {
+.hero-sub-logo {
   position: absolute;
-
-  left: 36px;
-  top: 80px;
-
+  left: 10px;
+  top: 30px;
   z-index: 4;
-
-  color: var(--color-tema);
-
-  font-size: clamp(22px, 2.4vw, 39px);
-
-  line-height: 0.98;
-
-  font-weight: 700;
-}
-
-.hero-main-logo {
-  position: absolute;
-
-  top: -5px;
-  right: 10px;
-
-  z-index: 4;
-
-  width: clamp(360px, 48vw, 820px);
-
+  width: clamp(280px, 50vw, 800px);
   height: auto;
 }
 
@@ -900,20 +846,20 @@ onMounted(() => {
 }
 
 .hero-texture-cera {
-  width: clamp(560px, 70vw, 1080px);
+  width: clamp(500px, 62vw, 920px);
 
-  left: 20%;
-  top: -40%;
+  left: 38%;
+  top: -39%;
 
   transform: rotate(90deg);
   transform-origin: center;
 }
 
 .hero-texture-pixel {
-  width: clamp(300px, 38vw, 640px);
+  width: clamp(250px, 31vw, 520px);
 
-  left: 15%;
-  top: 5%;
+  left: 33%;
+  top: 2%;
 }
 
 .hero-date {
@@ -976,28 +922,6 @@ onMounted(() => {
   color: var(--color-tema);
 }
 
-.hero-agenda {
-  width: 100%;
-
-  min-height: auto;
-
-  margin: 0;
-
-  background: #0040f2;
-
-  color: #ffffff;
-
-  padding: 28px clamp(24px, 6vw, 54px) 34px;
-
-  font-family:
-    "Inter",
-    "Helvetica Neue",
-    Arial,
-    sans-serif;
-
-  font-weight: 400;
-}
-
 .hero-video {
   width: 100%;
   background: #ffffff;
@@ -1016,86 +940,6 @@ onMounted(() => {
   background: #000000;
 }
 
-.hero-agenda-proyecciones {
-  background: #fe8507;
-}
-
-.hero-agenda-dialogos {
-  background: #05d181;
-}
-
-.hero-agenda-talleres {
-  background: #fc0299;
-}
-
-.hero-agenda-artistas .agenda-grid {
-  grid-template-columns:
-    minmax(0, 180px)
-    minmax(0, 1fr);
-}
-
-.hero-agenda-artistas .agenda-grid p:nth-child(2) {
-  padding-left: clamp(24px, 4vw, 56px);
-}
-
-.agenda-grid {
-  display: grid;
-
-  grid-template-columns:
-    minmax(0, 180px)
-    minmax(0, 1fr)
-    minmax(0, 110px);
-
-  gap: 16px;
-
-  align-items: center;
-}
-
-.agenda-grid p {
-  margin: 0;
-}
-
-.agenda-grid-head {
-  margin-bottom: 6px;
-
-  font-size: clamp(30px, 3.6vw, 44px);
-
-  line-height: 1;
-
-  font-weight: 400;
-}
-
-.agenda-row {
-  padding: 10px 0;
-
-  border-top: 1px solid rgba(255, 255, 255, 0.5);
-
-  font-size: clamp(26px, 2.6vw, 44px);
-
-  line-height: 1;
-
-  letter-spacing: -0.05em;
-
-  font-weight: 400;
-}
-
-.agenda-row:first-of-type {
-  border-top: none;
-}
-
-.agenda-row p:nth-child(2),
-.agenda-time {
-  font-size: clamp(25px, 2vw, 33px);
-
-  letter-spacing: -0.01em;
-
-  font-weight: 400;
-}
-
-.agenda-time {
-  text-align: right;
-}
-
 .studio {
   min-height: auto;
 
@@ -1106,41 +950,29 @@ onMounted(() => {
 
 .studio-heading {
   max-width: 1820px;
-
   margin: 0 auto 28px;
-
   color: var(--color-tema);
 }
 
 .studio-kicker {
   color: var(--color-tema);
-
   font-size: 18px;
-
   text-transform: uppercase;
-
   letter-spacing: 0.35em;
 }
 
 .hero-title {
   color: var(--color-tema);
-
   font-size: clamp(38px, 5vw, 86px);
-
   font-weight: 700;
-
   line-height: 0.96;
-
   margin: 8px 0 10px;
 }
 
 .studio-text {
   max-width: 760px;
-
   color: var(--color-tema);
-
   font-size: clamp(18px, 1.8vw, 28px);
-
   line-height: 1.1;
 }
 
@@ -1152,11 +984,11 @@ onMounted(() => {
   display: grid;
 
   grid-template-columns:
-    84px
+    clamp(46px, 6vw, 84px)
     minmax(0, 1fr)
-    300px;
+    clamp(120px, 22vw, 300px);
 
-  gap: 16px;
+  gap: clamp(8px, 1.4vw, 16px);
 
   align-items: stretch;
 }
@@ -1166,8 +998,8 @@ onMounted(() => {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  gap: 14px;
-  padding-top: 20px;
+  gap: clamp(8px, 1.3vw, 14px);
+  padding-top: clamp(8px, 1.8vw, 20px);
 }
 
 .canvas-wrap {
@@ -1196,7 +1028,7 @@ onMounted(() => {
 
   justify-content: flex-start;
 
-  gap: 12px;
+  gap: clamp(8px, 1.2vw, 12px);
 
   min-height: 100%;
   padding-top: 0;
@@ -1247,7 +1079,7 @@ onMounted(() => {
 .brush-thumb {
   width: 100%;
 
-  height: 158px;
+  height: clamp(58px, 10vw, 158px);
 
   object-fit: contain;
 
@@ -1272,14 +1104,14 @@ onMounted(() => {
 .color-list-side {
   flex-direction: column;
   justify-content: flex-start;
-  gap: 12px;
+  gap: clamp(8px, 1.2vw, 12px);
   padding-left: 0;
   padding-bottom: 0;
 }
 
 .color-dot {
-  width: 52px;
-  height: 52px;
+  width: clamp(30px, 3.8vw, 52px);
+  height: clamp(30px, 3.8vw, 52px);
 
   border-radius: 999px;
 
@@ -1301,6 +1133,8 @@ onMounted(() => {
 }
 
 .stamp-icon {
+  width: clamp(24px, 3.2vw, 44px);
+  height: clamp(24px, 3.2vw, 44px);
   color: var(--color-tema);
   stroke-width: 2.1;
 }
@@ -1328,85 +1162,21 @@ onMounted(() => {
 }
 
 @media (max-width: 1120px) {
-  .hero-main-logo {
-    top: -42px;
-    right: 28px;
-  }
-
   .hero-texture-cera {
-    left: -3%;
-    top: 28%;
+    width: clamp(660px, 70vw, 1180px);
+    left: 29%;
+    top: -15%;
+    transform: rotate(80deg);
   }
 
   .hero-texture-pixel {
-    left: 2%;
-    top: 55%;
+    width: clamp(520px, 36vw, 560px);
+    left: 15%;
+    top: 7%;
   }
 
   .hero-place {
     right: 28px;
-  }
-
-  .hero-agenda {
-    width: 100%;
-
-    min-height: auto;
-
-    padding: 20px 16px 24px;
-  }
-
-  .agenda-grid {
-    grid-template-columns:
-      minmax(0, 104px)
-      minmax(0, 1fr)
-      minmax(0, 70px);
-
-    gap: 10px;
-  }
-
-  .agenda-grid-head {
-    font-size: clamp(24px, 6.1vw, 32px);
-  }
-
-  .hero-agenda-artistas .agenda-grid {
-    grid-template-columns:
-      minmax(0, 104px)
-      minmax(0, 1fr);
-  }
-
-  .agenda-row {
-    font-size: clamp(20px, 5.4vw, 30px);
-  }
-
-  .agenda-row p:nth-child(2),
-  .agenda-time {
-    font-size: clamp(16px, 4.3vw, 22px);
-  }
-
-  .workbench {
-    grid-template-columns: 1fr;
-  }
-
-  .tools-panel {
-    gap: 16px;
-    padding-top: 0;
-  }
-
-  .actions-side {
-    order: 3;
-    flex-direction: row;
-    justify-content: center;
-    padding-bottom: 0;
-    padding-top: 0;
-  }
-
-  .brush-list {
-    display: grid;
-
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
-
-    gap: 10px;
   }
 
 }
@@ -1419,12 +1189,10 @@ onMounted(() => {
     padding: 28px 18px;
   }
 
-  .hero-info {
-    font-size: clamp(13px, 3.2vw, 18px);
-  }
-
-  .hero-main-logo {
-    width: min(68vw, 390px);
+  .hero-sub-logo {
+    left: 14px;
+    top: -6px;
+    width: min(74vw, 500px);
   }
 
   .hero-date {
@@ -1437,34 +1205,6 @@ onMounted(() => {
 }
 
 @media (max-width: 700px) {
-  .hero-agenda {
-    padding: 18px 14px 22px;
-  }
-
-  .agenda-grid {
-    grid-template-columns: 82px 1fr 52px;
-    gap: 8px;
-  }
-
-  .hero-agenda-artistas .agenda-grid {
-    grid-template-columns: 82px 1fr;
-  }
-
-  .agenda-grid-head {
-    font-size: 22px;
-  }
-
-  .agenda-row {
-    padding: 8px 0;
-    font-size: 18px;
-  }
-
-  .agenda-row p:nth-child(2),
-  .agenda-time {
-    font-size: 15px;
-    line-height: 1.1;
-  }
-
   .studio {
     padding: 48px 14px 72px;
   }
@@ -1482,37 +1222,6 @@ onMounted(() => {
     aspect-ratio: 17 / 11;
   }
 
-  .brush-list {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  .brush-thumb {
-    height: 72px;
-  }
-
-  .color-list {
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  .color-dot {
-    width: 40px;
-    height: 40px;
-  }
-
-  .actions-side {
-    gap: 14px;
-  }
-
-  .color-list-side {
-    flex-direction: row;
-    gap: 10px;
-  }
-
-  .stamp-icon {
-    width: 34px;
-    height: 34px;
-  }
 }
 
 @media (orientation: portrait) and (max-width: 430px) {
@@ -1522,30 +1231,23 @@ onMounted(() => {
     padding: 18px 10px;
   }
 
-  .hero-info {
-    left: 8px;
-    top: 48px;
-    font-size: 12px;
-    line-height: 0.95;
-  }
-
-  .hero-main-logo {
-    top: 34px;
-    right: 8px;
-    width: min(66vw, 290px);
+  .hero-sub-logo {
+    left: 6px;
+    top: -14px;
+    width: min(86vw, 370px);
   }
 
   .hero-texture-cera {
-    width: 112vw;
-    left: -14%;
-    top: 24%;
+    width: 98vw;
+    left: 50%;
+    top: 18%;
     transform: rotate(96deg);
   }
 
   .hero-texture-pixel {
-    width: 62vw;
-    left: -2%;
-    top: 56%;
+    width: 52vw;
+    left: 6%;
+    top: 50%;
   }
 
   .hero-date {
@@ -1569,33 +1271,6 @@ onMounted(() => {
     line-height: 0.92;
   }
 
-  .hero-agenda {
-    padding: 14px 10px 16px;
-  }
-
-  .agenda-grid {
-    grid-template-columns: 74px 1fr 48px;
-    gap: 6px;
-  }
-
-  .hero-agenda-artistas .agenda-grid {
-    grid-template-columns: 74px 1fr;
-  }
-
-  .agenda-grid-head {
-    font-size: 14px;
-  }
-
-  .agenda-row {
-    padding: 6px 0;
-    font-size: 13px;
-  }
-
-  .agenda-row p:nth-child(2),
-  .agenda-time {
-    font-size: 10px;
-    line-height: 1.12;
-  }
 }
 
 </style>
