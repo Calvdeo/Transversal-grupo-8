@@ -240,7 +240,7 @@ onMounted(() => {
 
 .contacto-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(420px, 1fr);
+  grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
   gap: clamp(2.5rem, 6vw, 6rem);
   align-items: start;
 }
@@ -280,9 +280,8 @@ onMounted(() => {
   gap: 1.5rem;
   margin-top: clamp(10rem, 18vw, 120rem);
   padding-top: 0;
-  width: min(100%, 44rem);
+  width: min(100%, 36rem);
   margin-left: auto;
-  margin-right: clamp(-1rem, -2vw, -2.5rem);
   justify-self: end;
   align-self: start;
 }
@@ -413,7 +412,6 @@ onMounted(() => {
   .contacto-form {
     margin-top: 2rem;
     width: 100%;
-    margin-right: 0;
   }
 
   .contacto-form-grid {

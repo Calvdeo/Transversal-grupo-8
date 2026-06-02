@@ -1,11 +1,215 @@
 ﻿<script setup lang="ts">
-import mapaFestival from '@/assets/mapa/mapa1.jpg'
+import { ref, computed, onMounted } from 'vue'
+
+import mapaNivel1 from '@/assets/mapa/mapa-nivel-1.jpg'
+import mapaNivel2 from '@/assets/mapa/mapa-nivel-2.jpg'
+import texturaCeraGrande from '@/assets/texturas/ceraazul.png'
+import texturaPixelGrande from '@/assets/texturas/pixelazul.png'
+import texturaCeraNaranja from '@/assets/texturas/ceranaranja.png'
+import texturaCeraRosa from '@/assets/texturas/cerarosa.png'
+import texturaCeraVerde from '@/assets/texturas/ceraverde.png'
+import texturaPixelNaranja from '@/assets/texturas/pixelnaranja.png'
+import texturaPixelRosa from '@/assets/texturas/pixelrosa.png'
+import texturaPixelVerde from '@/assets/texturas/pixelverde.png'
+
+type Zona = {
+  id: number
+  nombre: string
+  nivel: 1 | 2
+  actividades: string[]
+}
+
+const CLAVE_INDICE_TEMA = 'esclat-theme-index'
+const archivosMapa = import.meta.glob(
+  '../../assets/mapa/*.{jpg,jpeg,png,webp}',
+  { eager: true, import: 'default' }
+) as Record<string, string>
+
+const zonaActiva = ref<number | null>(null)
+const mapaNivel1Actual = ref(mapaNivel1)
+const mapaNivel2Actual = ref(mapaNivel2)
+const texturaCeraActual = ref(texturaCeraGrande)
+const texturaPixelActual = ref(texturaPixelGrande)
+
+const zonas: Zona[] = [
+  {
+    id: 1,
+    nombre: 'La Polivalent',
+    nivel: 1,
+    actividades: [
+      '"Madre" - Rodrigo Sorogoyen',
+      '"Zona Wao" - Nagore Eceiza Mujika',
+      '"Utopias y otras especies" - Julia Izaguirre',
+      '"Me" - Don Hertzfeldt',
+      '"No als poalets" - Laura Garcia Andreu',
+      '"Uli" - Mariana Gil'
+    ]
+  },
+  {
+    id: 2,
+    nombre: 'Hall La Polivalent',
+    nivel: 2,
+    actividades: [
+      'Acceso a "Madre" - Rodrigo Sorogoyen',
+      'Circulacion a "Zona Wao" - Nagore Eceiza Mujika',
+      'Punto de encuentro previo a "Uli" - Mariana Gil'
+    ]
+  },
+  {
+    id: 3,
+    nombre: 'Factoría',
+    nivel: 2,
+    actividades: [
+      'Cadaver exquisito',
+      'Escritura creativa',
+      'Improvisacion teatral',
+      'Clase de produccion musical',
+      'Piel de platano - Miss Beige',
+      'La performance - TER'
+    ]
+  },
+  {
+    id: 4,
+    nombre: 'Visual Room',
+    nivel: 2,
+    actividades: [
+      'Taller de cianotipia',
+      'Taller de fanzines'
+    ]
+  },
+  {
+    id: 5,
+    nombre: 'Sala de Exposiciones',
+    nivel: 1,
+    actividades: [
+      'Manipulamos o nos manipulan - Diego Alvarez',
+      '¿Esta todo inventado? - PutoMikel',
+      'Espanul - Lamine Thior',
+      'Qué nos dice la música - Jaime Altozano'
+    ]
+  },
+  {
+    id: 6,
+    nombre: 'Patio 1',
+    nivel: 1,
+    actividades: [
+      'CORTE! / Escandaloso Xposito / La Paloma / Shego',
+      'La Fumiga / Aiko el grupo / Ariel Pink / Mala gestión',
+      'Los Punsetes / Las Petunias / Amor Liquido / zoo'
+    ]
+  },
+  {
+    id: 7,
+    nombre: 'Patio 2',
+    nivel: 1,
+    actividades: [
+      'Valeria Castro / Figa Flawas',
+      'El Kanka / Belen Aguilera',
+      'Silvana Estrada / Oques Grasses'
+    ]
+  }
+]
+
+const zonaSeleccionada = computed(() => {
+  return zonas.find((zona) => zona.id === zonaActiva.value)
+})
+
+function obtenerIndiceTemaGuardado() {
+  let indiceTema = 0
+
+  try {
+    const guardado = window.localStorage.getItem(CLAVE_INDICE_TEMA)
+
+    if (guardado !== null) {
+      const numero = Number.parseInt(guardado, 10)
+
+      if (Number.isFinite(numero)) {
+        indiceTema = ((numero % 4) + 4) % 4
+      }
+    }
+  } catch {
+    indiceTema = 0
+  }
+
+  return indiceTema
+}
+
+function buscarMapaTematico(
+  nivel: 1 | 2,
+  palabrasClave: string[],
+  fallback: string
+) {
+  const coincidencia = Object.entries(archivosMapa).find(([ruta]) => {
+    const rutaNormalizada = ruta.toLowerCase()
+    const coincideNivel =
+      rutaNormalizada.includes(`nivel-${nivel}`) ||
+      rutaNormalizada.includes(`nivel${nivel}`) ||
+      rutaNormalizada.includes(`nave-${nivel}`) ||
+      rutaNormalizada.includes(`nave${nivel}`)
+
+    const coincideColor = palabrasClave.some((palabra) =>
+      rutaNormalizada.includes(palabra)
+    )
+
+    return coincideNivel && coincideColor
+  })
+
+  return coincidencia?.[1] ?? fallback
+}
+
+onMounted(() => {
+  const indiceTema = obtenerIndiceTemaGuardado()
+  const palabrasTema =
+    [
+      ['azul', 'blue'],
+      ['naranja', 'orange'],
+      ['rosa', 'pink', 'fucsia', 'magenta'],
+      ['verde', 'green']
+    ][indiceTema] ?? ['azul', 'blue']
+
+  const texturasTema =
+    [
+      {
+        cera: texturaCeraGrande,
+        pixel: texturaPixelGrande
+      },
+      {
+        cera: texturaCeraNaranja,
+        pixel: texturaPixelNaranja
+      },
+      {
+        cera: texturaCeraRosa,
+        pixel: texturaPixelRosa
+      },
+      {
+        cera: texturaCeraVerde,
+        pixel: texturaPixelVerde
+      }
+    ][indiceTema] ?? {
+      cera: texturaCeraGrande,
+      pixel: texturaPixelGrande
+    }
+
+  mapaNivel1Actual.value = buscarMapaTematico(1, palabrasTema, mapaNivel1)
+  mapaNivel2Actual.value = buscarMapaTematico(2, palabrasTema, mapaNivel2)
+  texturaCeraActual.value = texturasTema.cera
+  texturaPixelActual.value = texturasTema.pixel
+})
 </script>
 
 <template>
   <main class="info-page">
     <section class="info-intro">
-      <h1>Qué es esclat</h1>
+      <div
+        class="info-texturas"
+        :class="{ 'is-hovered': zonaActiva !== null }"
+        aria-hidden="true"
+      >
+        <img :src="texturaCeraActual" alt="" class="info-textura info-textura-cera">
+        <img :src="texturaPixelActual" alt="" class="info-textura info-textura-pixel">
+      </div>
+
+      <h1>¿Qué es esclat?</h1>
 
       <div class="info-columnas">
         <p>
@@ -27,20 +231,70 @@ import mapaFestival from '@/assets/mapa/mapa1.jpg'
       <h2>Mapa del festival</h2>
 
       <div class="mapa-wrapper">
-        <img
-          :src="mapaFestival"
-          alt="Mapa de espacios de ESCLAT"
-          class="mapa-imagen"
-        >
+        <div class="mapa-main">
+          <div class="mapas">
+            <article class="mapa-bloque">
+              <img
+                :src="mapaNivel2Actual"
+                alt="Mapa nivel 2"
+                class="mapa-imagen"
+              >
+            </article>
 
-        <div class="mapa-leyenda">
-          <div><span>1</span> La Polivalent</div>
-          <div><span>2</span> Factoria</div>
-          <div><span>3</span> Visual Room</div>
-          <div><span>4</span> Sala de Exposiciones</div>
-          <div><span>5</span> Patio 1</div>
-          <div><span>6</span> Patio 2</div>
+            <article class="mapa-bloque">
+              <img
+                :src="mapaNivel1Actual"
+                alt="Mapa nivel 1"
+                class="mapa-imagen"
+              >
+            </article>
+          </div>
+
+          <div
+            v-if="zonaSeleccionada"
+            class="zona-info"
+          >
+            <p class="zona-info-kicker">
+              Nivel {{ zonaSeleccionada.nivel }}
+            </p>
+
+            <h3>
+              {{ zonaSeleccionada.nombre }}
+            </h3>
+
+            <ul>
+              <li
+                v-for="actividad in zonaSeleccionada.actividades"
+                :key="actividad"
+              >
+                {{ actividad }}
+              </li>
+            </ul>
+          </div>
+
+          <div
+            v-else
+            class="zona-info zona-info-vacia"
+          >
+            <p>Pasa el ratón por una zona numerada para ver qué ocurre ahí.</p>
+          </div>
         </div>
+
+        <aside class="mapa-panel">
+          <div class="mapa-leyenda">
+            <button
+              v-for="zona in zonas"
+              :key="zona.id"
+              class="leyenda-item"
+              :class="zonaActiva === zona.id ? 'is-active' : ''"
+              @mouseenter="zonaActiva = zona.id"
+              @mouseleave="zonaActiva = null"
+            >
+              <span>{{ String(zona.id).padStart(2, '0') }}</span>
+              {{ zona.nombre }}
+            </button>
+          </div>
+        </aside>
       </div>
     </section>
   </main>
@@ -50,24 +304,70 @@ import mapaFestival from '@/assets/mapa/mapa1.jpg'
 .info-page {
   min-height: 100vh;
   background: #ffffff;
-  color: #0040f2;
+  color: var(--esclat-theme-color, #0040f2);
   font-family: "Alte Haas Grotesk", "Helvetica Neue", Arial, sans-serif;
 }
 
 .info-intro {
+  position: relative;
   width: min(100%, 1180px);
-  margin: 0 auto;
+  margin: 0;
   padding: 8rem 1.5rem 4rem;
+}
+
+.info-texturas {
+  position: absolute;
+  top: clamp(0.5rem, 2vw, 1.5rem);
+  right: clamp(-16rem, -12vw, -8rem);
+  width: clamp(440px, 52vw, 760px);
+  height: clamp(280px, 36vw, 560px);
+  pointer-events: none;
+}
+
+.info-textura {
+  position: absolute;
+  display: block;
+  height: auto;
+  transition:
+    transform 220ms ease,
+    opacity 220ms ease,
+    filter 220ms ease;
+}
+
+.info-textura-cera {
+  top: 0;
+  right: 0;
+  width: clamp(290px, 34vw, 520px);
+  opacity: 0.96;
+}
+
+.info-textura-pixel {
+  right: clamp(4rem, 11vw, 11rem);
+  bottom: clamp(0.5rem, 2vw, 1.5rem);
+  width: clamp(230px, 28vw, 390px);
+  opacity: 0.82;
+  transform: rotate(-8deg);
+}
+
+.info-texturas.is-hovered .info-textura-cera {
+  opacity: 0.72;
+  transform: translate3d(-18px, 8px, 0) rotate(8deg) scale(0.96);
+}
+
+.info-texturas.is-hovered .info-textura-pixel {
+  opacity: 1;
+  transform: translate3d(16px, -10px, 0) rotate(6deg) scale(1.08);
+  filter: saturate(1.08);
 }
 
 .info-intro h1 {
   margin: 0 0 2rem;
-  color: #0040f2;
+  color: var(--esclat-theme-color, #0040f2);
   font-size: clamp(3.4rem, 9vw, 8rem);
   line-height: 0.9;
   font-weight: 700;
   letter-spacing: -0.02em;
-  text-decoration: none;
+  text-align: left;
 }
 
 .info-columnas {
@@ -78,13 +378,13 @@ import mapaFestival from '@/assets/mapa/mapa1.jpg'
 
 .info-columnas p {
   margin: 0;
-  color: #0040f2;
+  color: var(--esclat-theme-color, #0040f2);
   font-size: clamp(1.5rem, 2.7vw, 2.6rem);
   line-height: 1.12;
-  text-decoration: none;
 }
 
 .info-mapa {
+  position: relative;
   width: 100%;
   padding: 2rem 0 8rem;
 }
@@ -94,7 +394,7 @@ import mapaFestival from '@/assets/mapa/mapa1.jpg'
   margin: 0 0 2rem;
   padding: 0 1.5rem;
   text-align: left;
-  color: #0040f2;
+  color: var(--esclat-theme-color, #0040f2);
   font-size: clamp(3rem, 8vw, 8rem);
   line-height: 0.85;
   font-weight: 700;
@@ -102,53 +402,165 @@ import mapaFestival from '@/assets/mapa/mapa1.jpg'
 
 .mapa-wrapper {
   display: grid;
-  grid-template-columns: minmax(0, 820px) 280px;
-  gap: 48px;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: clamp(32px, 4vw, 72px);
   align-items: start;
-  width: min(100%, 1180px);
+  width: min(100%, 1440px);
   margin: 0 auto;
   padding: 0 1.5rem;
-  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.mapa-main {
+  display: grid;
+  gap: 2.5rem;
+  align-content: start;
+}
+
+.mapas {
+  display: grid;
+  grid-template-columns: minmax(0, 430px) minmax(0, 560px);
+  gap: clamp(24px, 3vw, 48px);
+  align-items: start;
+  justify-content: start;
+  padding: 0 clamp(12px, 2vw, 28px) 0 0;
+}
+
+.mapa-bloque:first-child {
+  width: 100%;
+}
+
+.mapa-bloque:nth-child(2) {
+  width: 100%;
+}
+
+.mapa-bloque {
+  position: relative;
+  max-width: none;
 }
 
 .mapa-imagen {
   width: 100%;
-  max-width: 820px;
   display: block;
+  height: auto;
+  object-fit: contain;
+}
+
+.mapa-panel {
+  position: sticky;
+  top: 130px;
+  display: grid;
+  gap: 32px;
 }
 
 .mapa-leyenda {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  padding-top: 2rem;
-  color: #0040f2;
-  font-size: 22px;
-  font-weight: 500;
-}
-
-.mapa-leyenda div {
-  display: flex;
-  align-items: center;
   gap: 12px;
 }
 
-.mapa-leyenda span {
+.leyenda-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border: none;
+  background: transparent;
+  color: var(--esclat-theme-color, #0040f2);
+  padding: 0;
+  text-align: left;
+  font-size: clamp(1.6rem, 2.4vw, 2.7rem);
+  line-height: 1;
+  font-weight: 700;
+  cursor: pointer;
+  opacity: 0.82;
+  transition:
+    transform 0.16s ease,
+    color 0.16s ease,
+    opacity 0.16s ease;
+}
+
+.leyenda-item span {
   width: 34px;
   height: 34px;
   border-radius: 999px;
-  background: #0040f2;
-  color: #ffffff;
-  display: flex;
+  border: 2px solid var(--esclat-theme-color, #0040f2);
+  background: #ffffff;
+  color: var(--esclat-theme-color, #0040f2);
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
+  flex: 0 0 auto;
+  font-size: 0.95rem;
   font-weight: 700;
+  transition:
+    background-color 0.16s ease,
+    box-shadow 0.16s ease,
+    transform 0.16s ease;
+}
+
+.leyenda-item:hover,
+.leyenda-item.is-active {
+  color: var(--esclat-theme-color, #0040f2);
+  opacity: 1;
+  transform: translateX(8px);
+}
+
+.leyenda-item:hover span,
+.leyenda-item.is-active span {
+  background: var(--esclat-theme-color, #0040f2);
+  color: #ffffff;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--esclat-theme-color, #0040f2) 18%, white);
+  transform: scale(1.05);
+}
+
+.leyenda-item.is-active {
+  font-weight: 800;
+}
+
+.zona-info {
+  border-top: 2px solid var(--esclat-theme-color, #0040f2);
+  padding-top: 18px;
+  color: var(--esclat-theme-color, #0040f2);
+}
+
+.zona-info-kicker {
+  margin: 0 0 6px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+}
+
+.zona-info h3 {
+  margin: 0 0 18px;
+  font-size: clamp(2rem, 4vw, 4rem);
+  line-height: 0.9;
+  font-weight: 700;
+}
+
+.zona-info ul {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.zona-info li {
+  padding-bottom: 8px;
+  border-bottom: 1px solid currentColor;
+  font-size: 1.05rem;
+}
+
+.zona-info-vacia p {
+  margin: 0;
+  font-size: 1.1rem;
 }
 
 @media (max-width: 900px) {
   .info-intro {
     padding-top: 7rem;
+    padding-right: 1.5rem;
   }
 
   .info-columnas {
@@ -156,13 +568,53 @@ import mapaFestival from '@/assets/mapa/mapa1.jpg'
     gap: 16px;
   }
 
-  .mapa-wrapper {
-    grid-template-columns: 1fr;
-    padding-right: 0;
+  .info-texturas {
+    position: relative;
+    top: auto;
+    right: auto;
+    width: clamp(220px, 62vw, 340px);
+    height: clamp(150px, 40vw, 260px);
+    margin: 0 0 1.5rem auto;
   }
 
-  .mapa-leyenda {
-    padding: 0 1.5rem;
+  .info-textura-cera {
+    width: clamp(150px, 42vw, 240px);
+  }
+
+  .info-textura-pixel {
+    right: clamp(1.5rem, 10vw, 4rem);
+    width: clamp(120px, 34vw, 190px);
+  }
+
+  .mapa-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .mapa-main {
+    gap: 2rem;
+  }
+
+  .mapas {
+    display: grid;
+    min-height: auto;
+    gap: 24px;
+    padding: 0;
+  }
+
+  .mapa-bloque {
+    position: relative;
+    width: 100%;
+  }
+
+  .mapa-bloque:first-child,
+  .mapa-bloque:nth-child(2) {
+    top: auto;
+    left: auto;
+    width: 100%;
+  }
+
+  .mapa-panel {
+    position: static;
   }
 }
 </style>
