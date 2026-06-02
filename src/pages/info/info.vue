@@ -16,8 +16,19 @@ type Zona = {
   id: number
   nombre: string
   nivel: 1 | 2
-  actividades: string[]
+  color: string
+  actividades: ActividadInfo[]
 }
+
+type ActividadInfo = {
+  titulo: string
+  color: string
+}
+
+const COLOR_MUSICA = '#0040f2'
+const COLOR_TALLER = '#ff3f9e'
+const COLOR_CHARLA = '#1f9f47'
+const COLOR_CORTO = '#ff7a00'
 
 const CLAVE_INDICE_TEMA = 'esclat-theme-index'
 const archivosMapa = import.meta.glob(
@@ -26,6 +37,7 @@ const archivosMapa = import.meta.glob(
 ) as Record<string, string>
 
 const zonaActiva = ref<number | null>(null)
+const zonaFijada = ref<number | null>(null)
 const mapaNivel1Actual = ref(mapaNivel1)
 const mapaNivel2Actual = ref(mapaNivel2)
 const texturaCeraActual = ref(texturaCeraGrande)
@@ -36,83 +48,98 @@ const zonas: Zona[] = [
     id: 1,
     nombre: 'La Polivalent',
     nivel: 1,
+    color: COLOR_CORTO,
     actividades: [
-      '"Madre" - Rodrigo Sorogoyen',
-      '"Zona Wao" - Nagore Eceiza Mujika',
-      '"Utopias y otras especies" - Julia Izaguirre',
-      '"Me" - Don Hertzfeldt',
-      '"No als poalets" - Laura Garcia Andreu',
-      '"Uli" - Mariana Gil'
+      { titulo: '"Madre" - Rodrigo Sorogoyen', color: COLOR_CORTO },
+      { titulo: '"Zona Wao" - Nagore Eceiza Mujika', color: COLOR_CORTO },
+      { titulo: '"Utopias y otras especies" - Julia Izaguirre', color: COLOR_CORTO },
+      { titulo: '"Me" - Don Hertzfeldt', color: COLOR_CORTO },
+      { titulo: '"No als poalets" - Laura Garcia Andreu', color: COLOR_CORTO },
+      { titulo: '"Uli" - Mariana Gil', color: COLOR_CORTO }
     ]
   },
-  {
-    id: 2,
-    nombre: 'Hall La Polivalent',
-    nivel: 2,
-    actividades: [
-      'Acceso a "Madre" - Rodrigo Sorogoyen',
-      'Circulacion a "Zona Wao" - Nagore Eceiza Mujika',
-      'Punto de encuentro previo a "Uli" - Mariana Gil'
-    ]
-  },
+ 
   {
     id: 3,
     nombre: 'Factoría',
     nivel: 2,
+    color: COLOR_TALLER,
     actividades: [
-      'Cadaver exquisito',
-      'Escritura creativa',
-      'Improvisacion teatral',
-      'Clase de produccion musical',
-      'Piel de platano - Miss Beige',
-      'La performance - TER'
+      { titulo: 'Cadaver exquisito', color: COLOR_TALLER },
+      { titulo: 'Escritura creativa', color: COLOR_TALLER },
+      { titulo: 'Improvisacion teatral', color: COLOR_TALLER },
+      { titulo: 'Clase de produccion musical', color: COLOR_TALLER },
+      { titulo: 'Piel de platano - Miss Beige', color: COLOR_CHARLA },
+      { titulo: 'La performance - TER', color: COLOR_CHARLA }
     ]
   },
   {
     id: 4,
     nombre: 'Visual Room',
     nivel: 2,
+    color: COLOR_TALLER,
     actividades: [
-      'Taller de cianotipia',
-      'Taller de fanzines'
+      { titulo: 'Taller de cianotipia', color: COLOR_TALLER },
+      { titulo: 'Taller de fanzines', color: COLOR_TALLER }
     ]
   },
   {
     id: 5,
     nombre: 'Sala de Exposiciones',
     nivel: 1,
+    color: COLOR_CHARLA,
     actividades: [
-      'Manipulamos o nos manipulan - Diego Alvarez',
-      '¿Esta todo inventado? - PutoMikel',
-      'Espanul - Lamine Thior',
-      'Qué nos dice la música - Jaime Altozano'
+      { titulo: 'Manipulamos o nos manipulan - Diego Alvarez', color: COLOR_CHARLA },
+      { titulo: '¿Esta todo inventado? - PutoMikel', color: COLOR_CHARLA },
+      { titulo: 'Espanul - Lamine Thior', color: COLOR_CHARLA },
+      { titulo: 'Qué nos dice la música - Jaime Altozano', color: COLOR_CHARLA }
     ]
   },
   {
     id: 6,
     nombre: 'Patio 1',
     nivel: 1,
+    color: COLOR_MUSICA,
     actividades: [
-      'CORTE! / Escandaloso Xposito / La Paloma / Shego',
-      'La Fumiga / Aiko el grupo / Ariel Pink / Mala gestión',
-      'Los Punsetes / Las Petunias / Amor Liquido / zoo'
+      { titulo: 'CORTE! / Escandaloso Xposito / La Paloma / Shego', color: COLOR_MUSICA },
+      { titulo: 'La Fumiga / Aiko el grupo / Ariel Pink / Mala gestión', color: COLOR_MUSICA },
+      { titulo: 'Los Punsetes / Las Petunias / Amor Liquido / zoo', color: COLOR_MUSICA }
     ]
   },
   {
     id: 7,
     nombre: 'Patio 2',
     nivel: 1,
+    color: COLOR_MUSICA,
     actividades: [
-      'Valeria Castro / Figa Flawas',
-      'El Kanka / Belen Aguilera',
-      'Silvana Estrada / Oques Grasses'
+      { titulo: 'Valeria Castro / Figa Flawas', color: COLOR_MUSICA },
+      { titulo: 'El Kanka / Belen Aguilera', color: COLOR_MUSICA },
+      { titulo: 'Silvana Estrada / Oques Grasses', color: COLOR_MUSICA }
     ]
   }
 ]
 
-const zonaSeleccionada = computed(() => {
-  return zonas.find((zona) => zona.id === zonaActiva.value)
+const zonasVisibles = computed(() => {
+  return zonas.filter((zona) => zona.nombre !== 'Hall La Polivalent')
 })
+
+const zonaMostradaId = computed(() => {
+  return zonaActiva.value ?? zonaFijada.value
+})
+
+const zonaSeleccionada = computed(() => {
+  return zonasVisibles.value.find(
+    (zona) => zona.id === zonaMostradaId.value
+  )
+})
+
+const colorZonaSeleccionada = computed(() => {
+  return zonaSeleccionada.value?.color ?? 'var(--esclat-theme-color, #0040f2)'
+})
+
+function alternarZonaFijada(id: number) {
+  zonaFijada.value = zonaFijada.value === id ? null : id
+}
 
 function obtenerIndiceTemaGuardado() {
   let indiceTema = 0
@@ -253,6 +280,7 @@ onMounted(() => {
           <div
             v-if="zonaSeleccionada"
             class="zona-info"
+            :style="{ '--zona-color': colorZonaSeleccionada }"
           >
             <p class="zona-info-kicker">
               Nivel {{ zonaSeleccionada.nivel }}
@@ -265,9 +293,10 @@ onMounted(() => {
             <ul>
               <li
                 v-for="actividad in zonaSeleccionada.actividades"
-                :key="actividad"
+                :key="actividad.titulo"
+                :style="{ '--actividad-color': actividad.color }"
               >
-                {{ actividad }}
+                {{ actividad.titulo }}
               </li>
             </ul>
           </div>
@@ -283,14 +312,16 @@ onMounted(() => {
         <aside class="mapa-panel">
           <div class="mapa-leyenda">
             <button
-              v-for="zona in zonas"
+              v-for="(zona, indiceVisible) in zonasVisibles"
               :key="zona.id"
               class="leyenda-item"
-              :class="zonaActiva === zona.id ? 'is-active' : ''"
+              :class="zonaMostradaId === zona.id ? 'is-active' : ''"
+              :style="{ '--zona-color': zona.color }"
               @mouseenter="zonaActiva = zona.id"
               @mouseleave="zonaActiva = null"
+              @click="alternarZonaFijada(zona.id)"
             >
-              <span>{{ String(zona.id).padStart(2, '0') }}</span>
+              <span>{{ String(indiceVisible + 1).padStart(2, '0') }}</span>
               {{ zona.nombre }}
             </button>
           </div>
@@ -318,10 +349,12 @@ onMounted(() => {
 .info-texturas {
   position: absolute;
   top: clamp(0.5rem, 2vw, 1.5rem);
-  right: clamp(-16rem, -12vw, -8rem);
-  width: clamp(440px, 52vw, 760px);
-  height: clamp(280px, 36vw, 560px);
+  right: clamp(-52rem, -36vw, -30rem);
+  width: clamp(560px, 62vw, 920px);
+  height: clamp(340px, 44vw, 680px);
   pointer-events: none;
+  transform: rotate(50deg);
+  transform-origin: center;
 }
 
 .info-textura {
@@ -337,14 +370,14 @@ onMounted(() => {
 .info-textura-cera {
   top: 0;
   right: 0;
-  width: clamp(290px, 34vw, 520px);
+  width: clamp(340px, 40vw, 620px);
   opacity: 0.96;
 }
 
 .info-textura-pixel {
   right: clamp(4rem, 11vw, 11rem);
   bottom: clamp(0.5rem, 2vw, 1.5rem);
-  width: clamp(230px, 28vw, 390px);
+  width: clamp(280px, 32vw, 460px);
   opacity: 0.82;
   transform: rotate(-8deg);
 }
@@ -501,16 +534,17 @@ onMounted(() => {
 
 .leyenda-item:hover,
 .leyenda-item.is-active {
-  color: var(--esclat-theme-color, #0040f2);
+  color: var(--zona-color, var(--esclat-theme-color, #0040f2));
   opacity: 1;
   transform: translateX(8px);
 }
 
 .leyenda-item:hover span,
 .leyenda-item.is-active span {
-  background: var(--esclat-theme-color, #0040f2);
+  border-color: var(--zona-color, var(--esclat-theme-color, #0040f2));
+  background: var(--zona-color, var(--esclat-theme-color, #0040f2));
   color: #ffffff;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--esclat-theme-color, #0040f2) 18%, white);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--zona-color, var(--esclat-theme-color, #0040f2)) 18%, white);
   transform: scale(1.05);
 }
 
@@ -519,9 +553,9 @@ onMounted(() => {
 }
 
 .zona-info {
-  border-top: 2px solid var(--esclat-theme-color, #0040f2);
+  border-top: 2px solid var(--zona-color, var(--esclat-theme-color, #0040f2));
   padding-top: 18px;
-  color: var(--esclat-theme-color, #0040f2);
+  color: var(--zona-color, var(--esclat-theme-color, #0040f2));
 }
 
 .zona-info-kicker {
@@ -548,7 +582,8 @@ onMounted(() => {
 
 .zona-info li {
   padding-bottom: 8px;
-  border-bottom: 1px solid currentColor;
+  color: var(--actividad-color, currentColor);
+  border-bottom: 1px solid var(--actividad-color, currentColor);
   font-size: 1.05rem;
 }
 

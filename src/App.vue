@@ -13,8 +13,7 @@ const COLORES_TEMA = [
 const CLAVE_INDICE_TEMA = 'esclat-theme-index'
 const COLOR_POR_RUTA: Record<string, string> = {
   '/artistas': '#0040f2',
-  '/programa': '#0040f2',
-  '/preguntas-frecuentes': '#0040f2'
+  '/programa': '#0040f2'
 }
 
 const route = useRoute()
