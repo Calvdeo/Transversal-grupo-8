@@ -327,6 +327,7 @@ onMounted(() => {
           </div>
         </aside>
       </div>
+
     </section>
   </main>
 </template>
@@ -651,5 +652,6 @@ onMounted(() => {
   .mapa-panel {
     position: static;
   }
+
 }
 </style>

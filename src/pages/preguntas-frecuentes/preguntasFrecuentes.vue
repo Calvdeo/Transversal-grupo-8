@@ -194,7 +194,7 @@ onMounted(() => {
       </div>
 
       <header class="faq-header">
-        <p class="faq-kicker">ESCLAT 2026</p>
+       
         <h1>Preguntas frecuentes</h1>
       </header>
 
@@ -217,17 +217,33 @@ onMounted(() => {
             </span>
           </button>
 
-          <div v-if="preguntaAbierta === item.id" class="faq-answer">
-            <p>
-              {{ item.respuesta }}
-              <RouterLink
-                v-if="item.enlaceTexto && item.enlaceRuta"
-                :to="item.enlaceRuta"
-                class="faq-link"
-              >
-                {{ item.enlaceTexto }}
-              </RouterLink>
-            </p>
+          <div
+            v-if="preguntaAbierta === item.id"
+            class="faq-answer"
+            :class="{ 'has-map': item.id === 1 }"
+          >
+            <div class="faq-answer-copy">
+              <p>
+                {{ item.respuesta }}
+                <RouterLink
+                  v-if="item.enlaceTexto && item.enlaceRuta"
+                  :to="item.enlaceRuta"
+                  class="faq-link"
+                >
+                  {{ item.enlaceTexto }}
+                </RouterLink>
+              </p>
+            </div>
+
+            <div v-if="item.id === 1" class="faq-map-frame">
+              <iframe
+                src="https://www.google.com/maps?q=Las+Naves,+Carrer+de+Joan+Verdeguer,+16-24,+46024+Val%C3%A8ncia&z=16&output=embed"
+                title="Google Maps de Las Naves de Valencia"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                allowfullscreen
+              />
+            </div>
           </div>
         </article>
       </section>
@@ -341,11 +357,42 @@ onMounted(() => {
   padding: 0 72px 28px 0;
 }
 
+.faq-answer.has-map {
+  max-width: none;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 320px);
+  gap: 28px;
+  align-items: start;
+  padding-right: 0;
+}
+
+.faq-answer-copy {
+  min-width: 0;
+}
+
 .faq-answer p {
   margin: 0;
   color: color-mix(in srgb, var(--esclat-theme-color, #0040f2) 74%, white);
   font-size: clamp(1rem, 1.45vw, 1.35rem);
   line-height: 1.7;
+}
+
+.faq-map-frame {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 320px);
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 18px;
+  justify-self: end;
+  box-shadow: 0 18px 45px color-mix(in srgb, var(--esclat-theme-color, #0040f2) 16%, transparent);
+}
+
+.faq-map-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
 }
 
 .faq-link {
@@ -395,6 +442,16 @@ onMounted(() => {
 
   .faq-answer {
     padding: 0 0 24px;
+  }
+
+  .faq-answer.has-map {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .faq-map-frame {
+    width: min(100%, 280px);
+    justify-self: start;
   }
 }
 </style>
