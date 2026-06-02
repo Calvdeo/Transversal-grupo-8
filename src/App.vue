@@ -95,7 +95,7 @@ watch(
 <template>
   <MainMenu />
 
-  <main class="pt-24">
+  <main>
     <RouterView />
   </main>
 

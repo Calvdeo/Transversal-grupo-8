@@ -490,7 +490,7 @@ const texturaActiva = computed(() => {
 .programa-page {
   --ui-color: #0040f2;
   min-height: 100vh;
-  padding: 140px 32px 90px;
+  padding: 236px 32px 90px;
   background: #f7f7f4;
   color: var(--ui-color);
   font-family: "Alte Haas Grotesk", "Helvetica Neue", Arial, sans-serif;
@@ -707,6 +707,7 @@ const texturaActiva = computed(() => {
 
 @media (max-width: 900px) {
   .programa-page {
+    padding-top: 188px;
     padding-inline: 18px;
   }
 

@@ -363,7 +363,7 @@ function limpiarCantanteActivo() {
   letter-spacing: -0.08em;
   font-weight: 700;
   line-height: 0.8;
-  color: #0040f2;
+  color: var(--esclat-theme-color, #0040f2);
 }
 
 .spotify-preview {

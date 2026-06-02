@@ -149,7 +149,6 @@ function comprarEntradas() {
     <section class="entradas-contenido">
       <h1
         class="titulo"
-        style="color: #0040f2;"
       >
         Entradas
       </h1>
@@ -279,7 +278,7 @@ function comprarEntradas() {
   width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-bottom: 50px;
-  color: #0040f2 !important;
+  color: var(--esclat-theme-color, #0040f2);
   font-size: clamp(72px, 16vw, 180px);
   line-height: 0.8;
   font-weight: 700;

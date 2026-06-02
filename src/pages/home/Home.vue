@@ -815,7 +815,7 @@ onMounted(() => {
 
   background: #ffffff;
 
-  padding-top: 0;
+  padding-top: 110px;
 }
 
 .hero-poster {
