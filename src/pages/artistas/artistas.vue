@@ -11,7 +11,7 @@ type Cantante = {
 }
 
 const COLORES_ARTISTAS = [
-  '#0040f2',
+  '#004fff',
   '#fe8507',
   '#fc0299',
   '#05d181'
@@ -363,7 +363,7 @@ function limpiarCantanteActivo() {
   letter-spacing: -0.08em;
   font-weight: 700;
   line-height: 0.8;
-  color: var(--esclat-theme-color, #0040f2);
+  color: var(--esclat-theme-color, #004fff);
 }
 
 .spotify-preview {
@@ -435,7 +435,7 @@ function limpiarCantanteActivo() {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: var(--tinte-cantante, #0040f2);
+  background: var(--tinte-cantante, #004fff);
   mix-blend-mode: multiply;
   opacity: 0;
   pointer-events: none;

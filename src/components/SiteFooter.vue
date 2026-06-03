@@ -17,6 +17,16 @@ import logoCocaCola from '@/assets/logo/instituciones/coca.png'
 <template>
   <footer class="site-footer">
     <div class="site-footer__content">
+      <nav class="site-footer__links" aria-label="Enlaces del pie">
+        <RouterLink to="/preguntas-frecuentes" class="site-footer__text-link">
+          FAQs
+        </RouterLink>
+
+        <RouterLink to="/contacto" class="site-footer__text-link">
+          Contacto
+        </RouterLink>
+      </nav>
+
       <RouterLink
         to="/entradas"
         class="site-footer__cta"
@@ -104,7 +114,7 @@ import logoCocaCola from '@/assets/logo/instituciones/coca.png'
 <style scoped>
 .site-footer {
   width: 100%;
-  background: #0040f2;
+  background: #004fff;
   border-top: 2px solid rgba(255, 255, 255, 0.55);
 }
 
@@ -180,7 +190,34 @@ import logoCocaCola from '@/assets/logo/instituciones/coca.png'
   transform: translateY(-2px) scale(1.05);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
   background: #ffffff;
-  color: #0040f2;
+  color: #004fff;
+}
+
+.site-footer__links {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: clamp(16px, 2.4vw, 34px);
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.site-footer__text-link {
+  color: #ffffff;
+  text-decoration: none;
+  font-family: "Alte Haas Grotesk", "Helvetica Neue", Arial, sans-serif;
+  font-size: clamp(18px, 1.7vw, 26px);
+  line-height: 1;
+  opacity: 0.96;
+  transition:
+    transform 130ms ease,
+    opacity 130ms ease;
+}
+
+.site-footer__text-link:hover {
+  transform: translateY(-1px);
+  opacity: 0.72;
 }
 
 .site-footer__logos {
@@ -242,6 +279,16 @@ import logoCocaCola from '@/assets/logo/instituciones/coca.png'
     height: 52px;
   }
 
+  .site-footer__links {
+    gap: 10px 18px;
+    margin-bottom: 14px;
+    justify-content: flex-start;
+  }
+
+  .site-footer__text-link {
+    font-size: 18px;
+  }
+
   .site-footer__logos {
     gap: 12px 18px;
     justify-content: center;
@@ -268,4 +315,3 @@ import logoCocaCola from '@/assets/logo/instituciones/coca.png'
   }
 }
 </style>
-

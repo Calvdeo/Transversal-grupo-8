@@ -1,9 +1,14 @@
 ﻿<script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue'
+import { RouterLink } from 'vue-router'
 import { Eraser, Save } from 'lucide-vue-next'
 
-import logoSubAzul from '@/assets/logo/logosubazul.png'
+import logoSubAzul from '@/assets/logo/logoazul-subtitulo.png'
 import imagenFondo1 from '@/assets/imagenes/imagenfondo1.jpg'
+import entradaAbono from '@/assets/entradas/entrada-1.jpg'
+import entradaDia23 from '@/assets/entradas/entrada-2.jpg'
+import entradaDia24 from '@/assets/entradas/entrada-3.jpg'
+import entradaDia25 from '@/assets/entradas/entrada-4.jpg'
 
 import texturaCeraGrande from '@/assets/texturas/ceraazul.png'
 import texturaPixelGrande from '@/assets/texturas/pixelazul.png'
@@ -13,9 +18,9 @@ import texturaCeraVerde from '@/assets/texturas/ceraverde.png'
 import texturaPixelNaranja from '@/assets/texturas/pixelnaranja.png'
 import texturaPixelRosa from '@/assets/texturas/pixelrosa.png'
 import texturaPixelVerde from '@/assets/texturas/pixelverde.png'
-import logoSubNaranja from '@/assets/logo/logosubnaranja.png'
-import logoSubRosa from '@/assets/logo/logosubrosa.png'
-import logoSubVerde from '@/assets/logo/logosubverde.png'
+import logoSubNaranja from '@/assets/logo/logonaranja-subtitulo.png'
+import logoSubRosa from '@/assets/logo/logorosa-subtitulo.png'
+import logoSubVerde from '@/assets/logo/logoverde-subtitulo.png'
 import pequesAzul04 from '@/assets/texturas/peques-04.png'
 import pequesAzul05 from '@/assets/texturas/peques-05.png'
 import pequesAzul06 from '@/assets/texturas/peques-06.png'
@@ -55,12 +60,21 @@ type TemaVisual = {
   pequesPosca: string
 }
 
+type EntradaInicio = {
+  id: number
+  nombre: string
+  precio: number
+  imagen: string
+  descripcion: string
+  color: string
+}
+
 const lienzo = ref<HTMLCanvasElement | null>(null)
 const estaPintando = ref(false)
 const pincelActual = ref<Pincel | null>(null)
 const ultimaPosicion = ref<Punto | null>(null)
 
-const COLOR_AZUL = '#0040f2'
+const COLOR_AZUL = '#004fff'
 const ANCHO_LIENZO = 1700
 const ALTO_LIENZO = 1100
 const MARGEN_MARCO = 44
@@ -71,10 +85,44 @@ const FUENTE_INTER =
 
 const fondoEscena = `url(${imagenFondo1})`
 const videoInicioUrl = '/videos/inicio.mp4'
+const entradasInicio: EntradaInicio[] = [
+  {
+    id: 1,
+    nombre: 'Abono general 3 días',
+    precio: 75,
+    imagen: entradaAbono,
+    descripcion: 'Acceso a todas las actividades de los tres días.',
+    color: '#004fff'
+  },
+  {
+    id: 2,
+    nombre: 'Entrada día 23.10.26',
+    precio: 40,
+    imagen: entradaDia23,
+    descripcion: 'Acceso a todas las actividades del día 23.',
+    color: '#ff2f92'
+  },
+  {
+    id: 3,
+    nombre: 'Entrada día 24.10.26',
+    precio: 40,
+    imagen: entradaDia24,
+    descripcion: 'Acceso a todas las actividades del día 24.',
+    color: '#1ea56a'
+  },
+  {
+    id: 4,
+    nombre: 'Entrada día 25.10.26',
+    precio: 40,
+    imagen: entradaDia25,
+    descripcion: 'Acceso a todas las actividades del día 25.',
+    color: '#f26a00'
+  }
+]
 
 const coloresDisponibles = [
   '#fe8507',
-  '#0040f2',
+  '#004fff',
   '#fc0299',
   '#05d181'
 ] as const
@@ -89,7 +137,7 @@ const CLAVE_INDICE_TEMA = 'esclat-theme-index'
 
 const temasVisuales: TemaVisual[] = [
   {
-    color: '#0040f2',
+    color: '#004fff',
     logoSub: logoSubAzul,
     texturaCera: texturaCeraGrande,
     texturaPixel: texturaPixelGrande,
@@ -238,13 +286,13 @@ function prepararLienzo() {
   contexto.textBaseline = 'top'
   contexto.textAlign = 'left'
 
-  const fechaY1 = baseInferiorY - 136
-  const fechaY2 = baseInferiorY - 56
+  const fechaY1 = baseInferiorY - 160
+  const fechaY2 = baseInferiorY - 58
 
-  contexto.font = `400 72px ${FUENTE_INTER}`
+  contexto.font = `500 104px ${FUENTE_INTER}`
 
   contexto.fillText(
-    '23.10',
+    '23',
     textoIzquierdaX,
     fechaY1
   )
@@ -256,47 +304,47 @@ function prepararLienzo() {
   )
 
   contexto.fillRect(
-    textoIzquierdaX + 218,
-    fechaY1 + 38,
-    205,
-    6
+    textoIzquierdaX + 140,
+    fechaY1 + 40,
+    360,
+    4
   )
 
   contexto.textAlign = 'right'
-  contexto.font = `400 64px ${FUENTE_INTER}`
+  contexto.font = `500 78px ${FUENTE_INTER}`
 
   contexto.fillText(
-    'LAS NAVES,',
+    'LAS NAVES',
     textoDerechaX,
-    baseInferiorY - 138
+    baseInferiorY - 186
   )
 
   contexto.fillText(
     'VALÈNCIA',
     textoDerechaX,
-    baseInferiorY - 68
+    baseInferiorY - 104
   )
 
-  contexto.font = `400 34px ${FUENTE_INTER}`
+  contexto.font = `400 32px ${FUENTE_INTER}`
 
   contexto.fillText(
     'Entradas en: www.esclat.es',
     textoDerechaX,
-    marco.y + marco.alto - 72
+    marco.y + marco.alto - 70
   )
 
   const logoSub = new Image()
   logoSub.src = logoSubTema.value
 
   logoSub.onload = () => {
-    const logoSubAncho = Math.round(marco.ancho * 0.4)
+    const logoSubAncho = Math.round(marco.ancho * 0.5)
     const proporcionOriginal =
       logoSub.height / logoSub.width
     const logoSubAlto = Math.round(
       logoSubAncho * proporcionOriginal
     )
     const logoSubX = textoIzquierdaX
-    const logoSubY = textoSuperiorY - 6
+    const logoSubY = textoSuperiorY - 12
 
     contexto.drawImage(
       logoSub,
@@ -697,6 +745,52 @@ onMounted(() => {
           </video>
         </div>
       </section>
+
+      <section class="home-entradas">
+        <div
+          class="home-entradas-cinta"
+          aria-label="Aviso de descuento"
+        >
+          <div class="home-entradas-cinta-pista">
+            <div class="home-entradas-cinta-grupo">
+              <span>Con el código ESCLAT consigue un 25% de descuento en tus entradas.</span>
+              <span>Con el código ESCLAT consigue un 25% de descuento en tus entradas.</span>
+              <span>Con el código ESCLAT consigue un 25% de descuento en tus entradas.</span>
+            </div>
+
+            <div
+              class="home-entradas-cinta-grupo"
+              aria-hidden="true"
+            >
+              <span>Con el código ESCLAT consigue un 25% de descuento en tus entradas.</span>
+              <span>Con el código ESCLAT consigue un 25% de descuento en tus entradas.</span>
+              <span>Con el código ESCLAT consigue un 25% de descuento en tus entradas.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="home-entradas-inner">
+          <RouterLink
+            v-for="entrada in entradasInicio"
+            :key="entrada.id"
+            to="/entradas"
+            class="home-entrada-item"
+            :style="{ color: entrada.color }"
+          >
+            <div class="home-entrada-bloque">
+              <img
+                :src="entrada.imagen"
+                :alt="entrada.nombre"
+                class="home-entrada-imagen"
+              >
+            </div>
+
+            <p class="home-entrada-descripcion">
+              {{ entrada.descripcion }}
+            </p>
+          </RouterLink>
+        </div>
+      </section>
     </section>
 
     <section
@@ -830,7 +924,7 @@ onMounted(() => {
 
 .hero-sub-logo {
   position: absolute;
-  left: 10px;
+  left: 42px;
   top: 30px;
   z-index: 4;
   width: clamp(280px, 50vw, 800px);
@@ -889,7 +983,7 @@ onMounted(() => {
   position: absolute;
 
   left: clamp(220px, 23vw, 420px);
-  bottom:250px;
+  bottom: 250px;
 
   width: clamp(160px, 17vw, 320px);
 
@@ -922,6 +1016,11 @@ onMounted(() => {
   color: var(--color-tema);
 }
 
+.hero-place p,
+.hero-date p {
+  margin: 0;
+}
+
 .hero-video {
   width: 100%;
   background: #ffffff;
@@ -938,6 +1037,97 @@ onMounted(() => {
   display: block;
   border: 0;
   background: #000000;
+}
+
+.home-entradas {
+  width: 100%;
+  background: #ffffff;
+  padding: 0 0 28px;
+}
+
+.home-entradas-cinta {
+  width: 100%;
+  overflow: hidden;
+  border-top: 2px solid var(--color-tema);
+  border-bottom: 2px solid var(--color-tema);
+  background: #ffffff;
+}
+
+.home-entradas-cinta-pista {
+  display: flex;
+  width: max-content;
+  white-space: nowrap;
+  animation: deslizar-cinta 30s linear infinite;
+}
+
+.home-entradas-cinta-grupo {
+  display: flex;
+  align-items: center;
+  gap: 96px;
+  padding-right: 96px;
+}
+
+.home-entradas-cinta-pista span {
+  padding: 8px 0;
+  color: var(--color-tema);
+  font-size: clamp(24px, 2.8vw, 40px);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.home-entradas-inner {
+  width: min(100%, 1320px);
+  margin: 0 auto;
+  padding: 28px 24px 12px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px 24px;
+  align-items: start;
+  justify-items: center;
+}
+
+.home-entrada-item {
+  width: min(620px, 100%);
+  color: inherit;
+  text-decoration: none;
+  transition: transform 180ms ease;
+}
+
+.home-entrada-item:hover {
+  transform: scale(1.01);
+}
+
+.home-entrada-bloque {
+  display: block;
+  width: 100%;
+}
+
+.home-entrada-imagen {
+  width: 100%;
+  display: block;
+}
+
+.home-entrada-descripcion {
+  margin: 8px 0 0;
+  font-size: 13px;
+  line-height: 1.2;
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+
+.home-entrada-item:hover .home-entrada-descripcion {
+  opacity: 1;
+}
+
+@keyframes deslizar-cinta {
+  from {
+    transform: translateX(100vw);
+  }
+
+  to {
+    transform: translateX(-100%);
+  }
 }
 
 .studio {
@@ -1179,6 +1369,19 @@ onMounted(() => {
     right: 28px;
   }
 
+  .home-entradas-cinta-grupo {
+    gap: 64px;
+    padding-right: 64px;
+  }
+
+  .home-entradas-cinta-pista span {
+    font-size: clamp(20px, 3.5vw, 30px);
+  }
+
+  .home-entradas-inner {
+    gap: 24px 18px;
+  }
+
 }
 
 @media (max-width: 700px) {
@@ -1190,7 +1393,7 @@ onMounted(() => {
   }
 
   .hero-sub-logo {
-    left: 14px;
+    left: 42px;
     top: -6px;
     width: min(74vw, 500px);
   }
@@ -1201,6 +1404,21 @@ onMounted(() => {
 
   .hero-place {
     font-size: clamp(24px, 6.2vw, 34px);
+  }
+
+  .home-entradas-inner {
+    grid-template-columns: 1fr;
+    gap: 36px;
+    padding: 18px 12px 8px;
+  }
+
+  .home-entrada-item {
+    width: min(100%, 520px);
+  }
+
+  .home-entrada-descripcion {
+    opacity: 1;
+    font-size: 12px;
   }
 }
 
@@ -1232,7 +1450,7 @@ onMounted(() => {
   }
 
   .hero-sub-logo {
-    left: 6px;
+    left: 10px;
     top: -14px;
     width: min(86vw, 370px);
   }

@@ -488,7 +488,7 @@ const texturaActiva = computed(() => {
 
 <style scoped>
 .programa-page {
-  --ui-color: #0040f2;
+  --ui-color: #004fff;
   min-height: 100vh;
   padding: 236px 32px 90px;
   background: #f7f7f4;
@@ -497,7 +497,7 @@ const texturaActiva = computed(() => {
 }
 
 .programa-page.tema-musica {
-  --ui-color: #0040f2;
+  --ui-color: #004fff;
 }
 
 .programa-page.tema-taller {
@@ -603,7 +603,7 @@ const texturaActiva = computed(() => {
 }
 
 .tabla-fila {
-  --categoria-color: #0040f2;
+  --categoria-color: #004fff;
   min-height: 105px;
   padding: 16px 0;
   color: var(--categoria-color);
@@ -625,7 +625,7 @@ const texturaActiva = computed(() => {
 }
 
 .tabla-fila.categoria-musica {
-  --categoria-color: #0040f2;
+  --categoria-color: #004fff;
 }
 
 .tabla-fila.categoria-taller {

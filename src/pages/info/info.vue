@@ -25,7 +25,7 @@ type ActividadInfo = {
   color: string
 }
 
-const COLOR_MUSICA = '#0040f2'
+const COLOR_MUSICA = '#004fff'
 const COLOR_TALLER = '#ff3f9e'
 const COLOR_CHARLA = '#1f9f47'
 const COLOR_CORTO = '#ff7a00'
@@ -134,7 +134,7 @@ const zonaSeleccionada = computed(() => {
 })
 
 const colorZonaSeleccionada = computed(() => {
-  return zonaSeleccionada.value?.color ?? 'var(--esclat-theme-color, #0040f2)'
+  return zonaSeleccionada.value?.color ?? 'var(--esclat-theme-color, #004fff)'
 })
 
 function alternarZonaFijada(id: number) {
@@ -336,7 +336,7 @@ onMounted(() => {
 .info-page {
   min-height: 100vh;
   background: #ffffff;
-  color: var(--esclat-theme-color, #0040f2);
+  color: var(--esclat-theme-color, #004fff);
   font-family: "Alte Haas Grotesk", "Helvetica Neue", Arial, sans-serif;
 }
 
@@ -396,7 +396,7 @@ onMounted(() => {
 
 .info-intro h1 {
   margin: 0 0 2rem;
-  color: var(--esclat-theme-color, #0040f2);
+  color: var(--esclat-theme-color, #004fff);
   font-size: clamp(3.4rem, 9vw, 8rem);
   line-height: 0.9;
   font-weight: 700;
@@ -412,7 +412,7 @@ onMounted(() => {
 
 .info-columnas p {
   margin: 0;
-  color: var(--esclat-theme-color, #0040f2);
+  color: var(--esclat-theme-color, #004fff);
   font-size: clamp(1.5rem, 2.7vw, 2.6rem);
   line-height: 1.12;
 }
@@ -428,7 +428,7 @@ onMounted(() => {
   margin: 0 0 2rem;
   padding: 0 1.5rem;
   text-align: left;
-  color: var(--esclat-theme-color, #0040f2);
+  color: var(--esclat-theme-color, #004fff);
   font-size: clamp(3rem, 8vw, 8rem);
   line-height: 0.85;
   font-weight: 700;
@@ -500,7 +500,7 @@ onMounted(() => {
   gap: 14px;
   border: none;
   background: transparent;
-  color: var(--esclat-theme-color, #0040f2);
+  color: var(--esclat-theme-color, #004fff);
   padding: 0;
   text-align: left;
   font-size: clamp(1.6rem, 2.4vw, 2.7rem);
@@ -518,9 +518,9 @@ onMounted(() => {
   width: 34px;
   height: 34px;
   border-radius: 999px;
-  border: 2px solid var(--esclat-theme-color, #0040f2);
+  border: 2px solid var(--esclat-theme-color, #004fff);
   background: #ffffff;
-  color: var(--esclat-theme-color, #0040f2);
+  color: var(--esclat-theme-color, #004fff);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -535,17 +535,17 @@ onMounted(() => {
 
 .leyenda-item:hover,
 .leyenda-item.is-active {
-  color: var(--zona-color, var(--esclat-theme-color, #0040f2));
+  color: var(--zona-color, var(--esclat-theme-color, #004fff));
   opacity: 1;
   transform: translateX(8px);
 }
 
 .leyenda-item:hover span,
 .leyenda-item.is-active span {
-  border-color: var(--zona-color, var(--esclat-theme-color, #0040f2));
-  background: var(--zona-color, var(--esclat-theme-color, #0040f2));
+  border-color: var(--zona-color, var(--esclat-theme-color, #004fff));
+  background: var(--zona-color, var(--esclat-theme-color, #004fff));
   color: #ffffff;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--zona-color, var(--esclat-theme-color, #0040f2)) 18%, white);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--zona-color, var(--esclat-theme-color, #004fff)) 18%, white);
   transform: scale(1.05);
 }
 
@@ -554,9 +554,9 @@ onMounted(() => {
 }
 
 .zona-info {
-  border-top: 2px solid var(--zona-color, var(--esclat-theme-color, #0040f2));
+  border-top: 2px solid var(--zona-color, var(--esclat-theme-color, #004fff));
   padding-top: 18px;
-  color: var(--zona-color, var(--esclat-theme-color, #0040f2));
+  color: var(--zona-color, var(--esclat-theme-color, #004fff));
 }
 
 .zona-info-kicker {

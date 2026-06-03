@@ -256,7 +256,7 @@ onMounted(() => {
   min-height: 100vh;
   padding: 138px 24px 90px;
   background: #ffffff;
-  color: var(--esclat-theme-color, #0040f2);
+  color: var(--esclat-theme-color, #004fff);
 }
 
 .faq-shell {
@@ -300,7 +300,7 @@ onMounted(() => {
 
 .faq-kicker {
   margin: 0 0 18px;
-  color: var(--esclat-theme-color, #0040f2);
+  color: var(--esclat-theme-color, #004fff);
   font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.24em;
@@ -322,7 +322,7 @@ onMounted(() => {
 }
 
 .faq-item {
-  border-top: 1px solid color-mix(in srgb, var(--esclat-theme-color, #0040f2) 18%, white);
+  border-top: 1px solid color-mix(in srgb, var(--esclat-theme-color, #004fff) 18%, white);
 }
 
 .faq-trigger {
@@ -346,7 +346,7 @@ onMounted(() => {
 }
 
 .faq-icon {
-  color: var(--esclat-theme-color, #0040f2);
+  color: var(--esclat-theme-color, #004fff);
   font-size: clamp(2.2rem, 4vw, 3rem);
   line-height: 1;
   font-weight: 400;
@@ -372,7 +372,7 @@ onMounted(() => {
 
 .faq-answer p {
   margin: 0;
-  color: color-mix(in srgb, var(--esclat-theme-color, #0040f2) 74%, white);
+  color: color-mix(in srgb, var(--esclat-theme-color, #004fff) 74%, white);
   font-size: clamp(1rem, 1.45vw, 1.35rem);
   line-height: 1.7;
 }
@@ -385,7 +385,7 @@ onMounted(() => {
   overflow: hidden;
   border-radius: 18px;
   justify-self: end;
-  box-shadow: 0 18px 45px color-mix(in srgb, var(--esclat-theme-color, #0040f2) 16%, transparent);
+  box-shadow: 0 18px 45px color-mix(in srgb, var(--esclat-theme-color, #004fff) 16%, transparent);
 }
 
 .faq-map-frame iframe {
@@ -396,14 +396,14 @@ onMounted(() => {
 }
 
 .faq-link {
-  color: var(--esclat-theme-color, #0040f2);
+  color: var(--esclat-theme-color, #004fff);
   font-weight: 700;
   text-decoration: underline;
   text-underline-offset: 0.16em;
 }
 
 .faq-item.is-open .faq-question {
-  color: var(--esclat-theme-color, #0040f2);
+  color: var(--esclat-theme-color, #004fff);
 }
 
 @media (max-width: 900px) {

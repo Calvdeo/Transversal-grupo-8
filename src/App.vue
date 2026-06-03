@@ -5,15 +5,15 @@ import MainMenu from '@/components/MainMenu.vue'
 import SiteFooter from '@/components/SiteFooter.vue'
 
 const COLORES_TEMA = [
-  '#0040f2',
+  '#004fff',
   '#fe8507',
   '#fc0299',
   '#05d181'
 ] as const
 const CLAVE_INDICE_TEMA = 'esclat-theme-index'
 const COLOR_POR_RUTA: Record<string, string> = {
-  '/artistas': '#0040f2',
-  '/programa': '#0040f2'
+  '/artistas': '#004fff',
+  '/programa': '#004fff'
 }
 
 const route = useRoute()

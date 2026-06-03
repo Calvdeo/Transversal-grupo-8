@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { X } from 'lucide-vue-next'
 
-import logoCabecera from '@/assets/logo/logoazul.png'
+import logoCabecera from '@/assets/logo/logosoloblanco.png'
 import texturaMenu from '@/assets/texturas/peques-04.png'
 
 const isMenuOpen = ref(false)
@@ -83,7 +83,7 @@ const closeMenu = () => {
   z-index: 1000;
   width: 100%;
   height: 110px;
-  background: var(--esclat-theme-color, #0040f2);
+  background: var(--esclat-theme-color, #004fff);
 }
 
 .header-nav {
@@ -103,7 +103,6 @@ const closeMenu = () => {
   width: clamp(130px, 14vw, 220px);
   height: auto;
   display: block;
-  filter: brightness(0) invert(1);
 }
 
 .menu-texture-button {
@@ -139,7 +138,7 @@ const closeMenu = () => {
   z-index: 1200;
   height: 100vh;
   width: min(380px, 92vw);
-  background: var(--esclat-theme-color, #0040f2);
+  background: var(--esclat-theme-color, #004fff);
   color: white;
   border-left: 1px solid rgba(255, 255, 255, 0.34);
   border-top: 1px solid rgba(255, 255, 255, 0.34);

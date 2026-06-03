@@ -26,7 +26,7 @@ const entradas = ref<Entrada[]>([
     imagen: entradaAbono,
     descripcion: 'Esta entrada incluye acceso a todas las actividades de los tres días.',
     rotacion: '-rotate-6',
-    color: '#0040f2'
+    color: '#004fff'
   },
   {
     id: 2,
@@ -158,7 +158,6 @@ function comprarEntradas() {
           v-for="entrada in entradas"
           :key="entrada.id"
           class="entrada-item"
-          :class="entrada.rotacion"
           :style="{ color: entrada.color }"
         >
           <div class="entrada-bloque">
@@ -233,15 +232,15 @@ function comprarEntradas() {
   padding-top: 110px;
   overflow-x: hidden;
   background: white;
-  color: #0040f2;
+  color: #004fff;
   font-family: "Alte Haas Grotesk", "Helvetica Neue", Arial, sans-serif;
 }
 
 .cinta-descuento {
   width: 100%;
   overflow: hidden;
-  border-top: 2px solid #0040f2;
-  border-bottom: 2px solid #0040f2;
+  border-top: 2px solid #004fff;
+  border-bottom: 2px solid #004fff;
   background: #ffffff;
 }
 
@@ -261,7 +260,7 @@ function comprarEntradas() {
 
 .cinta-descuento-pista span {
   padding: 8px 0;
-  color: #0040f2;
+  color: #004fff;
   font-size: clamp(24px, 2.8vw, 40px);
   font-weight: 700;
   text-transform: uppercase;
@@ -269,7 +268,7 @@ function comprarEntradas() {
 }
 
 .entradas-contenido {
-  width: min(100%, 980px);
+  width: min(100%, 1320px);
   margin: 0 auto;
   padding: 24px 24px 80px;
 }
@@ -278,7 +277,7 @@ function comprarEntradas() {
   width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-bottom: 50px;
-  color: var(--esclat-theme-color, #0040f2);
+  color: var(--esclat-theme-color, #004fff);
   font-size: clamp(72px, 16vw, 180px);
   line-height: 0.8;
   font-weight: 700;
@@ -286,19 +285,21 @@ function comprarEntradas() {
 }
 
 .lista-entradas {
-  display: flex;
-  flex-direction: column;
-  gap: 64px;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px 24px;
+  align-items: start;
+  justify-items: center;
 }
 
 .entrada-item {
-  width: min(620px, 86vw);
+  width: min(620px, 100%);
   transition: transform 180ms ease;
+  justify-self: center;
 }
 
 .entrada-item:hover {
-  transform: rotate(0deg) scale(1.01);
+  transform: scale(1.01);
   z-index: 5;
 }
 
@@ -312,14 +313,14 @@ function comprarEntradas() {
 .entrada-imagen {
   flex: 1 1 auto;
   min-width: 0;
-  width: auto;
+  width: 100%;
   display: block;
 }
 
 .selector-cantidad {
   flex: 0 0 auto;
   border: 1px solid currentColor;
-  color: inherit;
+  color: currentColor;
   background: white;
   font-size: 14px;
   padding: 4px 6px;
@@ -340,7 +341,7 @@ function comprarEntradas() {
 .resumen-compra {
   margin: 90px auto 0;
   max-width: 760px;
-  border-top: 8px solid #0040f2;
+  border-top: 8px solid #004fff;
   padding-top: 20px;
   display: grid;
   grid-template-columns: 1fr auto;
@@ -360,8 +361,8 @@ function comprarEntradas() {
 
 .codigo input {
   width: 180px;
-  border: 2px solid #0040f2;
-  color: #0040f2;
+  border: 2px solid #004fff;
+  color: #004fff;
   padding: 6px 8px;
   outline: none;
 }
@@ -379,7 +380,7 @@ function comprarEntradas() {
 
 .boton-comprar {
   margin-top: 16px;
-  background: #0040f2;
+  background: #004fff;
   color: white;
   border: none;
   padding: 8px 14px;
@@ -414,7 +415,7 @@ function comprarEntradas() {
   }
 
   .entrada-item {
-    width: min(560px, 90vw);
+    width: min(100%, 560px);
   }
 
   .resumen-compra {
@@ -442,23 +443,21 @@ function comprarEntradas() {
     margin-bottom: 26px;
     font-size: clamp(54px, 20vw, 88px);
     line-height: 0.86;
+    text-align: left;
   }
 
   .lista-entradas {
+    grid-template-columns: 1fr;
     gap: 36px;
   }
 
   .entrada-item {
     width: min(100%, 520px);
+    justify-self: center;
   }
 
   .entrada-bloque {
     gap: 8px;
-  }
-
-  .selector-cantidad {
-    font-size: 12px;
-    padding: 3px;
   }
 
   .entrada-item:hover {

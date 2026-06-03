@@ -11,11 +11,11 @@ const correo = ref('')
 const mensaje = ref('')
 
 const formularioEnviado = ref(false)
-const colorTema = ref('#0040f2')
+const colorTema = ref('#004fff')
 const texturaTema = ref(texturaPoscaAzul)
 const CLAVE_INDICE_TEMA = 'esclat-theme-index'
 const temasContacto = [
-  { color: '#0040f2', textura: texturaPoscaAzul },
+  { color: '#004fff', textura: texturaPoscaAzul },
   { color: '#fe8507', textura: texturaPixelNaranja },
   { color: '#fc0299', textura: texturaCeraRosa },
   { color: '#05d181', textura: texturaSubrayadorVerde }
