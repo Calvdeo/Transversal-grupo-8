@@ -38,6 +38,7 @@ const archivosMapa = import.meta.glob(
 
 const zonaActiva = ref<number | null>(null)
 const zonaFijada = ref<number | null>(null)
+const admiteHover = ref(false)
 const mapaNivel1Actual = ref(mapaNivel1)
 const mapaNivel2Actual = ref(mapaNivel2)
 const texturaCeraActual = ref(texturaCeraGrande)
@@ -137,8 +138,21 @@ const colorZonaSeleccionada = computed(() => {
   return zonaSeleccionada.value?.color ?? 'var(--esclat-theme-color, #004fff)'
 })
 
-function alternarZonaFijada(id: number) {
-  zonaFijada.value = zonaFijada.value === id ? null : id
+function mostrarZonaTemporal(id: number) {
+  if (!admiteHover.value) return
+
+  zonaActiva.value = id
+}
+
+function ocultarZonaTemporal() {
+  if (!admiteHover.value) return
+
+  zonaActiva.value = null
+}
+
+function seleccionarZona(id: number) {
+  zonaActiva.value = null
+  zonaFijada.value = id
 }
 
 function obtenerIndiceTemaGuardado() {
@@ -185,6 +199,9 @@ function buscarMapaTematico(
 }
 
 onMounted(() => {
+  admiteHover.value =
+    window.matchMedia('(hover: hover) and (pointer: fine)').matches
+
   const indiceTema = obtenerIndiceTemaGuardado()
   const palabrasTema =
     [
@@ -305,7 +322,7 @@ onMounted(() => {
             v-else
             class="zona-info zona-info-vacia"
           >
-            <p>Pasa el ratón por una zona numerada para ver qué ocurre ahí.</p>
+            <p>Pasa el ratón o toca una zona numerada para ver qué ocurre ahí.</p>
           </div>
         </div>
 
@@ -316,10 +333,11 @@ onMounted(() => {
               :key="zona.id"
               class="leyenda-item"
               :class="zonaMostradaId === zona.id ? 'is-active' : ''"
+              :aria-pressed="zonaMostradaId === zona.id"
               :style="{ '--zona-color': zona.color }"
-              @mouseenter="zonaActiva = zona.id"
-              @mouseleave="zonaActiva = null"
-              @click="alternarZonaFijada(zona.id)"
+              @mouseenter="mostrarZonaTemporal(zona.id)"
+              @mouseleave="ocultarZonaTemporal()"
+              @click="seleccionarZona(zona.id)"
             >
               <span>{{ String(indiceVisible + 1).padStart(2, '0') }}</span>
               {{ zona.nombre }}
@@ -338,6 +356,7 @@ onMounted(() => {
   background: #ffffff;
   color: var(--esclat-theme-color, #004fff);
   font-family: "Alte Haas Grotesk", "Helvetica Neue", Arial, sans-serif;
+  overflow-x: hidden;
 }
 
 .info-intro {
@@ -501,15 +520,21 @@ onMounted(() => {
   border: none;
   background: transparent;
   color: var(--esclat-theme-color, #004fff);
-  padding: 0;
+  width: 100%;
+  min-height: 56px;
+  padding: 10px 12px;
   text-align: left;
   font-size: clamp(1.6rem, 2.4vw, 2.7rem);
   line-height: 1;
   font-weight: 700;
   cursor: pointer;
   opacity: 0.82;
+  border-radius: 18px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   transition:
     transform 0.16s ease,
+    background-color 0.16s ease,
     color 0.16s ease,
     opacity 0.16s ease;
 }
@@ -537,6 +562,10 @@ onMounted(() => {
 .leyenda-item.is-active {
   color: var(--zona-color, var(--esclat-theme-color, #004fff));
   opacity: 1;
+  background: color-mix(in srgb, var(--zona-color, var(--esclat-theme-color, #004fff)) 10%, white);
+}
+
+.leyenda-item:hover {
   transform: translateX(8px);
 }
 
@@ -593,15 +622,40 @@ onMounted(() => {
   font-size: 1.1rem;
 }
 
+@media (max-width: 1200px) {
+  .info-texturas {
+    right: clamp(-32rem, -28vw, -18rem);
+    width: clamp(460px, 54vw, 760px);
+    height: clamp(280px, 38vw, 520px);
+  }
+
+  .mapa-wrapper {
+    gap: 32px;
+  }
+
+  .mapas {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 900px) {
   .info-intro {
-    padding-top: 7rem;
-    padding-right: 1.5rem;
+    width: min(100%, 760px);
+    padding: 6.5rem 1rem 3rem;
+  }
+
+  .info-intro h1 {
+    margin-bottom: 1.25rem;
+    font-size: clamp(3rem, 14vw, 5.6rem);
   }
 
   .info-columnas {
     grid-template-columns: 1fr;
     gap: 16px;
+  }
+
+  .info-columnas p {
+    font-size: clamp(1.25rem, 4.4vw, 2rem);
   }
 
   .info-texturas {
@@ -610,7 +664,8 @@ onMounted(() => {
     right: auto;
     width: clamp(220px, 62vw, 340px);
     height: clamp(150px, 40vw, 260px);
-    margin: 0 0 1.5rem auto;
+    margin: 0 0 1.25rem auto;
+    transform: rotate(36deg);
   }
 
   .info-textura-cera {
@@ -622,18 +677,30 @@ onMounted(() => {
     width: clamp(120px, 34vw, 190px);
   }
 
+  .info-mapa {
+    padding: 1rem 0 5rem;
+  }
+
+  .info-mapa h2 {
+    margin-bottom: 1.25rem;
+    padding: 0 1rem;
+    font-size: clamp(2.6rem, 12vw, 4.8rem);
+  }
+
   .mapa-wrapper {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 0 1rem;
   }
 
   .mapa-main {
-    gap: 2rem;
+    gap: 1.5rem;
   }
 
   .mapas {
-    display: grid;
     min-height: auto;
-    gap: 24px;
+    grid-template-columns: 1fr;
+    gap: 18px;
     padding: 0;
   }
 
@@ -651,7 +718,91 @@ onMounted(() => {
 
   .mapa-panel {
     position: static;
+    gap: 20px;
   }
 
+  .mapa-leyenda {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .leyenda-item {
+    align-items: center;
+    gap: 12px;
+    font-size: clamp(1.15rem, 3.6vw, 1.55rem);
+    line-height: 1.02;
+  }
+
+  .leyenda-item span {
+    width: 30px;
+    height: 30px;
+    flex: 0 0 30px;
+  }
+
+  .zona-info {
+    padding-top: 14px;
+  }
+
+  .zona-info h3 {
+    margin-bottom: 14px;
+    font-size: clamp(1.75rem, 7vw, 3rem);
+  }
+
+  .zona-info li {
+    font-size: 1rem;
+  }
+
+  .zona-info-vacia p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .info-intro {
+    padding: 6rem 0.75rem 2.5rem;
+  }
+
+  .info-texturas {
+    width: min(250px, 72vw);
+    height: 160px;
+    margin-bottom: 1rem;
+  }
+
+  .info-textura-cera {
+    width: min(180px, 52vw);
+  }
+
+  .info-textura-pixel {
+    right: 0.75rem;
+    bottom: 0.5rem;
+    width: min(130px, 40vw);
+  }
+
+  .info-mapa h2 {
+    padding: 0 0.75rem;
+  }
+
+  .mapa-wrapper {
+    padding: 0 0.75rem;
+  }
+
+  .mapa-leyenda {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .leyenda-item {
+    gap: 10px;
+    font-size: 1.1rem;
+  }
+
+  .zona-info ul {
+    gap: 6px;
+  }
+
+  .zona-info li {
+    padding-bottom: 6px;
+  }
 }
 </style>
