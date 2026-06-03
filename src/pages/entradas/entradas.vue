@@ -5,6 +5,7 @@ import entradaAbono from '@/assets/entradas/entrada-1.jpg'
 import entradaDia23 from '@/assets/entradas/entrada-2.jpg'
 import entradaDia24 from '@/assets/entradas/entrada-3.jpg'
 import entradaDia25 from '@/assets/entradas/entrada-4.jpg'
+import graciasImagen from '@/assets/entradas/gracias.png'
 
 type Entrada = {
   id: number
@@ -17,6 +18,7 @@ type Entrada = {
 }
 
 const codigoPromocional = ref('')
+const mostrarPantallaGracias = ref(false)
 
 const entradas = ref<Entrada[]>([
   {
@@ -119,6 +121,11 @@ function comprarEntradas() {
   }
 
   codigoPromocional.value = ''
+  mostrarPantallaGracias.value = true
+}
+
+function cerrarPantallaGracias() {
+  mostrarPantallaGracias.value = false
 }
 </script>
 
@@ -223,6 +230,25 @@ function comprarEntradas() {
         </div>
       </section>
     </section>
+
+    <button
+      v-if="mostrarPantallaGracias"
+      type="button"
+      class="pantalla-gracias"
+      aria-label="Cerrar mensaje de compra y volver a entradas"
+      @click="cerrarPantallaGracias"
+    >
+      <div class="pantalla-gracias-inner">
+        <p class="pantalla-gracias-texto">
+          Las entradas se descargarán automáticamente en tu dispositivo -------------------->
+        </p>
+        <img
+          :src="graciasImagen"
+          alt="Gracias"
+          class="pantalla-gracias-imagen"
+        >
+      </div>
+    </button>
   </main>
 </template>
 
@@ -389,6 +415,46 @@ function comprarEntradas() {
   cursor: pointer;
 }
 
+.pantalla-gracias {
+  position: fixed;
+  inset: 0;
+  z-index: 1400;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border: none;
+  padding: 24px;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.pantalla-gracias-inner {
+  display: grid;
+  justify-items: stretch;
+  gap: 22px;
+  width: 100%;
+  text-align: left;
+  color: #004fff;
+}
+
+.pantalla-gracias-imagen {
+  width: min(100%, 1100px);
+  height: auto;
+  display: block;
+  justify-self: center;
+}
+
+.pantalla-gracias-texto {
+  margin: 0;
+  width: 100%;
+  max-width: none;
+  font-size: clamp(20px, 1.7vw, 28px);
+  line-height: 1.08;
+  font-weight: 700;
+  text-align: left;
+}
+
 @keyframes deslizar-cinta {
   from {
     transform: translateX(100vw);
@@ -488,6 +554,18 @@ function comprarEntradas() {
 
   .boton-comprar {
     font-size: 26px;
+  }
+
+  .pantalla-gracias {
+    padding: 18px;
+  }
+
+  .pantalla-gracias-inner {
+    gap: 14px;
+  }
+
+  .pantalla-gracias-imagen {
+    width: min(100%, 620px);
   }
 }
 </style>
