@@ -5,6 +5,7 @@ import { Eraser, Save } from 'lucide-vue-next'
 
 import logoSubAzul from '@/assets/logo/logoazul-subtitulo.png'
 import imagenFondo1 from '@/assets/imagenes/imagenfondo1.jpg'
+import videoInicioMp4 from '@/assets/vídeos/animacion-prueba.mp4'
 import entradaAbono from '@/assets/entradas/entrada-1.jpg'
 import entradaDia23 from '@/assets/entradas/entrada-2.jpg'
 import entradaDia24 from '@/assets/entradas/entrada-3.jpg'
@@ -84,7 +85,7 @@ const FUENTE_INTER =
   '"Inter", "Helvetica Neue", Arial, sans-serif'
 
 const fondoEscena = `url(${imagenFondo1})`
-const videoInicioUrl = '/videos/inicio.mp4'
+const videoInicioUrl = videoInicioMp4
 const entradasInicio: EntradaInicio[] = [
   {
     id: 1,
@@ -1023,7 +1024,7 @@ onMounted(() => {
 
 .hero-video {
   width: 100%;
-  background: #ffffff;
+  background: var(--color-tema);
   padding: 20px 16px 24px;
 }
 
