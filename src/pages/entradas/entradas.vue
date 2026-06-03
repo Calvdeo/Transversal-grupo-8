@@ -44,7 +44,7 @@ const entradas = ref<Entrada[]>([
     imagen: entradaDia24,
     descripcion: 'Esta entrada incluye acceso a todas las actividades del día 24.10.26.',
     rotacion: 'rotate-3',
-    color: '#1ea56a'
+    color: '#f26a00'
   },
   {
     id: 4,
@@ -53,7 +53,7 @@ const entradas = ref<Entrada[]>([
     imagen: entradaDia25,
     descripcion: 'Esta entrada incluye acceso a todas las actividades del día 25.10.26.',
     rotacion: '-rotate-6',
-    color: '#f26a00'
+    color: '#1ea56a'
   }
 ])
 

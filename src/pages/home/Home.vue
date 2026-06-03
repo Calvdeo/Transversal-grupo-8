@@ -1,10 +1,16 @@
 ﻿<script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { Eraser, Save } from 'lucide-vue-next'
 
 import logoSubAzul from '@/assets/logo/logoazul-subtitulo.png'
 import imagenFondo1 from '@/assets/imagenes/imagenfondo1.jpg'
+import artistaBelen from '@/assets/artistas/art-05.jpg'
+import artistaSilvana from '@/assets/artistas/art-06.jpg'
+import artistaKanka from '@/assets/artistas/art-07.jpg'
+import artistaValeria from '@/assets/artistas/art-08.jpg'
+import artistaFiga from '@/assets/artistas/art-19.jpg'
+import artistaOques from '@/assets/artistas/art-11.jpg'
 import videoInicioMp4 from '@/assets/vídeos/animacion-prueba.mp4'
 import entradaAbono from '@/assets/entradas/entrada-1.jpg'
 import entradaDia23 from '@/assets/entradas/entrada-2.jpg'
@@ -70,6 +76,14 @@ type EntradaInicio = {
   color: string
 }
 
+type ArtistaInicio = {
+  id: number
+  nombre: string
+  hora: string
+  escenario: string
+  imagen: string
+}
+
 const lienzo = ref<HTMLCanvasElement | null>(null)
 const estaPintando = ref(false)
 const pincelActual = ref<Pincel | null>(null)
@@ -86,6 +100,50 @@ const FUENTE_INTER =
 
 const fondoEscena = `url(${imagenFondo1})`
 const videoInicioUrl = videoInicioMp4
+const artistasInicio: ArtistaInicio[] = [
+  {
+    id: 1,
+    nombre: 'Belen Aguilera',
+    hora: 'Dia 24, 17:00',
+    escenario: 'Patio 2',
+    imagen: artistaBelen
+  },
+  {
+    id: 2,
+    nombre: 'Silvana Estrada',
+    hora: 'Dia 25, 19:00',
+    escenario: 'Patio 2',
+    imagen: artistaSilvana
+  },
+  {
+    id: 3,
+    nombre: 'El Kanka',
+    hora: 'Dia 24, 21:00',
+    escenario: 'Patio 2',
+    imagen: artistaKanka
+  },
+  {
+    id: 4,
+    nombre: 'Valeria Castro',
+    hora: 'Dia 25, 20:15',
+    escenario: 'Patio 2',
+    imagen: artistaValeria
+  },
+  {
+    id: 5,
+    nombre: 'Figa Flawas',
+    hora: 'Dia 25, 21:00',
+    escenario: 'Patio 2',
+    imagen: artistaFiga
+  },
+  {
+    id: 6,
+    nombre: 'Oques Grasses',
+    hora: 'Dia 25, 21:45',
+    escenario: 'Patio 2',
+    imagen: artistaOques
+  }
+]
 const entradasInicio: EntradaInicio[] = [
   {
     id: 1,
@@ -109,7 +167,7 @@ const entradasInicio: EntradaInicio[] = [
     precio: 40,
     imagen: entradaDia24,
     descripcion: 'Acceso a todas las actividades del día 24.',
-    color: '#1ea56a'
+    color: '#f26a00'
   },
   {
     id: 4,
@@ -117,7 +175,7 @@ const entradasInicio: EntradaInicio[] = [
     precio: 40,
     imagen: entradaDia25,
     descripcion: 'Acceso a todas las actividades del día 25.',
-    color: '#f26a00'
+    color: '#1ea56a'
   }
 ]
 
@@ -133,8 +191,12 @@ const colorTema = ref(COLOR_AZUL)
 const logoSubTema = ref(logoSubAzul)
 const texturaCeraHero = ref(texturaCeraGrande)
 const texturaPixelHero = ref(texturaPixelGrande)
+const indiceCarruselArtistas = ref(0)
 const indiceTemaActual = ref(0)
 const CLAVE_INDICE_TEMA = 'esclat-theme-index'
+const INTERVALO_CARRUSEL_ARTISTAS = 4200
+
+let temporizadorCarruselArtistas: ReturnType<typeof setInterval> | null = null
 
 const temasVisuales: TemaVisual[] = [
   {
@@ -178,6 +240,17 @@ const temasVisuales: TemaVisual[] = [
     pequesPosca: pequesVerde07
   }
 ]
+
+const artistasCarruselVisibles = computed<ArtistaInicio[]>(() => {
+  return Array.from({ length: 3 }, (_, offset) => {
+    const artista =
+      artistasInicio[
+        (indiceCarruselArtistas.value + offset) % artistasInicio.length
+      ]
+
+    return artista ?? artistasInicio[0]!
+  })
+})
 
 const pinceles = computed<Pincel[]>(() => {
   const tema =
@@ -678,11 +751,41 @@ function aplicarTemaActual() {
   )
 }
 
+function avanzarCarruselArtistas() {
+  indiceCarruselArtistas.value =
+    (indiceCarruselArtistas.value + 1) % artistasInicio.length
+}
+
+function detenerCarruselArtistas() {
+  if (temporizadorCarruselArtistas !== null) {
+    clearInterval(temporizadorCarruselArtistas)
+    temporizadorCarruselArtistas = null
+  }
+}
+
+function iniciarCarruselArtistas() {
+  detenerCarruselArtistas()
+
+  temporizadorCarruselArtistas = setInterval(() => {
+    avanzarCarruselArtistas()
+  }, INTERVALO_CARRUSEL_ARTISTAS)
+}
+
+function seleccionarSlideArtistas(indice: number) {
+  indiceCarruselArtistas.value = indice
+  iniciarCarruselArtistas()
+}
+
 onMounted(() => {
   aplicarTemaActual()
   pincelActual.value = pinceles.value[0] ?? null
 
   prepararLienzo()
+  iniciarCarruselArtistas()
+})
+
+onBeforeUnmount(() => {
+  detenerCarruselArtistas()
 })
 </script>
 
@@ -744,6 +847,51 @@ onMounted(() => {
             >
             Tu navegador no soporta vídeo HTML5.
           </video>
+        </div>
+      </section>
+
+      <section class="hero-artistas">
+        <div class="hero-artistas-inner">
+          <div class="hero-artistas-heading">
+            <p class="hero-artistas-kicker">Line up</p>
+            <h2>Artistas</h2>
+          </div>
+
+          <div class="hero-artistas-track">
+            <RouterLink
+              v-for="(artista, index) in artistasCarruselVisibles"
+              :key="`${artista.id}-${index}`"
+              to="/artistas"
+              class="hero-artista-card"
+              :class="{ 'is-active': index === 0 }"
+              :aria-label="`Ir a la pagina de artistas: ${artista.nombre}`"
+            >
+              <img
+                :src="artista.imagen"
+                :alt="artista.nombre"
+                class="hero-artista-image"
+              >
+
+              <div class="hero-artista-overlay">
+                <p class="hero-artista-time">
+                  {{ artista.hora }} · {{ artista.escenario }}
+                </p>
+                <h3>{{ artista.nombre }}</h3>
+              </div>
+            </RouterLink>
+          </div>
+
+          <div class="hero-artistas-dots" aria-label="Selector de artistas destacados">
+            <button
+              v-for="(artista, index) in artistasInicio"
+              :key="artista.id"
+              type="button"
+              class="hero-artistas-dot"
+              :class="{ 'is-active': index === indiceCarruselArtistas }"
+              :aria-label="`Mostrar ${artista.nombre}`"
+              @click="seleccionarSlideArtistas(index)"
+            />
+          </div>
         </div>
       </section>
 
@@ -1020,6 +1168,133 @@ onMounted(() => {
 .hero-place p,
 .hero-date p {
   margin: 0;
+}
+
+.hero-artistas {
+  width: 100%;
+  padding: 24px 16px 10px;
+  background: #ffffff;
+}
+
+.hero-artistas-inner {
+  width: min(100%, 1280px);
+  margin: 0 auto;
+}
+
+.hero-artistas-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.hero-artistas-kicker {
+  margin: 0;
+  color: var(--color-tema);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.hero-artistas-heading h2 {
+  margin: 0;
+  color: var(--color-tema);
+  font-size: clamp(34px, 5vw, 64px);
+  font-weight: 700;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+.hero-artistas-track {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.hero-artista-card {
+  position: relative;
+  min-height: 420px;
+  overflow: hidden;
+  text-decoration: none;
+  background: #000000;
+  color: #ffffff;
+  transform: translateY(0);
+  transition:
+    transform 220ms ease,
+    box-shadow 220ms ease,
+    opacity 220ms ease;
+}
+
+.hero-artista-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.18);
+}
+
+.hero-artista-card.is-active {
+  box-shadow: 0 0 0 3px var(--color-tema);
+}
+
+.hero-artista-image {
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
+  display: block;
+  object-fit: cover;
+}
+
+.hero-artista-overlay {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 18px 18px 16px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.68) 44%,
+      rgba(0, 0, 0, 0.92) 100%
+    );
+}
+
+.hero-artista-time {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.hero-artista-overlay h3 {
+  margin: 0;
+  font-size: clamp(26px, 3vw, 38px);
+  font-weight: 700;
+  line-height: 0.94;
+  text-transform: uppercase;
+}
+
+.hero-artistas-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.hero-artistas-dot {
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--color-tema);
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    background-color 160ms ease;
+}
+
+.hero-artistas-dot.is-active {
+  background: var(--color-tema);
+  transform: scale(1.08);
 }
 
 .hero-video {
@@ -1370,6 +1645,15 @@ onMounted(() => {
     right: 28px;
   }
 
+  .hero-artistas-track {
+    gap: 14px;
+  }
+
+  .hero-artista-card,
+  .hero-artista-image {
+    min-height: 360px;
+  }
+
   .home-entradas-cinta-grupo {
     gap: 64px;
     padding-right: 64px;
@@ -1407,6 +1691,24 @@ onMounted(() => {
     font-size: clamp(24px, 6.2vw, 34px);
   }
 
+  .hero-artistas {
+    padding: 18px 12px 8px;
+  }
+
+  .hero-artistas-track {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .hero-artista-card:nth-child(3) {
+    display: none;
+  }
+
+  .hero-artista-card,
+  .hero-artista-image {
+    min-height: 320px;
+  }
+
   .home-entradas-inner {
     grid-template-columns: 1fr;
     gap: 36px;
@@ -1430,6 +1732,19 @@ onMounted(() => {
 
   .hero-title {
     font-size: 42px;
+  }
+
+  .hero-artistas-track {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-artista-card:nth-child(n + 2) {
+    display: none;
+  }
+
+  .hero-artista-card,
+  .hero-artista-image {
+    min-height: 360px;
   }
 
   .studio-text {
