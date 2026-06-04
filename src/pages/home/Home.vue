@@ -13,9 +13,6 @@ import artistaFiga from '@/assets/artistas/art-19.jpg'
 import artistaOques from '@/assets/artistas/art-11.jpg'
 import videoInicioMp4 from '@/assets/vídeos/animacion-prueba.mp4'
 import entradaAbono from '@/assets/entradas/entrada-1.jpg'
-import entradaDia23 from '@/assets/entradas/entrada-2.jpg'
-import entradaDia24 from '@/assets/entradas/entrada-3.jpg'
-import entradaDia25 from '@/assets/entradas/entrada-4.jpg'
 
 import texturaCeraGrande from '@/assets/texturas/ceraazul.png'
 import texturaPixelGrande from '@/assets/texturas/pixelazul.png'
@@ -25,6 +22,14 @@ import texturaCeraVerde from '@/assets/texturas/ceraverde.png'
 import texturaPixelNaranja from '@/assets/texturas/pixelnaranja.png'
 import texturaPixelRosa from '@/assets/texturas/pixelrosa.png'
 import texturaPixelVerde from '@/assets/texturas/pixelverde.png'
+import texturaPoscaAzul from '@/assets/texturas/poscaazul.png'
+import texturaPoscaNaranja from '@/assets/texturas/poscanaranja.png'
+import texturaPoscaRosa from '@/assets/texturas/poscarosa.png'
+import texturaPoscaVerde from '@/assets/texturas/poscaverde.png'
+import texturaSubrayadorAzul from '@/assets/texturas/subrayadorazul.png'
+import texturaSubrayadorNaranja from '@/assets/texturas/subrayadornaranja.png'
+import texturaSubrayadorRosa from '@/assets/texturas/subrayadorrosa.png'
+import texturaSubrayadorVerde from '@/assets/texturas/subrayadorerde.png'
 import logoSubNaranja from '@/assets/logo/logonaranja-subtitulo.png'
 import logoSubRosa from '@/assets/logo/logorosa-subtitulo.png'
 import logoSubVerde from '@/assets/logo/logoverde-subtitulo.png'
@@ -61,6 +66,8 @@ type TemaVisual = {
   logoSub: string
   texturaCera: string
   texturaPixel: string
+  texturaPosca: string
+  texturaSubrayador: string
   pequesSubrayador: string
   pequesPixel: string
   pequesCera: string
@@ -150,32 +157,8 @@ const entradasInicio: EntradaInicio[] = [
     nombre: 'Abono general 3 días',
     precio: 75,
     imagen: entradaAbono,
-    descripcion: 'Acceso a todas las actividades de los tres días.',
+    descripcion: 'Pulsa para conseguir las demás entradas',
     color: '#004fff'
-  },
-  {
-    id: 2,
-    nombre: 'Entrada día 23.10.26',
-    precio: 40,
-    imagen: entradaDia23,
-    descripcion: 'Acceso a todas las actividades del día 23.',
-    color: '#ff2f92'
-  },
-  {
-    id: 3,
-    nombre: 'Entrada día 24.10.26',
-    precio: 40,
-    imagen: entradaDia24,
-    descripcion: 'Acceso a todas las actividades del día 24.',
-    color: '#f26a00'
-  },
-  {
-    id: 4,
-    nombre: 'Entrada día 25.10.26',
-    precio: 40,
-    imagen: entradaDia25,
-    descripcion: 'Acceso a todas las actividades del día 25.',
-    color: '#1ea56a'
   }
 ]
 
@@ -191,12 +174,17 @@ const colorTema = ref(COLOR_AZUL)
 const logoSubTema = ref(logoSubAzul)
 const texturaCeraHero = ref(texturaCeraGrande)
 const texturaPixelHero = ref(texturaPixelGrande)
+const texturaPoscaHero = ref(texturaPoscaAzul)
+const texturaSubrayadorHero = ref(texturaSubrayadorAzul)
 const indiceCarruselArtistas = ref(0)
 const indiceTemaActual = ref(0)
+const mostrarTexturasAlternativas = ref(false)
 const CLAVE_INDICE_TEMA = 'esclat-theme-index'
 const INTERVALO_CARRUSEL_ARTISTAS = 4200
+const INTERVALO_TEXTURAS_HERO = 2500
 
 let temporizadorCarruselArtistas: ReturnType<typeof setInterval> | null = null
+let temporizadorTexturasHero: ReturnType<typeof setInterval> | null = null
 
 const temasVisuales: TemaVisual[] = [
   {
@@ -204,6 +192,8 @@ const temasVisuales: TemaVisual[] = [
     logoSub: logoSubAzul,
     texturaCera: texturaCeraGrande,
     texturaPixel: texturaPixelGrande,
+    texturaPosca: texturaPoscaAzul,
+    texturaSubrayador: texturaSubrayadorAzul,
     pequesSubrayador: pequesAzul04,
     pequesPixel: pequesAzul05,
     pequesCera: pequesAzul06,
@@ -214,6 +204,8 @@ const temasVisuales: TemaVisual[] = [
     logoSub: logoSubNaranja,
     texturaCera: texturaCeraNaranja,
     texturaPixel: texturaPixelNaranja,
+    texturaPosca: texturaPoscaNaranja,
+    texturaSubrayador: texturaSubrayadorNaranja,
     pequesSubrayador: pequesNaranja04,
     pequesPixel: pequesNaranja05,
     pequesCera: pequesNaranja06,
@@ -224,6 +216,8 @@ const temasVisuales: TemaVisual[] = [
     logoSub: logoSubRosa,
     texturaCera: texturaCeraRosa,
     texturaPixel: texturaPixelRosa,
+    texturaPosca: texturaPoscaRosa,
+    texturaSubrayador: texturaSubrayadorRosa,
     pequesSubrayador: pequesRosa04,
     pequesPixel: pequesRosa05,
     pequesCera: pequesRosa06,
@@ -234,6 +228,8 @@ const temasVisuales: TemaVisual[] = [
     logoSub: logoSubVerde,
     texturaCera: texturaCeraVerde,
     texturaPixel: texturaPixelVerde,
+    texturaPosca: texturaPoscaVerde,
+    texturaSubrayador: texturaSubrayadorVerde,
     pequesSubrayador: pequesVerde04,
     pequesPixel: pequesVerde05,
     pequesCera: pequesVerde06,
@@ -733,6 +729,10 @@ function aplicarTemaActual() {
     indiceTema = 0
   }
 
+  aplicarTemaVisual(indiceTema)
+}
+
+function aplicarTemaVisual(indiceTema: number) {
   const tema =
     temasVisuales[indiceTema] ?? temasVisuales[0]
 
@@ -743,6 +743,8 @@ function aplicarTemaActual() {
   logoSubTema.value = tema.logoSub
   texturaCeraHero.value = tema.texturaCera
   texturaPixelHero.value = tema.texturaPixel
+  texturaPoscaHero.value = tema.texturaPosca
+  texturaSubrayadorHero.value = tema.texturaSubrayador
   colorActual.value = tema.color
 
   document.documentElement.style.setProperty(
@@ -771,6 +773,21 @@ function iniciarCarruselArtistas() {
   }, INTERVALO_CARRUSEL_ARTISTAS)
 }
 
+function detenerTexturasHero() {
+  if (temporizadorTexturasHero !== null) {
+    clearInterval(temporizadorTexturasHero)
+    temporizadorTexturasHero = null
+  }
+}
+
+function iniciarTexturasHero() {
+  detenerTexturasHero()
+
+  temporizadorTexturasHero = setInterval(() => {
+    mostrarTexturasAlternativas.value = !mostrarTexturasAlternativas.value
+  }, INTERVALO_TEXTURAS_HERO)
+}
+
 function seleccionarSlideArtistas(indice: number) {
   indiceCarruselArtistas.value = indice
   iniciarCarruselArtistas()
@@ -782,10 +799,12 @@ onMounted(() => {
 
   prepararLienzo()
   iniciarCarruselArtistas()
+  iniciarTexturasHero()
 })
 
 onBeforeUnmount(() => {
   detenerCarruselArtistas()
+  detenerTexturasHero()
 })
 </script>
 
@@ -801,6 +820,7 @@ onBeforeUnmount(() => {
       <div
         id="inicio"
         class="hero-poster"
+        :class="{ 'is-texture-alt': mostrarTexturasAlternativas }"
       >
         <img
           :src="logoSubTema"
@@ -818,6 +838,18 @@ onBeforeUnmount(() => {
           :src="texturaPixelHero"
           alt=""
           class="hero-texture hero-texture-pixel"
+        >
+
+        <img
+          :src="texturaSubrayadorHero"
+          alt=""
+          class="hero-texture hero-texture-subrayador"
+        >
+
+        <img
+          :src="texturaPoscaHero"
+          alt=""
+          class="hero-texture hero-texture-posca"
         >
 
         <div class="hero-date">
@@ -1088,23 +1120,54 @@ onBeforeUnmount(() => {
   z-index: 2;
 
   pointer-events: none;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
 }
 
 .hero-texture-cera {
   width: clamp(500px, 62vw, 920px);
 
-  left: 38%;
-  top: -39%;
+  left: 35%;
+  top: -28%;
 
-  transform: rotate(90deg);
+  transform: rotate(60deg);
   transform-origin: center;
 }
 
 .hero-texture-pixel {
-  width: clamp(250px, 31vw, 520px);
+  width: clamp(350px, 41vw, 620px);
 
-  left: 33%;
-  top: 2%;
+  left: 30%;
+  top: 10%;
+}
+
+.hero-texture-subrayador {
+  z-index: 3;
+  width: clamp(300px, 40vw, 760px);
+  left: 50%;
+  top: -20%;
+  opacity: 0;
+  transform: rotate(90deg);
+}
+
+.hero-texture-posca {
+  z-index: 3;
+  width: clamp(240px, 28vw, 600px);
+  left: 35%;
+  top: 19%;
+  opacity: 0;
+  transform: rotate(60deg);
+}
+
+.hero-poster.is-texture-alt .hero-texture-cera,
+.hero-poster.is-texture-alt .hero-texture-pixel {
+  opacity: 0;
+}
+
+.hero-poster.is-texture-alt .hero-texture-subrayador,
+.hero-poster.is-texture-alt .hero-texture-posca {
+  opacity: 1;
 }
 
 .hero-date {
@@ -1332,7 +1395,7 @@ onBeforeUnmount(() => {
   overflow: hidden;
   border-top: 2px solid var(--color-tema);
   border-bottom: 2px solid var(--color-tema);
-  background: #ffffff;
+  background: var(--color-tema);
 }
 
 .home-entradas-cinta-pista {
@@ -1351,7 +1414,7 @@ onBeforeUnmount(() => {
 
 .home-entradas-cinta-pista span {
   padding: 8px 0;
-  color: var(--color-tema);
+  color: #ffffff;
   font-size: clamp(24px, 2.8vw, 40px);
   font-weight: 700;
   text-transform: uppercase;
@@ -1363,9 +1426,10 @@ onBeforeUnmount(() => {
   margin: 0 auto;
   padding: 28px 24px 12px;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 680px);
   gap: 32px 24px;
   align-items: start;
+  justify-content: center;
   justify-items: center;
 }
 
@@ -1647,6 +1711,20 @@ onBeforeUnmount(() => {
     top: 7%;
   }
 
+  .hero-texture-subrayador {
+    width: clamp(420px, 50vw, 760px);
+    left: 50%;
+    top: -3%;
+    transform: rotate(70deg);
+  }
+
+  .hero-texture-posca {
+    width: clamp(380px, 45vw, 660px);
+    left: 25%;
+    top: 20%;
+    transform: rotate(70deg);
+  }
+
   .hero-place {
     right: 28px;
   }
@@ -1715,6 +1793,24 @@ onBeforeUnmount(() => {
     transform: rotate(0deg);
   }
 
+  .hero-texture-subrayador {
+    left: 35%;
+    top: 7%;
+    width: 70%;
+    height: auto;
+    object-fit: contain;
+    transform: rotate(67deg);
+  }
+
+  .hero-texture-posca {
+    left: 10%;
+    top: 31%;
+    width: 60%;
+    height: auto;
+    object-fit: contain;
+    transform: rotate(66deg);
+  }
+
   .hero-date {
     left: 5%;
     top: 85%;
@@ -1758,7 +1854,15 @@ onBeforeUnmount(() => {
   }
 
   .hero-artistas {
-    padding: 18px 12px 8px;
+    padding: 12px 10px 6px;
+  }
+
+  .hero-artistas-heading {
+    margin-bottom: 10px;
+  }
+
+  .hero-artistas-heading h2 {
+    font-size: 30px;
   }
 
   .hero-artistas-track {
@@ -1772,7 +1876,25 @@ onBeforeUnmount(() => {
 
   .hero-artista-card,
   .hero-artista-image {
-    min-height: 320px;
+    min-height: 240px;
+  }
+
+  .hero-artista-overlay {
+    padding: 14px;
+  }
+
+  .hero-artista-overlay h3 {
+    font-size: 24px;
+  }
+
+  .hero-artistas-dots {
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .hero-artistas-dot {
+    width: 9px;
+    height: 9px;
   }
 
   .home-entradas-inner {
@@ -1810,7 +1932,7 @@ onBeforeUnmount(() => {
 
   .hero-artista-card,
   .hero-artista-image {
-    min-height: 360px;
+    min-height: 240px;
   }
 
   .studio-text {
@@ -1847,7 +1969,7 @@ onBeforeUnmount(() => {
     width: 108%;
     height: auto;
     object-fit: contain;
-    transform: rotate(14deg);
+    transform: rotate(78deg);
   }
 
   .hero-texture-pixel {
@@ -1857,6 +1979,24 @@ onBeforeUnmount(() => {
     height: auto;
     object-fit: contain;
     transform: rotate(-9deg);
+  }
+
+  .hero-texture-subrayador {
+    left: 47%;
+    top: 8%;
+    width: 58%;
+    height: auto;
+    object-fit: contain;
+    transform: rotate(-26deg);
+  }
+
+  .hero-texture-posca {
+    left: 29%;
+    top: 31%;
+    width: 68%;
+    height: auto;
+    object-fit: contain;
+    transform: rotate(-16deg);
   }
 
   .hero-date {
