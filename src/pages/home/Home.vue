@@ -5,13 +5,21 @@ import { Eraser, Save } from 'lucide-vue-next'
 
 import logoSubAzul from '@/assets/logo/logoazul-subtitulo.png'
 import imagenFondo1 from '@/assets/imagenes/imagenfondo1.jpg'
+import fotoFondo from '@/assets/foticos/fotofondo.png'
+import cartelPrincipal from '@/assets/carteles/cartel principal.png'
+import cartelSecundario from '@/assets/carteles/cartel 2.png'
+import cartelCortos from '@/assets/carteles/carteleras-04.png'
+import cartelTalleres from '@/assets/carteles/carteleras-05.png'
 import artistaBelen from '@/assets/artistas/art-05.jpg'
 import artistaSilvana from '@/assets/artistas/art-06.jpg'
 import artistaKanka from '@/assets/artistas/art-07.jpg'
 import artistaValeria from '@/assets/artistas/art-08.jpg'
 import artistaFiga from '@/assets/artistas/art-19.jpg'
 import artistaOques from '@/assets/artistas/art-11.jpg'
-import videoInicioMp4 from '@/assets/vídeos/animacion-prueba.mp4'
+import videoInicioAzulMp4 from '@/assets/videos/Secuencia 01 azul.mp4'
+import videoInicioNaranjaMp4 from '@/assets/videos/Secuencia 01 naranja.mp4'
+import videoInicioRosaMp4 from '@/assets/videos/Secuencia 01 rosa.mp4'
+import videoInicioVerdeMp4 from '@/assets/videos/Secuencia 01 verde.mp4'
 import entradaAbono from '@/assets/entradas/entrada-1.jpg'
 
 import texturaCeraGrande from '@/assets/texturas/ceraazul.png'
@@ -106,7 +114,12 @@ const FUENTE_INTER =
   '"Inter", "Helvetica Neue", Arial, sans-serif'
 
 const fondoEscena = `url(${imagenFondo1})`
-const videoInicioUrl = videoInicioMp4
+const videosInicioPorColor: Record<string, string> = {
+  '#004fff': videoInicioAzulMp4,
+  '#fe8507': videoInicioNaranjaMp4,
+  '#fc0299': videoInicioRosaMp4,
+  '#05d181': videoInicioVerdeMp4
+}
 const artistasInicio: ArtistaInicio[] = [
   {
     id: 1,
@@ -161,6 +174,28 @@ const entradasInicio: EntradaInicio[] = [
     color: '#004fff'
   }
 ]
+const cartelesInicio = [
+  {
+    id: 1,
+    imagen: cartelPrincipal,
+    alt: 'Cartel principal de Esclat'
+  },
+  {
+    id: 2,
+    imagen: cartelSecundario,
+    alt: 'Cartel de programación de Esclat'
+  },
+  {
+    id: 3,
+    imagen: cartelCortos,
+    alt: 'Cartel de cortos de Esclat'
+  },
+  {
+    id: 4,
+    imagen: cartelTalleres,
+    alt: 'Cartel de talleres de Esclat'
+  }
+]
 
 const coloresDisponibles = [
   '#fe8507',
@@ -171,6 +206,7 @@ const coloresDisponibles = [
 
 const colorActual = ref<string>(coloresDisponibles[1])
 const colorTema = ref(COLOR_AZUL)
+const videoInicioUrl = computed(() => videosInicioPorColor[colorTema.value] ?? videoInicioAzulMp4)
 const logoSubTema = ref(logoSubAzul)
 const texturaCeraHero = ref(texturaCeraGrande)
 const texturaPixelHero = ref(texturaPixelGrande)
@@ -871,8 +907,10 @@ onBeforeUnmount(() => {
       <section class="hero-video">
         <div class="hero-video-inner">
           <video
+            :key="videoInicioUrl"
             class="hero-video-player"
             controls
+            loop
             playsinline
             preload="metadata"
           >
@@ -974,6 +1012,34 @@ onBeforeUnmount(() => {
           </RouterLink>
         </div>
       </section>
+    </section>
+
+    <section
+      class="home-foto-fondo"
+      aria-label="Ambiente del festival"
+    >
+      <div class="home-foto-fondo__marco">
+        <img
+          :src="fotoFondo"
+          alt=""
+          class="home-foto-fondo__imagen"
+        >
+
+        <div
+          class="home-carteles-loop"
+          aria-label="Carteles del festival"
+        >
+          <div class="home-carteles-loop__stage">
+            <img
+              v-for="cartel in cartelesInicio"
+              :key="cartel.id"
+              :src="cartel.imagen"
+              :alt="cartel.alt"
+              class="home-carteles-loop__poster"
+            >
+          </div>
+        </div>
+      </div>
     </section>
 
     <section
@@ -1369,16 +1435,17 @@ onBeforeUnmount(() => {
 .hero-video {
   width: 100%;
   background: var(--color-tema);
-  padding: 20px 16px 24px;
+  padding: 28px 18px 32px;
 }
 
 .hero-video-inner {
-  width: min(100%, 1280px);
+  width: min(100%, 1180px);
   margin: 0 auto;
 }
 
 .hero-video-player {
   width: 100%;
+  height: auto;
   display: block;
   border: 0;
   background: #000000;
@@ -1473,6 +1540,151 @@ onBeforeUnmount(() => {
 
   to {
     transform: translateX(-100%);
+  }
+}
+
+.home-foto-fondo {
+  width: 100%;
+  background: #ffffff;
+  overflow: hidden;
+  padding: 36px 0 44px;
+}
+
+.home-foto-fondo__marco {
+  position: relative;
+  width: 100vw;
+  height: clamp(160px, 30vw, 520px);
+  margin-left: calc(50% - 50vw);
+  overflow: hidden;
+}
+
+.home-foto-fondo__imagen {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.home-carteles-loop {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.home-carteles-loop__stage {
+  position: relative;
+  width: min(30vw, 260px);
+  aspect-ratio: 210 / 297;
+  margin: 0 auto;
+}
+
+.home-carteles-loop__poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transform: translateY(48px) scale(0.94) rotate(-3deg);
+  transform-origin: center;
+  filter: drop-shadow(0 18px 26px rgb(0 0 0 / 0.14));
+  will-change: opacity, transform;
+}
+
+.home-carteles-loop__poster:nth-child(1) {
+  animation: apilar-cartel-1 9s ease-in-out infinite;
+  z-index: 1;
+}
+
+.home-carteles-loop__poster:nth-child(2) {
+  animation: apilar-cartel-2 9s ease-in-out infinite;
+  z-index: 2;
+}
+
+.home-carteles-loop__poster:nth-child(3) {
+  animation: apilar-cartel-3 9s ease-in-out infinite;
+  z-index: 3;
+}
+
+.home-carteles-loop__poster:nth-child(4) {
+  animation: apilar-cartel-4 9s ease-in-out infinite;
+  z-index: 4;
+}
+
+@keyframes apilar-cartel-1 {
+  0% {
+    opacity: 0;
+    transform: translateY(48px) scale(0.94) rotate(-3deg);
+  }
+
+  8%,
+  96% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(-3deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-16px) scale(0.98) rotate(-3deg);
+  }
+}
+
+@keyframes apilar-cartel-2 {
+  0%,
+  22% {
+    opacity: 0;
+    transform: translateY(48px) scale(0.94) rotate(2.5deg);
+  }
+
+  30%,
+  96% {
+    opacity: 1;
+    transform: translateY(-8px) scale(1) rotate(2.5deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-24px) scale(0.98) rotate(2.5deg);
+  }
+}
+
+@keyframes apilar-cartel-3 {
+  0%,
+  44% {
+    opacity: 0;
+    transform: translateY(48px) scale(0.94) rotate(-1.5deg);
+  }
+
+  52%,
+  96% {
+    opacity: 1;
+    transform: translateY(-16px) scale(1) rotate(-1.5deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-32px) scale(0.98) rotate(-1.5deg);
+  }
+}
+
+@keyframes apilar-cartel-4 {
+  0%,
+  66% {
+    opacity: 0;
+    transform: translateY(48px) scale(0.94) rotate(1deg);
+  }
+
+  74%,
+  96% {
+    opacity: 1;
+    transform: translateY(-24px) scale(1) rotate(1deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-40px) scale(0.98) rotate(1deg);
   }
 }
 
@@ -1910,6 +2122,24 @@ onBeforeUnmount(() => {
   .home-entrada-descripcion {
     opacity: 1;
     font-size: 12px;
+  }
+
+  .home-foto-fondo {
+    padding: 28px 0 34px;
+  }
+
+  .home-foto-fondo__marco {
+    width: 100vw;
+    height: clamp(220px, 54vw, 320px);
+    margin-left: calc(50% - 50vw);
+  }
+
+  .home-foto-fondo__imagen {
+    object-position: center;
+  }
+
+  .home-carteles-loop__stage {
+    width: min(40vw, 180px);
   }
 }
 
