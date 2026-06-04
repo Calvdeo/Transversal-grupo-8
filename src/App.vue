@@ -10,6 +10,7 @@ const COLORES_TEMA = [
   '#fc0299',
   '#05d181'
 ] as const
+const PESOS_COLORES_TEMA = [4, 1, 1, 1] as const
 const CLAVE_INDICE_TEMA = 'esclat-theme-index'
 const COLOR_POR_RUTA: Record<string, string> = {
   '/artistas': '#004fff',
@@ -46,6 +47,24 @@ function aplicarColorHeader(color: string) {
   )
 }
 
+function obtenerIndiceTemaPonderado() {
+  const totalPesos = PESOS_COLORES_TEMA.reduce(
+    (suma, peso) => suma + peso,
+    0
+  )
+  let valor = Math.random() * totalPesos
+
+  for (let indice = 0; indice < PESOS_COLORES_TEMA.length; indice += 1) {
+    valor -= PESOS_COLORES_TEMA[indice] ?? 0
+
+    if (valor < 0) {
+      return indice
+    }
+  }
+
+  return 0
+}
+
 function aplicarColorGlobal(
   ruta: string,
   avanzarSecuencia: boolean
@@ -62,9 +81,7 @@ function aplicarColorGlobal(
   let indiceTema = obtenerIndiceTemaGuardado()
 
   if (avanzarSecuencia) {
-    indiceTema =
-      (indiceTema + 1 + COLORES_TEMA.length) %
-      COLORES_TEMA.length
+    indiceTema = obtenerIndiceTemaPonderado()
 
     try {
       window.localStorage.setItem(

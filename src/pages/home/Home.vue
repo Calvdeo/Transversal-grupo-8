@@ -5,7 +5,10 @@ import { Eraser, Save } from 'lucide-vue-next'
 
 import logoSubAzul from '@/assets/logo/logoazul-subtitulo.png'
 import imagenFondo1 from '@/assets/imagenes/imagenfondo1.jpg'
-import fotoFondo from '@/assets/foticos/fotofondo.png'
+import fotoFondoAzul from '@/assets/foticos/azul.png'
+import fotoFondoNaranja from '@/assets/foticos/narnaj.png'
+import fotoFondoRosa from '@/assets/foticos/rosa.png'
+import fotoFondoVerde from '@/assets/foticos/foto1.png'
 import cartelPrincipal from '@/assets/carteles/cartel principal.png'
 import cartelSecundario from '@/assets/carteles/cartel 2.png'
 import cartelCortos from '@/assets/carteles/carteleras-04.png'
@@ -120,6 +123,12 @@ const videosInicioPorColor: Record<string, string> = {
   '#fc0299': videoInicioRosaMp4,
   '#05d181': videoInicioVerdeMp4
 }
+const fotosFondoPorColor: Record<string, string> = {
+  '#004fff': fotoFondoAzul,
+  '#fe8507': fotoFondoNaranja,
+  '#fc0299': fotoFondoRosa,
+  '#05d181': fotoFondoVerde
+}
 const artistasInicio: ArtistaInicio[] = [
   {
     id: 1,
@@ -207,6 +216,7 @@ const coloresDisponibles = [
 const colorActual = ref<string>(coloresDisponibles[1])
 const colorTema = ref(COLOR_AZUL)
 const videoInicioUrl = computed(() => videosInicioPorColor[colorTema.value] ?? videoInicioAzulMp4)
+const fotoFondoUrl = computed(() => fotosFondoPorColor[colorTema.value] ?? fotoFondoAzul)
 const logoSubTema = ref(logoSubAzul)
 const texturaCeraHero = ref(texturaCeraGrande)
 const texturaPixelHero = ref(texturaPixelGrande)
@@ -1020,7 +1030,7 @@ onBeforeUnmount(() => {
     >
       <div class="home-foto-fondo__marco">
         <img
-          :src="fotoFondo"
+          :src="fotoFondoUrl"
           alt=""
           class="home-foto-fondo__imagen"
         >
@@ -1553,7 +1563,7 @@ onBeforeUnmount(() => {
 .home-foto-fondo__marco {
   position: relative;
   width: 100vw;
-  height: clamp(160px, 30vw, 520px);
+  height: clamp(260px, 60vw, 620px);
   margin-left: calc(50% - 50vw);
   overflow: hidden;
 }
@@ -2066,7 +2076,7 @@ onBeforeUnmount(() => {
   }
 
   .hero-artistas {
-    padding: 12px 10px 6px;
+    padding: 8px 10px 4px;
   }
 
   .hero-artistas-heading {
@@ -2074,7 +2084,7 @@ onBeforeUnmount(() => {
   }
 
   .hero-artistas-heading h2 {
-    font-size: 30px;
+    font-size: 24px;
   }
 
   .hero-artistas-track {
@@ -2088,15 +2098,20 @@ onBeforeUnmount(() => {
 
   .hero-artista-card,
   .hero-artista-image {
-    min-height: 240px;
+    min-height: 180px;
   }
 
   .hero-artista-overlay {
-    padding: 14px;
+    padding: 10px;
   }
 
   .hero-artista-overlay h3 {
-    font-size: 24px;
+    font-size: 18px;
+  }
+
+  .hero-artista-time {
+    margin-bottom: 4px;
+    font-size: 9px;
   }
 
   .hero-artistas-dots {
@@ -2154,6 +2169,8 @@ onBeforeUnmount(() => {
 
   .hero-artistas-track {
     grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 8px;
   }
 
   .hero-artista-card:nth-child(n + 2) {
@@ -2162,7 +2179,11 @@ onBeforeUnmount(() => {
 
   .hero-artista-card,
   .hero-artista-image {
-    min-height: 240px;
+    min-height: 170px;
+  }
+
+  .hero-artista-card {
+    width: min(78vw, 280px);
   }
 
   .studio-text {
