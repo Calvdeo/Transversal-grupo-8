@@ -265,8 +265,8 @@ function cerrarPantallaGracias() {
 .cinta-descuento {
   width: 100%;
   overflow: hidden;
-  border-top: 2px solid #004fff;
-  border-bottom: 2px solid #004fff;
+  border-top: 2px solid var(--esclat-theme-color, #004fff);
+  border-bottom: 2px solid var(--esclat-theme-color, #004fff);
   background: #ffffff;
 }
 
@@ -286,7 +286,7 @@ function cerrarPantallaGracias() {
 
 .cinta-descuento-pista span {
   padding: 8px 0;
-  color: #004fff;
+  color: var(--esclat-theme-color, #004fff);
   font-size: clamp(24px, 2.8vw, 40px);
   font-weight: 700;
   text-transform: uppercase;

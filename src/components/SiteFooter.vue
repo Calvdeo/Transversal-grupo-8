@@ -67,15 +67,15 @@ import logoCocaCola from '@/assets/logo/instituciones/coca.png'
           <span class="site-footer__label">organiza</span>
 
           <img
-            :src="logoInstitucionesOrganiza"
-            alt="Ajuntament de Valencia y Las Naves"
-            class="site-footer__logo site-footer__logo--organiza"
-          >
-
-          <img
             :src="logoEsclatInstitucion"
             alt="Esclat"
             class="site-footer__logo site-footer__logo--esclat"
+          >
+
+          <img
+            :src="logoInstitucionesOrganiza"
+            alt="Ajuntament de Valencia y Las Naves"
+            class="site-footer__logo site-footer__logo--organiza"
           >
         </div>
 
@@ -114,7 +114,7 @@ import logoCocaCola from '@/assets/logo/instituciones/coca.png'
 <style scoped>
 .site-footer {
   width: 100%;
-  background: #004fff;
+  background: var(--esclat-theme-color, #004fff);
   border-top: 2px solid rgba(255, 255, 255, 0.55);
 }
 
@@ -190,7 +190,7 @@ import logoCocaCola from '@/assets/logo/instituciones/coca.png'
   transform: translateY(-2px) scale(1.05);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
   background: #ffffff;
-  color: #004fff;
+  color: var(--esclat-theme-color, #004fff);
 }
 
 .site-footer__links {
@@ -225,22 +225,22 @@ import logoCocaCola from '@/assets/logo/instituciones/coca.png'
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(16px, 2.6vw, 44px);
+  gap: clamp(12px, 2vw, 32px);
   flex-wrap: wrap;
-  padding-top: 12px;
+  padding-top: 8px;
 }
 
 .site-footer__logo-group {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(10px, 1.2vw, 18px);
+  gap: clamp(8px, 1vw, 14px);
   flex-wrap: wrap;
 }
 
 .site-footer__label {
   color: #ffffff;
-  font-size: clamp(20px, 1.8vw, 30px);
+  font-size: clamp(14px, 1.25vw, 20px);
   font-family: "Alte Haas Grotesk", "Helvetica Neue", Arial, sans-serif;
   line-height: 1;
   opacity: 0.96;
@@ -248,17 +248,17 @@ import logoCocaCola from '@/assets/logo/instituciones/coca.png'
 }
 
 .site-footer__logo {
-  height: clamp(42px, 3.9vw, 64px);
+  height: clamp(28px, 2.7vw, 44px);
   width: auto;
   object-fit: contain;
 }
 
 .site-footer__logo--organiza {
-  height: clamp(40px, 3.7vw, 62px);
+  height: clamp(23px, 2.2vw, 36px);
 }
 
 .site-footer__logo--esclat {
-  height: clamp(34px, 3vw, 52px);
+  height: clamp(22px, 2.1vw, 34px);
 }
 
 @media (max-width: 860px) {
@@ -290,28 +290,28 @@ import logoCocaCola from '@/assets/logo/instituciones/coca.png'
   }
 
   .site-footer__logos {
-    gap: 12px 18px;
+    gap: 10px 14px;
     justify-content: center;
   }
 
   .site-footer__logo-group {
-    gap: 8px 12px;
+    gap: 6px 10px;
   }
 
   .site-footer__label {
-    font-size: 18px;
+    font-size: 14px;
   }
 
   .site-footer__logo {
-    height: 34px;
+    height: 24px;
   }
 
   .site-footer__logo--organiza {
-    height: 32px;
+    height: 21px;
   }
 
   .site-footer__logo--esclat {
-    height: 28px;
+    height: 20px;
   }
 }
 </style>
