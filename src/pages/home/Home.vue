@@ -104,42 +104,42 @@ const artistasInicio: ArtistaInicio[] = [
   {
     id: 1,
     nombre: 'Belen Aguilera',
-    hora: 'Dia 24, 17:00',
+    hora: 'Dia 24, 17h',
     escenario: 'Patio 2',
     imagen: artistaBelen
   },
   {
     id: 2,
     nombre: 'Silvana Estrada',
-    hora: 'Dia 25, 19:00',
+    hora: 'Dia 25, 19h',
     escenario: 'Patio 2',
     imagen: artistaSilvana
   },
   {
     id: 3,
     nombre: 'El Kanka',
-    hora: 'Dia 24, 21:00',
+    hora: 'Dia 24, 21h',
     escenario: 'Patio 2',
     imagen: artistaKanka
   },
   {
     id: 4,
     nombre: 'Valeria Castro',
-    hora: 'Dia 25, 20:15',
+    hora: 'Dia 25, 20h15',
     escenario: 'Patio 2',
     imagen: artistaValeria
   },
   {
     id: 5,
     nombre: 'Figa Flawas',
-    hora: 'Dia 25, 21:00',
+    hora: 'Dia 25, 21h',
     escenario: 'Patio 2',
     imagen: artistaFiga
   },
   {
     id: 6,
     nombre: 'Oques Grasses',
-    hora: 'Dia 25, 21:45',
+    hora: 'Dia 25, 21h45',
     escenario: 'Patio 2',
     imagen: artistaOques
   }

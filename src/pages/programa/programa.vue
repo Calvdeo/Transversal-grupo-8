@@ -87,8 +87,8 @@ const eventos: Evento[] = [
     categoria: 'musica',
     espacio: 'Patio 2',
     actuaciones: [
-      { hora: '18:00', artista: 'Figa Flawas' },
-      { hora: '21:00', artista: 'Valeria Castro' }
+      { hora: '18h', artista: 'Figa Flawas' },
+      { hora: '21h', artista: 'Valeria Castro' }
       
     ]
   },
@@ -101,10 +101,10 @@ const eventos: Evento[] = [
     categoria: 'musica',
     espacio: 'Patio 1',
     actuaciones: [
-      { hora: '11:00', artista: 'Shego' },
-      { hora: '12:30', artista: 'Escandaloso Xposito' },
-      { hora: '16:00', artista: 'La Paloma' },
-       { hora: '19:00', artista: 'CORTE!' }
+      { hora: '11h', artista: 'Shego' },
+      { hora: '12h30', artista: 'Escandaloso Xposito' },
+      { hora: '16h', artista: 'La Paloma' },
+       { hora: '19h', artista: 'CORTE!' }
     ]
   },
   {
@@ -116,8 +116,8 @@ const eventos: Evento[] = [
     categoria: 'musica',
     espacio: 'Patio 2',
     actuaciones: [
-      { hora: '18:00', artista: 'Belen Aguilera' },
-      { hora: '21:00', artista: 'El Kanka' },
+      { hora: '18h', artista: 'Belen Aguilera' },
+      { hora: '21h', artista: 'El Kanka' },
       
     
     ]
@@ -131,10 +131,10 @@ const eventos: Evento[] = [
     categoria: 'musica',
     espacio: 'Patio 1',
     actuaciones: [
-      { hora: '11:00', artista: 'Ariel Pink' },
-      { hora: '12:30', artista: 'Aiko el grupo' },
-      { hora: '16:00', artista: 'Mala Gestión' },
-      { hora: '19:00', artista: 'La fúmiga' }
+      { hora: '11h', artista: 'Ariel Pink' },
+      { hora: '12h30', artista: 'Aiko el grupo' },
+      { hora: '16h', artista: 'Mala Gestión' },
+      { hora: '19h', artista: 'La fúmiga' }
     
     ]
   },
@@ -147,8 +147,8 @@ const eventos: Evento[] = [
     categoria: 'musica',
     espacio: 'Patio 2',
     actuaciones: [
-      { hora: '19:00', artista: 'Silvana Estrada' },
-      { hora: '21:00', artista: 'Oques Grasses' }
+      { hora: '19h', artista: 'Silvana Estrada' },
+      { hora: '21h', artista: 'Oques Grasses' }
    
     ]
   },
@@ -161,10 +161,10 @@ const eventos: Evento[] = [
     categoria: 'musica',
     espacio: 'Patio 1',
     actuaciones: [
-      { hora: '11:00', artista: 'Amor Liquido' },
-      { hora: '12:30', artista: 'Las Petunias' },
-      { hora: '16:00', artista: 'Zoo' },
-      { hora: '16:00', artista: 'Los Punsetes' }
+      { hora: '11h', artista: 'Amor Liquido' },
+      { hora: '12h30', artista: 'Las Petunias' },
+      { hora: '16h', artista: 'Zoo' },
+      { hora: '16h', artista: 'Los Punsetes' }
       
       
     ]
@@ -172,7 +172,7 @@ const eventos: Evento[] = [
   {
     dia: 'viernes',
     fecha: '23.10.26',
-    hora: '13:00',
+    hora: '13h',
     titulo: 'Taller de cianotipia',
     descripcion: 'Pintar con luz y revelar accidentes felices.',
     categoria: 'taller',
@@ -181,7 +181,7 @@ const eventos: Evento[] = [
   {
     dia: 'viernes',
     fecha: '23.10.26',
-    hora: '18:30',
+    hora: '18h30',
     titulo: 'Cadaver exquisito',
     descripcion: 'Crear juntos sin saber adónde vamos',
     categoria: 'taller',
@@ -190,7 +190,7 @@ const eventos: Evento[] = [
   {
     dia: 'sabado',
     fecha: '24.10.26',
-    hora: '13:30',
+    hora: '13h30',
     titulo: 'Escritura creativa',
     descripcion: 'Encontrar historias donde parecía que no había nada.',
     categoria: 'taller',
@@ -199,7 +199,7 @@ const eventos: Evento[] = [
   {
     dia: 'sabado',
     fecha: '24.10.26',
-    hora: '18:30',
+    hora: '18h30',
     titulo: 'Improvisacion teatral',
     descripcion: 'Menos control. Más juego.',
     categoria: 'taller',
@@ -208,7 +208,7 @@ const eventos: Evento[] = [
   {
     dia: 'domingo',
     fecha: '25.10.26',
-    hora: '13:30',
+    hora: '13h30',
     titulo: 'Taller de fanzines',
     descripcion: 'Hazlo tú mismo antes de que alguien te diga cómo.',
     categoria: 'taller',
@@ -217,7 +217,7 @@ const eventos: Evento[] = [
   {
     dia: 'domingo',
     fecha: '25.10.26',
-    hora: '18:30',
+    hora: '18h30',
     titulo: 'Clase de produccion musical',
     descripcion: 'Convertir una idea en algo que realmente suceda.',
     categoria: 'taller',
@@ -226,7 +226,7 @@ const eventos: Evento[] = [
   {
     dia: 'viernes',
     fecha: '23.10.26',
-    hora: '11:00',
+    hora: '11h',
     titulo: 'Manipulamos o nos manipulan - Diego Alvarez',
     descripcion: 'Quien manipula y quien es manipulado.',
     categoria: 'charla',
@@ -235,7 +235,7 @@ const eventos: Evento[] = [
   {
     dia: 'viernes',
     fecha: '23.10.26',
-    hora: '16:00',
+    hora: '16h',
     titulo: 'Piel de platano - Miss Beige',
     descripcion: 'Este encuentro es un intento de poner el centro las prácticas artísticas cómicas. La risa nos libera de tensiones, y eso es un asunto serio.',
     categoria: 'charla',
@@ -244,7 +244,7 @@ const eventos: Evento[] = [
   {
     dia: 'sabado',
     fecha: '24.10.26',
-    hora: '11:00',
+    hora: '11h',
     titulo: '¿Esta todo inventado? - PutoMikel',
     descripcion: 'Crear después de internet: una conversación incómodamente necesaria.',
     categoria: 'charla',
@@ -253,7 +253,7 @@ const eventos: Evento[] = [
   {
     dia: 'sabado',
     fecha: '24.10.26',
-    hora: '16:00',
+    hora: '16h',
     titulo: 'La performance - TER',
     descripcion: 'Cuando el cuerpo deja de explicar y empieza a decir.',
     categoria: 'charla',
@@ -262,7 +262,7 @@ const eventos: Evento[] = [
   {
     dia: 'domingo',
     fecha: '25.10.26',
-    hora: '11:00',
+    hora: '11h',
     titulo: 'Espanul - Lamine Thior',
     descripcion: 'Entre idiomas, fronteras y etiquetas que nunca terminan de encajar.',
     categoria: 'charla',
@@ -271,7 +271,7 @@ const eventos: Evento[] = [
   {
     dia: 'domingo',
     fecha: '25.10.26',
-    hora: '18:00',
+    hora: '18h',
     titulo: 'Qué nos dice la música - Jaime Altozano',
     descripcion: 'Escuchar más allá de las canciones.',
     categoria: 'charla',
@@ -280,7 +280,7 @@ const eventos: Evento[] = [
   {
     dia: 'viernes',
     fecha: '23.10.26',
-    hora: '12:00',
+    hora: '12h',
     titulo: '"Madre" - Rodrigo Sorogoyen',
     descripcion: 'La cotidiana conversación entre Marta y su madre se convierte en una trágica situación contrarreloj cuando reciben una llamada de su hijo de 6 años desde una playa francesa perdido sin su padre .',
     categoria: 'corto',
@@ -289,7 +289,7 @@ const eventos: Evento[] = [
   {
     dia: 'viernes',
     fecha: '23.10.26',
-    hora: '18:30',
+    hora: '18h30',
     titulo: '"Zona Wao" - Nagore Eceiza Mujika',
     descripcion: 'Nominado al Goya a Mejor Corto Documental. Desde hace más de 50 años, empresas petroleras extraen petróleo de la Amazonía con mayor biodiversidad del planeta.',
     categoria: 'corto',
@@ -298,7 +298,7 @@ const eventos: Evento[] = [
   {
     dia: 'sabado',
     fecha: '24.10.26',
-    hora: '12:00',
+    hora: '12h',
     titulo: '"Utopias y otras especies" - Julia Izaguirre',
     descripcion: 'Cercado por nuevos edificios en Vitoria, el barrio ocupado Errekaleor resiste el desalojo en red, entablando un diálogo entre la comunidad y su huerto.',
     categoria: 'corto',
@@ -307,7 +307,7 @@ const eventos: Evento[] = [
   {
     dia: 'sabado',
     fecha: '24.10.26',
-    hora: '18:30',
+    hora: '18h30',
     titulo: '"Me" - Don Hertzfeldt',
     descripcion: 'Preseleccionado para los Oscar a mejor cortometraje de animación, el aclamado maestro de la animación Don Hertzfeldt ("World of Tomorrow") vuelve con esta odisea musical.',
     categoria: 'corto',
@@ -316,7 +316,7 @@ const eventos: Evento[] = [
   {
     dia: 'domingo',
     fecha: '25.10.26',
-    hora: '12:00',
+    hora: '12h',
     titulo: '"No als poalets" - Laura Garcia Andreu',
     descripcion: 'Los poalets, unos cubos de reciclaje, polarizan a un pueblo entero. Entre masivas protestas, las urnas decidirán si este delirante conflicto cambia su destino.',
     categoria: 'corto',
@@ -325,7 +325,7 @@ const eventos: Evento[] = [
   {
     dia: 'domingo',
     fecha: '25.10.26',
-    hora: '18:30',
+    hora: '18h30',
     titulo: '"Uli" - Mariana Gil',
     descripcion: 'Una historia que aborda las metamorfosis ocurridas entre la niñez y la adolescencia, desde la imaginación de una zona donde construir nuevas formas de vincularse diversamente.',
     categoria: 'corto',

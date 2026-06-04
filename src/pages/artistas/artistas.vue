@@ -21,7 +21,7 @@ const cantantes = ref<Cantante[]>([
   {
     id: 1,
     nombre: 'Belen Aguilera',
-    hora: 'Dia 24, 17:00',
+    hora: 'Dia 24, 17h',
     escenario: 'Patio 2',
     descripcion: 'Pop emocional con letras intimas y estribillos potentes.',
     rutaImagen: '/src/assets/artistas/art-05.jpg'
@@ -29,7 +29,7 @@ const cantantes = ref<Cantante[]>([
   {
     id: 2,
     nombre: 'Silvana Estrada',
-    hora: 'Dia 25, 19:00',
+    hora: 'Dia 25, 19h',
     escenario: 'Patio 2',
     descripcion: 'Folk latino de voz delicada y arreglos acusticos organicos.',
     rutaImagen: '/src/assets/artistas/art-06.jpg'
@@ -37,7 +37,7 @@ const cantantes = ref<Cantante[]>([
   {
     id: 3,
     nombre: 'El Kanka',
-    hora: 'Dia 24, 21:00',
+    hora: 'Dia 24, 21h',
     escenario: 'Patio 2',
     descripcion: 'Cancion de autor con humor, cercania y mucho carisma en directo.',
     rutaImagen: '/src/assets/artistas/art-07.jpg'
@@ -45,7 +45,7 @@ const cantantes = ref<Cantante[]>([
   {
     id: 4,
     nombre: 'valeria Castro',
-    hora: 'Dia 25, 20:15',
+    hora: 'Dia 25, 20h15',
     escenario: 'Patio 2',
     descripcion: 'Pop de raiz con sensibilidad vocal y atmosfera cinematica.',
     rutaImagen: '/src/assets/artistas/art-08.jpg'
@@ -53,7 +53,7 @@ const cantantes = ref<Cantante[]>([
   {
     id: 5,
     nombre: 'Figa Flawas',
-    hora: 'Dia 25, 21:00',
+    hora: 'Dia 25, 21h',
     escenario: 'Patio 2',
     descripcion: 'Ritmos urbanos y fiesta mediterranea con energia joven.',
     rutaImagen: '/src/assets/artistas/art-19.jpg'
@@ -61,7 +61,7 @@ const cantantes = ref<Cantante[]>([
   {
     id: 6,
     nombre: 'Oques Grasses',
-    hora: 'Dia 25, 21:45',
+    hora: 'Dia 25, 21h45',
     escenario: 'Patio 2',
     descripcion: 'Mestizaje pop y electronica con himnos para cantar en grupo.',
     rutaImagen: '/src/assets/artistas/art-11.jpg'
@@ -72,7 +72,7 @@ const cantantesSecundarios = ref<Cantante[]>([
   {
     id: 112,
     nombre: 'La Paloma',
-    hora: 'Dia 23, 16:00',
+    hora: 'Dia 23, 16h',
     escenario: 'Patio 1',
     descripcion: 'Rock alternativo con guitarras tensas y pulso post punk.',
     rutaImagen: '/src/assets/artistas/art-12.jpg'
@@ -80,7 +80,7 @@ const cantantesSecundarios = ref<Cantante[]>([
   {
     id: 113,
     nombre: 'Shego',
-    hora: 'Dia 23, 11:00',
+    hora: 'Dia 23, 11h',
     escenario: 'Patio 1',
     descripcion: 'Garage punk directo, ironico y lleno de actitud.',
     rutaImagen: '/src/assets/artistas/art-13.jpg'
@@ -88,7 +88,7 @@ const cantantesSecundarios = ref<Cantante[]>([
   {
     id: 114,
     nombre: 'Corte!',
-    hora: 'Dia 23, 19:00',
+    hora: 'Dia 23, 19h',
     escenario: 'Patio 1',
     descripcion: 'Post punk crudo y melodias rapidas para no parar de saltar.',
     rutaImagen: '/src/assets/artistas/art-14.jpg'
@@ -96,7 +96,7 @@ const cantantesSecundarios = ref<Cantante[]>([
   {
     id: 115,
     nombre: 'Escandaloso expósito',
-    hora: 'Dia 23, 12:30',
+    hora: 'Dia 23, 12h30',
     escenario: 'Patio 1',
     descripcion: 'Rap narrativo con metales, groove y mucha presencia escenica.',
     rutaImagen: '/src/assets/artistas/art-15.jpg'
@@ -104,7 +104,7 @@ const cantantesSecundarios = ref<Cantante[]>([
   {
     id: 116,
     nombre: 'Mala gestión',
-    hora: 'Dia 24, 16:00',
+    hora: 'Dia 24, 16h',
     escenario: 'Patio 1',
     descripcion: 'Indie pop fresco con estribillos pegadizos y actitud DIY.',
     rutaImagen: '/src/assets/artistas/art-16.jpg'
@@ -112,7 +112,7 @@ const cantantesSecundarios = ref<Cantante[]>([
   {
     id: 117,
     nombre: 'Aiko el grupo',
-    hora: 'Dia 24, 12:30',
+    hora: 'Dia 24, 12h30',
     escenario: 'Patio 1',
     descripcion: 'Punk pop afilado, divertido y sin filtros.',
     rutaImagen: '/src/assets/artistas/art-17.jpg'
@@ -120,7 +120,7 @@ const cantantesSecundarios = ref<Cantante[]>([
   {
     id: 118,
     nombre: 'Ariel Pink',
-    hora: 'Dia 25, 16:00',
+    hora: 'Dia 25, 16h',
     escenario: 'Patio 1',
     descripcion: 'Pop lo fi psicodelico con sonidos retro y raros encantadores.',
     rutaImagen: '/src/assets/artistas/art-18.jpg'
@@ -128,7 +128,7 @@ const cantantesSecundarios = ref<Cantante[]>([
   {
     id: 120,
     nombre: 'La fúmiga',
-    hora: 'Dia 25, 17:30',
+    hora: 'Dia 25, 17h30',
     escenario: 'Patio 1',
     descripcion: 'Brass pop festivo con letras cercanas y ritmo contagioso.',
     rutaImagen: '/src/assets/artistas/art-20.jpg'
@@ -136,7 +136,7 @@ const cantantesSecundarios = ref<Cantante[]>([
   {
     id: 121,
     nombre: 'Los Punsetes',
-    hora: 'Dia 25, 18:15',
+    hora: 'Dia 25, 18h15',
     escenario: 'Patio 1',
     descripcion: 'Indie rock mordaz con guitarras secas y humor negro.',
     rutaImagen: '/src/assets/artistas/art-21.jpg'
@@ -144,7 +144,7 @@ const cantantesSecundarios = ref<Cantante[]>([
   {
     id: 122,
     nombre: 'Las petunias',
-    hora: 'Dia 25, 19:00',
+    hora: 'Dia 25, 19h',
     escenario: 'Patio 1',
     descripcion: 'Punk pop irreverente con melodias simples y mucha chispa.',
     rutaImagen: '/src/assets/artistas/art-22.jpg'
@@ -152,7 +152,7 @@ const cantantesSecundarios = ref<Cantante[]>([
   {
     id: 123,
     nombre: 'Amor líquido',
-    hora: 'Dia 25, 19:45',
+    hora: 'Dia 25, 19h45',
     escenario: 'Patio 1',
     descripcion: 'Electro pop experimental con capas de voz y texturas densas.',
     rutaImagen: '/src/assets/artistas/art-23.jpg'
@@ -258,9 +258,12 @@ function limpiarCantanteActivo() {
         <button
           v-for="cantante in cantantes"
           :key="cantante.id"
+          type="button"
           class="tarjeta-cantante"
           @mouseenter="manejarHoverCantante(cantante)"
           @mouseleave="limpiarCantanteActivo"
+          @focus="activarCantante(cantante)"
+          @blur="limpiarCantanteActivo"
         >
          
 
@@ -301,9 +304,12 @@ function limpiarCantanteActivo() {
         <button
           v-for="cantante in cantantesSecundarios"
           :key="cantante.id"
+          type="button"
           class="tarjeta-secundaria"
           @mouseenter="manejarHoverCantante(cantante)"
           @mouseleave="limpiarCantanteActivo"
+          @focus="activarCantante(cantante)"
+          @blur="limpiarCantanteActivo"
         >
           <div
             class="miniatura-secundaria"
@@ -359,8 +365,8 @@ function limpiarCantanteActivo() {
   width: 100vw;
   margin-left: calc(50% - 50vw);
   text-align: left;
-  font-size: clamp(72px, 16vw, 180px);
-  letter-spacing: -0.08em;
+  font-size: 11.25rem;
+  letter-spacing: 0;
   font-weight: 700;
   line-height: 0.8;
   color: var(--esclat-theme-color, #004fff);
@@ -405,6 +411,7 @@ function limpiarCantanteActivo() {
   flex: 1 1 0;
   min-width: 0;
   border: 0;
+  appearance: none;
   background: transparent;
   text-align: left;
   padding: 0;
@@ -488,8 +495,9 @@ function limpiarCantanteActivo() {
 }
 
 .tarjeta-secundaria {
-  flex: 0 0 calc(100% / 6);
+  flex: 0 0 calc(100% / 7);
   border: 0;
+  appearance: none;
   background: transparent;
   text-align: left;
   padding: 0;
@@ -514,6 +522,13 @@ function limpiarCantanteActivo() {
   box-shadow: 0 14px 26px rgba(0, 0, 0, 0.18);
 }
 
+.tarjeta-cantante:focus-visible,
+.tarjeta-secundaria:focus-visible {
+  outline: 3px solid var(--esclat-theme-color, #004fff);
+  outline-offset: 4px;
+  z-index: 3;
+}
+
 .hueco-cantante {
   border: 1px dashed #777;
   display: flex;
@@ -529,7 +544,7 @@ function limpiarCantanteActivo() {
   inset: 0;
   z-index: 2;
   background: rgba(255, 255, 255, 0.55);
-  color: #111;
+  color: #004fff;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -544,6 +559,12 @@ function limpiarCantanteActivo() {
 }
 
 .overlay-cantante.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.tarjeta-cantante:focus-visible .overlay-cantante,
+.tarjeta-secundaria:focus-visible .overlay-cantante {
   opacity: 1;
   transform: translateY(0);
 }
@@ -564,6 +585,10 @@ function limpiarCantanteActivo() {
 }
 
 @media (max-width: 980px) {
+  .titulo-cantantes {
+    font-size: 8rem;
+  }
+
   .spotify-preview {
     margin: 2rem auto 0;
   }
@@ -600,7 +625,7 @@ function limpiarCantanteActivo() {
   }
 
   .tarjeta-secundaria {
-    flex: 0 0 calc(100% / 3);
+    flex: 0 0 calc(100% / 4);
   }
 
   .miniatura-secundaria {
@@ -609,10 +634,120 @@ function limpiarCantanteActivo() {
   }
 }
 
+@media (max-width: 760px) {
+  .fondo-cantantes {
+    padding: 5.5rem 1.25rem 3.5rem !important;
+  }
+
+  .panel-cantantes {
+    padding: 0 !important;
+  }
+
+  .titulo-cantantes {
+    width: 100%;
+    margin-left: 0;
+    font-size: 5.75rem;
+    line-height: 0.9;
+  }
+
+  .rejilla-cantantes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .miniatura-cantante,
+  .hueco-cantante {
+    height: auto;
+    aspect-ratio: 4 / 5;
+  }
+
+  .rejilla-secundaria {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .tarjeta-secundaria {
+    flex: unset;
+  }
+
+  .miniatura-secundaria {
+    aspect-ratio: 4 / 5;
+  }
+}
+
 @media (max-width: 640px) {
+  .titulo-cantantes {
+    font-size: 4.25rem;
+  }
+
+  .rejilla-cantantes {
+    gap: 0.55rem;
+  }
+
+  .rejilla-secundaria {
+    gap: 0.55rem;
+  }
+
+  .miniatura-cantante,
+  .miniatura-secundaria,
+  .hueco-cantante {
+    aspect-ratio: 1 / 1;
+  }
+
+  .overlay-cantante {
+    padding: 0.65rem;
+    font-size: 0.72rem;
+    gap: 0.08rem;
+  }
+
+  .overlay-nombre {
+    font-size: 0.8rem;
+  }
+
+  .overlay-descripcion {
+    display: none;
+  }
+
   .spotify-embed {
     height: 232px;
     border-radius: 12px;
+  }
+}
+
+@media (max-width: 420px) {
+  .fondo-cantantes {
+    padding-inline: 1rem !important;
+  }
+
+  .titulo-cantantes {
+    font-size: 3.5rem;
+  }
+
+  .fondo-cantantes {
+    padding-top: 5rem !important;
+  }
+}
+
+@media (hover: none) {
+  .miniatura-cantante::after,
+  .miniatura-secundaria::after {
+    opacity: 0.78;
+  }
+
+  .overlay-cantante {
+    opacity: 1;
+    transform: none;
+    background: linear-gradient(
+      to top,
+      rgba(255, 255, 255, 0.92),
+      rgba(255, 255, 255, 0.2)
+    );
+  }
+
+  .tarjeta-cantante:hover .imagen-cantante,
+  .tarjeta-secundaria:hover .imagen-cantante {
+    transform: none;
   }
 }
 </style>
