@@ -208,23 +208,26 @@ onMounted(() => {
 <style scoped>
 .contacto-titulo {
   font-family: "Alte Haas Grotesk", "Helvetica Neue", Arial, sans-serif;
-  font-size: clamp(6rem, 15vw, 14rem);
-  letter-spacing: -0.096em;
-  line-height: 0.85;
+  font-size: clamp(5rem, 14vw, 13.5rem);
+  letter-spacing: 0;
+  line-height: 0.88;
   font-weight: 700;
   color: var(--contacto-color);
   margin-top: 0;
   margin-bottom: 0;
-  margin-left: clamp(-60rem, -15vw, -10rem);
+  margin-left: clamp(-4rem, -4vw, -1rem);
   text-align: left;
   justify-self: start;
 }
+
 .contacto-page {
   position: relative;
   isolation: isolate;
   background: #ffffff;
   color: var(--contacto-color);
   padding-top: 110px;
+  padding-inline: clamp(1rem, 4vw, 1.5rem);
+  overflow-x: clip;
 }
 
 .contacto-wrap {
@@ -240,7 +243,7 @@ onMounted(() => {
 
 .contacto-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
   gap: clamp(2.5rem, 6vw, 6rem);
   align-items: start;
 }
@@ -248,6 +251,7 @@ onMounted(() => {
 .contacto-copy {
   display: grid;
   gap: 1.5rem;
+  min-width: 0;
 }
 
 .contacto-kicker {
@@ -278,12 +282,13 @@ onMounted(() => {
 .contacto-form {
   display: grid;
   gap: 1.5rem;
-  margin-top: clamp(10rem, 18vw, 120rem);
+  margin-top: clamp(9rem, 16vw, 15rem);
   padding-top: 0;
   width: min(100%, 36rem);
   margin-left: auto;
   justify-self: end;
   align-self: start;
+  min-width: 0;
 }
 
 .contacto-descripcion {
@@ -298,6 +303,7 @@ onMounted(() => {
   gap: 1.5rem;
   max-width: 32rem;
   padding-top: 1rem;
+  overflow-wrap: anywhere;
 }
 
 .contacto-info-label {
@@ -352,10 +358,14 @@ onMounted(() => {
 }
 
 .contacto-boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: fit-content;
   border: 1px solid var(--contacto-color);
   background: var(--contacto-color);
   color: #ffffff;
+  text-align: center;
 }
 
 .contacto-confirmacion {
@@ -366,7 +376,7 @@ onMounted(() => {
   display: flex;
   align-items: center;
   gap: 1rem;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
 }
 
 .contacto-redes a {
@@ -384,7 +394,7 @@ onMounted(() => {
 
 @media (max-width: 900px) {
   .contacto-page {
-    padding-top: 110px;
+    padding-top: clamp(88px, 14vw, 110px);
     padding-bottom: 7rem;
   }
 
@@ -398,9 +408,16 @@ onMounted(() => {
     transform: translateX(-45%);
   }
 
+  .contacto-titulo {
+    font-size: clamp(4rem, 18vw, 8rem);
+    line-height: 0.92;
+    margin-left: 0;
+    max-width: 100%;
+  }
+
   .contacto-layout {
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 2.5rem;
   }
 
   .contacto-info {
@@ -412,10 +429,59 @@ onMounted(() => {
   .contacto-form {
     margin-top: 2rem;
     width: 100%;
+    margin-left: 0;
+    justify-self: stretch;
   }
 
   .contacto-form-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .contacto-page {
+    padding-top: 126px;
+    padding-bottom: 5rem;
+  }
+
+  .contacto-wrap {
+    padding-top: 0;
+  }
+
+  .contacto-copy {
+    gap: 1.25rem;
+  }
+
+  .contacto-titulo {
+    font-size: clamp(3.25rem, 19vw, 5.25rem);
+  }
+
+  .contacto-descripcion {
+    max-width: none;
+    font-size: 1rem;
+  }
+
+  .contacto-info {
+    gap: 1rem;
+    padding-top: 0.25rem;
+  }
+
+  .contacto-form {
+    gap: 1.25rem;
+    margin-top: 0;
+  }
+
+  .contacto-form-grid {
+    gap: 1rem;
+  }
+
+  .contacto-field {
+    font-size: 1rem;
+  }
+
+  .contacto-boton {
+    width: 100%;
+    justify-content: center;
   }
 }
 </style>

@@ -821,7 +821,10 @@ onBeforeUnmount(() => {
         >
 
         <div class="hero-date">
-          <p>23.10</p>
+          <p>
+            <span class="hero-date-desktop">23.10</span>
+            <span class="hero-date-mobile">23</span>
+          </p>
           <p>25.10.2026</p>
         </div>
 
@@ -1125,6 +1128,10 @@ onBeforeUnmount(() => {
 
   font-weight: 400;
   color: var(--color-tema);
+}
+
+.hero-date-mobile {
+  display: none;
 }
 
 .hero-line {
@@ -1669,25 +1676,85 @@ onBeforeUnmount(() => {
 }
 
 @media (max-width: 700px) {
+  .hero-home {
+    min-height: auto;
+    padding-top: 64px;
+  }
+
   .hero-poster {
-    height: min(100vh, 720px);
-    height: min(100svh, 720px);
-    min-height: 620px;
-    padding: 28px 18px;
+    aspect-ratio: 210 / 297;
+    height: auto;
+    min-height: 0;
+    padding: 0;
   }
 
   .hero-sub-logo {
-    left: 42px;
-    top: -6px;
-    width: min(74vw, 500px);
+    left: 5%;
+    top: 7%;
+    width: 68%;
+    height: auto;
+    max-width: none;
+    object-fit: contain;
+  }
+
+  .hero-texture-cera {
+    left: 10%;
+    top: 2%;
+    width: 95%;
+    height: auto;
+    object-fit: contain;
+    transform: rotate(40deg);
+  }
+
+  .hero-texture-pixel {
+    left: -5%;
+    top: 18%;
+    width: 85%;
+    height: auto;
+    object-fit: contain;
+    transform: rotate(0deg);
   }
 
   .hero-date {
-    font-size: clamp(34px, 8.2vw, 46px);
+    left: 5%;
+    top: 85%;
+    bottom: auto;
+    width: auto;
+    height: auto;
+    font-size: clamp(28px, 8vw, 42px);
+    line-height: 0.9;
+    letter-spacing: 0;
+  }
+
+  .hero-date-desktop {
+    display: none;
+  }
+
+  .hero-date-mobile {
+    display: inline;
+  }
+
+  .hero-line {
+    left: 17%;
+    top: 87%;
+    bottom: auto;
+    width: 30%;
+    height: clamp(3px, 1vw, 5px);
   }
 
   .hero-place {
-    font-size: clamp(24px, 6.2vw, 34px);
+    left: auto;
+    right: 5%;
+    top: 87%;
+    bottom: auto;
+    width: 40%;
+    height: auto;
+    font-size: clamp(28px, 10vw, 30px);
+    line-height: 0.92;
+  }
+
+  .hero-place p {
+    white-space: nowrap;
   }
 
   .hero-artistas {
@@ -1759,48 +1826,66 @@ onBeforeUnmount(() => {
 
 @media (orientation: portrait) and (max-width: 430px) {
   .hero-poster {
-    height: clamp(430px, 69svh, 560px);
-    min-height: 430px;
-    padding: 18px 10px;
+    aspect-ratio: 210 / 297;
+    height: auto;
+    min-height: 0;
+    padding: 0;
   }
 
   .hero-sub-logo {
-    left: 10px;
-    top: -14px;
-    width: min(86vw, 370px);
+    left: 5%;
+    top: 7%;
+    width: 68%;
+    height: auto;
+    max-width: none;
+    object-fit: contain;
   }
 
   .hero-texture-cera {
-    width: 98vw;
-    left: 50%;
-    top: 18%;
-    transform: rotate(96deg);
+    left: 24%;
+    top: 25%;
+    width: 108%;
+    height: auto;
+    object-fit: contain;
+    transform: rotate(14deg);
   }
 
   .hero-texture-pixel {
-    width: 52vw;
-    left: 6%;
-    top: 50%;
+    left: 12%;
+    top: 55%;
+    width: 62%;
+    height: auto;
+    object-fit: contain;
+    transform: rotate(-9deg);
   }
 
   .hero-date {
-    left: 10px;
-    bottom: 52px;
-    font-size: clamp(26px, 9.4vw, 44px);
+    left: 5%;
+    top: 83%;
+    bottom: auto;
+    width: auto;
+    height: auto;
+    font-size: clamp(38px, 12vw, 58px);
     line-height: 0.9;
+    letter-spacing: 0;
   }
 
   .hero-line {
-    left: 32%;
-    bottom: 98px;
-    width: 22vw;
-    height: 4px;
+    left: 17%;
+    top: 85.2%;
+    bottom: auto;
+    width: 32%;
+    height: clamp(3px, 1vw, 5px);
   }
 
   .hero-place {
-    right: 10px;
-    bottom: 58px;
-    font-size: clamp(18px, 7vw, 34px);
+    left: auto;
+    right: 5%;
+    top: 83.6%;
+    bottom: auto;
+    width: 44%;
+    height: auto;
+    font-size: clamp(18px, 5.8vw, 30px);
     line-height: 0.92;
   }
 

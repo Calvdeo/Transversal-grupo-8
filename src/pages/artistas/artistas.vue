@@ -636,7 +636,7 @@ function limpiarCantanteActivo() {
 
 @media (max-width: 760px) {
   .fondo-cantantes {
-    padding: 5.5rem 1.25rem 3.5rem !important;
+    padding: 7.5rem 1.25rem 3.5rem !important;
   }
 
   .panel-cantantes {
@@ -725,7 +725,7 @@ function limpiarCantanteActivo() {
   }
 
   .fondo-cantantes {
-    padding-top: 5rem !important;
+    padding-top: 7.25rem !important;
   }
 }
 
