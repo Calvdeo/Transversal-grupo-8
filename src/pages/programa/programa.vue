@@ -427,9 +427,9 @@ const texturaActiva = computed(() => {
         class="tabla-fila"
         :class="`categoria-${evento.categoria}`"
       >
-        <p>{{ evento.fecha }}</p>
+        <p class="fecha-celda" data-label="Fecha">{{ evento.fecha }}</p>
 
-        <div class="hora-celda">
+        <div class="hora-celda" data-label="Hora">
           <button
             v-if="esBloqueArtistas(evento)"
             type="button"
@@ -445,6 +445,7 @@ const texturaActiva = computed(() => {
         <div
           class="actividad-celda"
           :class="{ 'actividad-celda-expandible': esBloqueArtistas(evento) }"
+          data-label="Actividad"
           @click="esBloqueArtistas(evento) && alternarBloque(evento)"
         >
           <h2 v-if="esBloqueArtistas(evento)">
@@ -462,8 +463,8 @@ const texturaActiva = computed(() => {
           <p>{{ evento.descripcion }}</p>
         </div>
 
-        <p>{{ etiquetaCategoria[evento.categoria] }}</p>
-        <p class="espacio-celda">{{ evento.espacio }}</p>
+        <p class="categoria-celda" data-label="Categoria">{{ etiquetaCategoria[evento.categoria] }}</p>
+        <p class="espacio-celda" data-label="Espacio">{{ evento.espacio }}</p>
 
         <div
           v-if="esBloqueArtistas(evento) && bloqueAbierto(evento)"
@@ -475,8 +476,8 @@ const texturaActiva = computed(() => {
             class="detalle-expandido-fila"
           >
             <p></p>
-            <p class="detalle-hora">{{ actuacion.hora }}</p>
-            <p>{{ actuacion.artista }}</p>
+            <p class="detalle-hora" data-label="Hora">{{ actuacion.hora }}</p>
+            <p class="detalle-artista" data-label="Artista">{{ actuacion.artista }}</p>
             <p></p>
             <p></p>
           </div>
@@ -709,14 +710,266 @@ const texturaActiva = computed(() => {
   .programa-page {
     padding-top: 188px;
     padding-inline: 18px;
+    padding-bottom: 64px;
   }
 
   .programa-header {
     padding-right: clamp(70px, 20vw, 120px);
+    margin-bottom: 42px;
+  }
+
+  .programa-kicker {
+    font-size: 15px;
+  }
+
+  .programa-header h1 {
+    max-width: 560px;
+    font-size: clamp(62px, 14vw, 110px);
+  }
+
+  .textura-esquina {
+    top: -180px;
+    width: clamp(180px, 34vw, 300px);
   }
 
   .programa-filtros {
     grid-template-columns: 1fr;
+    gap: 18px;
+    margin-bottom: 38px;
+    padding: 14px 0;
+  }
+
+  .programa-filtros p {
+    margin-bottom: 8px;
+    font-size: 12px;
+  }
+
+  .programa-filtros button {
+    margin: 0 6px 6px 0;
+    padding: 7px 12px;
+    font-size: 13px;
+  }
+
+  .tabla-cabecera,
+  .tabla-fila,
+  .detalle-expandido-fila {
+    grid-template-columns: 92px 74px minmax(0, 1fr) 110px 120px;
+    gap: 14px;
+  }
+
+  .tabla-fila {
+    min-height: 88px;
+    padding: 14px 0;
+  }
+
+  .tabla-fila h2 {
+    font-size: clamp(20px, 3vw, 28px);
+  }
+
+  .tabla-fila p,
+  .detalle-expandido-fila,
+  .tabla-cabecera {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 700px) {
+  .programa-page {
+    padding-top: 158px;
+    padding-inline: 12px;
+    padding-bottom: 48px;
+  }
+
+  .programa-header {
+    margin-bottom: 28px;
+    padding-right: 72px;
+  }
+
+  .programa-kicker {
+    font-size: 12px;
+  }
+
+  .programa-header h1 {
+    max-width: 320px;
+    font-size: clamp(44px, 17vw, 72px);
+    line-height: 0.84;
+  }
+
+  .textura-esquina {
+    top: -92px;
+    right: -10px;
+    width: 138px;
+  }
+
+  .programa-filtros {
+    gap: 14px;
+    margin-bottom: 26px;
+    padding: 12px 0;
+  }
+
+  .programa-filtros button {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .programa-tabla {
+    overflow: visible;
+    border-top-width: 1px;
+  }
+
+  .tabla-cabecera {
+    display: none;
+  }
+
+  .tabla-fila {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas:
+      "fecha categoria"
+      "hora espacio"
+      "actividad actividad"
+      "detalle detalle";
+    gap: 10px 14px;
+    min-height: 0;
+    padding: 14px 0 16px;
+  }
+
+  .fecha-celda {
+    grid-area: fecha;
+  }
+
+  .categoria-celda {
+    grid-area: categoria;
+    text-align: right;
+  }
+
+  .hora-celda {
+    grid-area: hora;
+    min-height: 20px;
+  }
+
+  .espacio-celda {
+    grid-area: espacio;
+    text-align: right;
+  }
+
+  .actividad-celda {
+    grid-area: actividad;
+  }
+
+  .detalle-expandido {
+    grid-area: detalle;
+    margin-top: 2px;
+  }
+
+  .tabla-fila > p,
+  .hora-celda,
+  .espacio-celda,
+  .categoria-celda {
+    position: relative;
+    padding-top: 12px;
+  }
+
+  .fecha-celda::before,
+  .hora-celda::before,
+  .categoria-celda::before,
+  .espacio-celda::before {
+    content: attr(data-label);
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.72;
+  }
+
+  .categoria-celda::before,
+  .espacio-celda::before {
+    left: auto;
+    right: 0;
+  }
+
+  .tabla-fila h2 {
+    font-size: clamp(18px, 6vw, 28px);
+    line-height: 0.98;
+  }
+
+  .tabla-fila p {
+    font-size: 12px;
+    line-height: 1.18;
+  }
+
+  .actividad-celda p {
+    margin-top: 6px;
+  }
+
+  .hora-toggle {
+    width: 24px;
+    height: 24px;
+    font-size: 18px;
+  }
+
+  .detalle-expandido-fila {
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 10px;
+    padding: 10px 0;
+  }
+
+  .detalle-expandido-fila > p:first-child,
+  .detalle-expandido-fila > p:nth-child(4),
+  .detalle-expandido-fila > p:nth-child(5) {
+    display: none;
+  }
+
+  .detalle-hora {
+    font-size: 12px;
+  }
+
+  .detalle-artista {
+    font-size: 13px;
+    line-height: 1.14;
+  }
+}
+
+@media (max-width: 420px) {
+  .programa-page {
+    padding-top: 146px;
+    padding-inline: 10px;
+  }
+
+  .programa-header {
+    padding-right: 58px;
+  }
+
+  .programa-header h1 {
+    max-width: 250px;
+    font-size: clamp(38px, 16vw, 58px);
+  }
+
+  .textura-esquina {
+    top: -74px;
+    width: 112px;
+  }
+
+  .programa-filtros button {
+    padding: 5px 9px;
+    font-size: 11px;
+  }
+
+  .tabla-fila {
+    gap: 8px 12px;
+  }
+
+  .tabla-fila h2 {
+    font-size: 17px;
+  }
+
+  .tabla-fila p,
+  .detalle-artista {
+    font-size: 11px;
   }
 }
 </style>
