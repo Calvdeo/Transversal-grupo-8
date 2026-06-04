@@ -424,16 +424,14 @@ onMounted(() => {
 }
 
 .info-columnas {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 28px;
+  max-width: 980px;
 }
 
 .info-columnas p {
   margin: 0;
   color: var(--esclat-theme-color, #004fff);
-  font-size: clamp(1.5rem, 2.7vw, 2.6rem);
-  line-height: 1.12;
+  font-size: clamp(1.15rem, 1.9vw, 1.9rem);
+  line-height: 1.2;
 }
 
 .info-mapa {
@@ -650,12 +648,11 @@ onMounted(() => {
   }
 
   .info-columnas {
-    grid-template-columns: 1fr;
-    gap: 16px;
+    max-width: none;
   }
 
   .info-columnas p {
-    font-size: clamp(1.25rem, 4.4vw, 2rem);
+    font-size: clamp(1.05rem, 3.8vw, 1.45rem);
   }
 
   .info-texturas {

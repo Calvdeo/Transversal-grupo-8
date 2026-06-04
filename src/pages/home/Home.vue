@@ -853,7 +853,6 @@ onBeforeUnmount(() => {
       <section class="hero-artistas">
         <div class="hero-artistas-inner">
           <div class="hero-artistas-heading">
-            <p class="hero-artistas-kicker">Line up</p>
             <h2>Artistas</h2>
           </div>
 

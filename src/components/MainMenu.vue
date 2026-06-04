@@ -30,49 +30,53 @@ const closeMenu = () => {
     </nav>
   </header>
 
-  <div v-if="isMenuOpen" class="menu-overlay" @click="closeMenu"></div>
+  <Transition name="menu-overlay">
+    <div v-if="isMenuOpen" class="menu-overlay" @click="closeMenu"></div>
+  </Transition>
 
-  <aside v-if="isMenuOpen" class="menu-panel">
-    <button class="menu-close" aria-label="Cerrar menú" @click="closeMenu">
-      <X class="menu-close-icon" />
-    </button>
+  <Transition name="menu-panel">
+    <aside v-if="isMenuOpen" class="menu-panel">
+      <button class="menu-close" aria-label="Cerrar menú" @click="closeMenu">
+        <X class="menu-close-icon" />
+      </button>
 
-    <nav class="menu-links">
-      <RouterLink to="/" class="menu-link menu-link-principal" @click="closeMenu">
-        Inicio
-      </RouterLink>
+      <nav class="menu-links">
+        <RouterLink to="/" class="menu-link menu-link-principal" @click="closeMenu">
+          Inicio
+        </RouterLink>
 
-      <RouterLink to="/info" class="menu-link menu-link-secundario" @click="closeMenu">
-        info
-      </RouterLink>
+        <RouterLink to="/info" class="menu-link menu-link-secundario" @click="closeMenu">
+          Info
+        </RouterLink>
 
-      <RouterLink to="/artistas" class="menu-link menu-link-secundario" @click="closeMenu">
-        Artistas
-      </RouterLink>
+        <RouterLink to="/artistas" class="menu-link menu-link-secundario" @click="closeMenu">
+          Artistas
+        </RouterLink>
 
-      <RouterLink to="/programa" class="menu-link menu-link-secundario" @click="closeMenu">
-        Programa
-      </RouterLink>
+        <RouterLink to="/programa" class="menu-link menu-link-secundario" @click="closeMenu">
+          Programa
+        </RouterLink>
 
-      <RouterLink to="/entradas" class="menu-link menu-link-destacado" @click="closeMenu">
-        Entradas
-      </RouterLink>
-    </nav>
+        <RouterLink to="/entradas" class="menu-link menu-link-destacado" @click="closeMenu">
+          Entradas
+        </RouterLink>
+      </nav>
 
-    <nav class="menu-links-bottom">
-      <RouterLink
-        to="/preguntas-frecuentes"
-        class="menu-link menu-link-mini"
-        @click="closeMenu"
-      >
-       FAQs
-      </RouterLink>
+      <nav class="menu-links-bottom">
+        <RouterLink
+          to="/preguntas-frecuentes"
+          class="menu-link menu-link-mini"
+          @click="closeMenu"
+        >
+         FAQs
+        </RouterLink>
 
-      <RouterLink to="/contacto" class="menu-link menu-link-mini" @click="closeMenu">
-        contacto
-      </RouterLink>
-    </nav>
-  </aside>
+        <RouterLink to="/contacto" class="menu-link menu-link-mini" @click="closeMenu">
+          contacto
+        </RouterLink>
+      </nav>
+    </aside>
+  </Transition>
 </template>
 
 <style scoped>
@@ -131,6 +135,16 @@ const closeMenu = () => {
   background: rgba(0, 0, 0, 0.2);
 }
 
+.menu-overlay-enter-active,
+.menu-overlay-leave-active {
+  transition: opacity 260ms ease;
+}
+
+.menu-overlay-enter-from,
+.menu-overlay-leave-to {
+  opacity: 0;
+}
+
 .menu-panel {
   position: fixed;
   top: 0;
@@ -145,6 +159,72 @@ const closeMenu = () => {
   padding: 1.35rem 1.25rem 1.2rem;
   display: flex;
   flex-direction: column;
+}
+
+.menu-panel-enter-active,
+.menu-panel-leave-active {
+  transition:
+    opacity 320ms ease,
+    transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.menu-panel-leave-active {
+  transition-duration: 220ms;
+}
+
+.menu-panel-enter-from,
+.menu-panel-leave-to {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.menu-panel-enter-active .menu-link {
+  animation: menu-link-appear 340ms ease both;
+}
+
+.menu-panel-enter-active .menu-link:nth-child(1) {
+  animation-delay: 90ms;
+}
+
+.menu-panel-enter-active .menu-link:nth-child(2) {
+  animation-delay: 125ms;
+}
+
+.menu-panel-enter-active .menu-link:nth-child(3) {
+  animation-delay: 160ms;
+}
+
+.menu-panel-enter-active .menu-link:nth-child(4) {
+  animation-delay: 195ms;
+}
+
+.menu-panel-enter-active .menu-link:nth-child(5) {
+  animation-delay: 230ms;
+}
+
+@keyframes menu-link-appear {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu-overlay-enter-active,
+  .menu-overlay-leave-active,
+  .menu-panel-enter-active,
+  .menu-panel-leave-active {
+    transition: none;
+  }
+
+  .menu-panel-enter-active .menu-link {
+    animation: none;
+  }
 }
 
 .menu-close {
@@ -184,8 +264,8 @@ const closeMenu = () => {
 }
 
 .menu-link-principal {
-  font-size: clamp(2rem, 6.3vw, 3.25rem);
-  font-weight: 700;
+  font-size: clamp(1.65rem, 4.2vw, 2.4rem);
+  font-weight: 600;
 }
 
 .menu-link-secundario {

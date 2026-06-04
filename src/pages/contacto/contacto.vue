@@ -83,7 +83,7 @@ onMounted(() => {
          
 
           <h1 class="contacto-titulo">
-            CONTACTO
+            Contacto
           </h1>
 
           <p class="contacto-descripcion">
