@@ -919,10 +919,10 @@ onBeforeUnmount(() => {
           <video
             :key="videoInicioUrl"
             class="hero-video-player"
-            controls
-            loop
-            playsinline
-            preload="metadata"
+            autoplay
+           muted
+           loop
+          playsinline
           >
             <source
               :src="videoInicioUrl"
@@ -2145,7 +2145,7 @@ onBeforeUnmount(() => {
 
   .home-foto-fondo__marco {
     width: 100vw;
-    height: clamp(220px, 54vw, 320px);
+    height: clamp(360px, 95vw, 520px);
     margin-left: calc(50% - 50vw);
   }
 

@@ -11,6 +11,7 @@ import texturaCeraVerde from '@/assets/texturas/ceraverde.png'
 import texturaPixelNaranja from '@/assets/texturas/pixelnaranja.png'
 import texturaPixelRosa from '@/assets/texturas/pixelrosa.png'
 import texturaPixelVerde from '@/assets/texturas/pixelverde.png'
+import videoEsclat from '@/assets/vídeos/animacion-prueba.mp4'
 
 type Zona = {
   id: number
@@ -270,6 +271,20 @@ onMounted(() => {
         </p>
       </div>
     </section>
+
+    <section class="info-video">
+  <div class="info-video-marco">
+    <video
+      autoplay
+     muted
+     loop
+      playsinline
+      class="info-video-player"
+    >
+      <source :src="videoEsclat" type="video/mp4">
+    </video>
+  </div>
+</section>
 
     <section class="info-mapa">
       <h2>Mapa del festival</h2>
@@ -619,6 +634,21 @@ onMounted(() => {
   margin: 0;
   font-size: 1.1rem;
 }
+  .info-video {
+  width: 100%;
+  padding: 1rem 1.5rem 5rem;
+}
+
+.info-video-marco {
+  width: min(100%, 900px);
+    margin-left: 1.5rem;
+}
+
+.info-video-player {
+  width: 100%;
+  display: block;
+  background: #000;
+}
 
 @media (max-width: 1200px) {
   .info-texturas {
@@ -626,6 +656,7 @@ onMounted(() => {
     width: clamp(460px, 54vw, 760px);
     height: clamp(280px, 38vw, 520px);
   }
+
 
   .mapa-wrapper {
     gap: 32px;
