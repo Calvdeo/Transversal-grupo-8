@@ -472,7 +472,7 @@ function prepararLienzo() {
   }
 }
 
-function obtenerPosicion(evento: MouseEvent) {
+function obtenerPosicion(evento: PointerEvent) {
   const canvas = lienzo.value
 
   if (!canvas) {
@@ -492,12 +492,17 @@ function obtenerPosicion(evento: MouseEvent) {
   }
 }
 
-function empezarPintar(evento: MouseEvent) {
+function empezarPintar(evento: PointerEvent) {
+  evento.preventDefault()
+
+  const canvas = lienzo.value
   const puntoInicial = obtenerPosicion(evento)
 
   if (!estaDentroDelAreaPintable(puntoInicial)) {
     return
   }
+
+  canvas?.setPointerCapture(evento.pointerId)
 
   estaPintando.value = true
   ultimaPosicion.value = puntoInicial
@@ -508,18 +513,26 @@ function empezarPintar(evento: MouseEvent) {
   )
 }
 
-function terminarPintar() {
+function terminarPintar(evento?: PointerEvent) {
+  const canvas = lienzo.value
+
+  if (evento && canvas?.hasPointerCapture(evento.pointerId)) {
+    canvas.releasePointerCapture(evento.pointerId)
+  }
+
   estaPintando.value = false
   ultimaPosicion.value = null
 }
 
-function pintar(evento: MouseEvent) {
+function pintar(evento: PointerEvent) {
   if (
     !estaPintando.value ||
     !pincelActual.value
   ) {
     return
   }
+
+  evento.preventDefault()
 
   const posicionActual =
     obtenerPosicion(evento)
@@ -1114,10 +1127,11 @@ onBeforeUnmount(() => {
           <canvas
             ref="lienzo"
             class="poster-canvas"
-            @mousedown="empezarPintar"
-            @mousemove="pintar"
-            @mouseup="terminarPintar"
-            @mouseleave="terminarPintar"
+            @pointerdown="empezarPintar"
+            @pointermove="pintar"
+            @pointerup="terminarPintar"
+            @pointercancel="terminarPintar"
+            @lostpointercapture="terminarPintar"
           ></canvas>
         </div>
 
@@ -1775,6 +1789,8 @@ onBeforeUnmount(() => {
   display: block;
 
   cursor: crosshair;
+  touch-action: none;
+  user-select: none;
 
   background: #ffffff;
 }
@@ -2163,6 +2179,24 @@ onBeforeUnmount(() => {
     padding: 48px 14px 72px;
   }
 
+  .workbench {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+    width: 100%;
+  }
+
+  .actions-side {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-top: 0;
+  }
+
+  .color-list-side {
+    flex-direction: row;
+    gap: 10px;
+  }
+
   .hero-title {
     font-size: 42px;
   }
@@ -2195,6 +2229,25 @@ onBeforeUnmount(() => {
     aspect-ratio: 17 / 11;
   }
 
+  .tools-panel {
+    min-height: 0;
+  }
+
+  .brush-list {
+    flex-direction: row;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .brush-chip:hover,
+  .brush-chip.is-active {
+    transform: translateY(-4px) scale(1.04);
+  }
+
+  .brush-thumb {
+    height: clamp(58px, 18vw, 86px);
+  }
+
 }
 
 @media (orientation: portrait) and (max-width: 430px) {
@@ -2215,39 +2268,39 @@ onBeforeUnmount(() => {
   }
 
   .hero-texture-cera {
-    left: 24%;
-    top: 25%;
-    width: 108%;
+    left: 8%;
+    top: 11%;
+    width: 118%;
     height: auto;
     object-fit: contain;
-    transform: rotate(78deg);
+    transform: rotate(48deg);
   }
 
   .hero-texture-pixel {
-    left: 12%;
-    top: 55%;
-    width: 62%;
+    left: -12%;
+    top: 33%;
+    width: 92%;
     height: auto;
     object-fit: contain;
-    transform: rotate(-9deg);
+    transform: rotate(-4deg);
   }
 
   .hero-texture-subrayador {
-    left: 47%;
-    top: 8%;
-    width: 58%;
+    left: 31%;
+    top: 13%;
+    width: 82%;
     height: auto;
     object-fit: contain;
-    transform: rotate(-26deg);
+    transform: rotate(62deg);
   }
 
   .hero-texture-posca {
-    left: 29%;
-    top: 31%;
-    width: 68%;
+    left: 10%;
+    top: 37%;
+    width: 84%;
     height: auto;
     object-fit: contain;
-    transform: rotate(-16deg);
+    transform: rotate(58deg);
   }
 
   .hero-date {

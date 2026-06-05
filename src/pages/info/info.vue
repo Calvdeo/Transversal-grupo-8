@@ -11,7 +11,7 @@ import texturaCeraVerde from '@/assets/texturas/ceraverde.png'
 import texturaPixelNaranja from '@/assets/texturas/pixelnaranja.png'
 import texturaPixelRosa from '@/assets/texturas/pixelrosa.png'
 import texturaPixelVerde from '@/assets/texturas/pixelverde.png'
-import videoEsclat from '@/assets/vídeos/animacion-prueba.mp4'
+import videoEsclat from '@/assets/videos/animacion-prueba.mp4'
 
 type Zona = {
   id: number
@@ -273,18 +273,20 @@ onMounted(() => {
     </section>
 
     <section class="info-video">
-  <div class="info-video-marco">
-    <video
-      autoplay
-     muted
-     loop
-      playsinline
-      class="info-video-player"
-    >
-      <source :src="videoEsclat" type="video/mp4">
-    </video>
-  </div>
-</section>
+      <div class="info-video-marco">
+        <div class="info-video-frame">
+          <video
+            autoplay
+            muted
+            loop
+            playsinline
+            class="info-video-player"
+          >
+            <source :src="videoEsclat" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </section>
 
     <section class="info-mapa">
       <h2>Mapa del festival</h2>
@@ -350,8 +352,8 @@ onMounted(() => {
               :class="zonaMostradaId === zona.id ? 'is-active' : ''"
               :aria-pressed="zonaMostradaId === zona.id"
               :style="{ '--zona-color': zona.color }"
-              @mouseenter="mostrarZonaTemporal(zona.id)"
-              @mouseleave="ocultarZonaTemporal()"
+              @pointerenter="mostrarZonaTemporal(zona.id)"
+              @pointerleave="ocultarZonaTemporal()"
               @click="seleccionarZona(zona.id)"
             >
               <span>{{ String(indiceVisible + 1).padStart(2, '0') }}</span>
@@ -634,20 +636,33 @@ onMounted(() => {
   margin: 0;
   font-size: 1.1rem;
 }
-  .info-video {
+.info-video {
   width: 100%;
-  padding: 1rem 1.5rem 5rem;
+  padding: 1rem 0 5rem;
 }
 
 .info-video-marco {
-  width: min(100%, 900px);
-    margin-left: 1.5rem;
+  width: min(100%, 1180px);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.info-video-frame {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  border: 2px solid currentColor;
+  border-radius: 2rem;
+  background: #000;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.12);
 }
 
 .info-video-player {
   width: 100%;
+  height: 100%;
   display: block;
   background: #000;
+  object-fit: cover;
 }
 
 @media (max-width: 1200px) {
@@ -707,6 +722,19 @@ onMounted(() => {
 
   .info-mapa {
     padding: 1rem 0 5rem;
+  }
+
+  .info-video {
+    padding: 0.75rem 0 4rem;
+  }
+
+  .info-video-marco {
+    padding: 0 1rem;
+  }
+
+  .info-video-frame {
+    border-width: 1.5px;
+    border-radius: 1.5rem;
   }
 
   .info-mapa h2 {
@@ -795,6 +823,18 @@ onMounted(() => {
     width: min(250px, 72vw);
     height: 160px;
     margin-bottom: 1rem;
+  }
+
+  .info-video {
+    padding: 0.5rem 0 3rem;
+  }
+
+  .info-video-marco {
+    padding: 0 0.75rem;
+  }
+
+  .info-video-frame {
+    border-radius: 1.1rem;
   }
 
   .info-textura-cera {

@@ -260,8 +260,9 @@ function limpiarCantanteActivo() {
           :key="cantante.id"
           type="button"
           class="tarjeta-cantante"
-          @mouseenter="manejarHoverCantante(cantante)"
-          @mouseleave="limpiarCantanteActivo"
+          @pointerenter="manejarHoverCantante(cantante)"
+          @pointerleave="limpiarCantanteActivo"
+          @click="manejarHoverCantante(cantante)"
           @focus="activarCantante(cantante)"
           @blur="limpiarCantanteActivo"
         >
@@ -306,8 +307,9 @@ function limpiarCantanteActivo() {
           :key="cantante.id"
           type="button"
           class="tarjeta-secundaria"
-          @mouseenter="manejarHoverCantante(cantante)"
-          @mouseleave="limpiarCantanteActivo"
+          @pointerenter="manejarHoverCantante(cantante)"
+          @pointerleave="limpiarCantanteActivo"
+          @click="manejarHoverCantante(cantante)"
           @focus="activarCantante(cantante)"
           @blur="limpiarCantanteActivo"
         >
