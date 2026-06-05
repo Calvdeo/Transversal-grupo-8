@@ -40,6 +40,8 @@ const archivosMapa = import.meta.glob(
 const zonaActiva = ref<number | null>(null)
 const zonaFijada = ref<number | null>(null)
 const admiteHover = ref(false)
+const videoInfo = ref<HTMLVideoElement | null>(null)
+const sonidoActivo = ref(true)
 const mapaNivel1Actual = ref(mapaNivel1)
 const mapaNivel2Actual = ref(mapaNivel2)
 const texturaCeraActual = ref(texturaCeraGrande)
@@ -91,7 +93,7 @@ const zonas: Zona[] = [
     nivel: 1,
     color: COLOR_CHARLA,
     actividades: [
-      { titulo: 'Manipulamos o nos manipulan - Diego Alvarez', color: COLOR_CHARLA },
+      { titulo: 'Manipulamos o nos manipulan - Diego Álvarez', color: COLOR_CHARLA },
       { titulo: '¿Esta todo inventado? - PutoMikel', color: COLOR_CHARLA },
       { titulo: 'Espanul - Lamine Thior', color: COLOR_CHARLA },
       { titulo: 'Qué nos dice la música - Jaime Altozano', color: COLOR_CHARLA }
@@ -154,6 +156,23 @@ function ocultarZonaTemporal() {
 function seleccionarZona(id: number) {
   zonaActiva.value = null
   zonaFijada.value = id
+}
+
+function alternarSonidoInfo() {
+  const video = videoInfo.value
+  sonidoActivo.value = !sonidoActivo.value
+
+  if (!video) return
+
+  video.muted = !sonidoActivo.value
+  video.volume = sonidoActivo.value ? 1 : 0
+
+  if (sonidoActivo.value) {
+    video.play().catch(() => {
+      sonidoActivo.value = false
+      video.muted = true
+    })
+  }
 }
 
 function obtenerIndiceTemaGuardado() {
@@ -239,6 +258,12 @@ onMounted(() => {
   mapaNivel2Actual.value = buscarMapaTematico(2, palabrasTema, mapaNivel2)
   texturaCeraActual.value = texturasTema.cera
   texturaPixelActual.value = texturasTema.pixel
+
+  if (videoInfo.value) {
+    videoInfo.value.muted = false
+    videoInfo.value.volume = 1
+    videoInfo.value.play().catch(() => {})
+  }
 })
 </script>
 
@@ -276,14 +301,24 @@ onMounted(() => {
       <div class="info-video-marco">
         <div class="info-video-frame">
           <video
+            ref="videoInfo"
             autoplay
-            muted
+            :muted="!sonidoActivo"
             loop
             playsinline
             class="info-video-player"
           >
             <source :src="videoEsclat" type="video/mp4">
           </video>
+
+          <button
+            class="info-video-sound"
+            type="button"
+            :aria-pressed="sonidoActivo"
+            @click="alternarSonidoInfo"
+          >
+            {{ sonidoActivo ? 'Quitar sonido' : 'Activar sonido' }}
+          </button>
         </div>
       </div>
     </section>
@@ -663,6 +698,27 @@ onMounted(() => {
   display: block;
   background: #000;
   object-fit: cover;
+}
+
+.info-video-sound {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 2;
+  border: 2px solid currentColor;
+  border-radius: 999px;
+  background: color-mix(in srgb, #ffffff 88%, transparent);
+  color: var(--esclat-theme-color, #004fff);
+  padding: 0.75rem 1.1rem;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+}
+
+.info-video-sound:hover {
+  background: var(--esclat-theme-color, #004fff);
+  color: #ffffff;
 }
 
 @media (max-width: 1200px) {

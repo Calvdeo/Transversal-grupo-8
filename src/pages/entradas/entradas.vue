@@ -6,6 +6,7 @@ import entradaDia23 from '@/assets/entradas/entrada-2.jpg'
 import entradaDia24 from '@/assets/entradas/entrada-3.jpg'
 import entradaDia25 from '@/assets/entradas/entrada-4.jpg'
 import graciasImagen from '@/assets/entradas/gracias.png'
+import toteBagImagen from '@/assets/entradas/totebag.png'
 
 type Entrada = {
   id: number
@@ -180,11 +181,20 @@ function cerrarPantallaGracias() {
       </div>
 
       <section class="resumen-compra">
-        <img
-          :src="entradaAbono"
-          alt=""
-          class="promo-imagen"
+        <div
+          class="promo-regalo"
+          aria-label="Tote bag de regalo"
         >
+          <span class="promo-etiqueta promo-etiqueta-arriba">Regalo</span>
+
+          <img
+            :src="toteBagImagen"
+            alt="Tote bag de regalo"
+            class="promo-imagen"
+          >
+
+          <span class="promo-etiqueta promo-etiqueta-abajo">con tus entradas</span>
+        </div>
 
         <div
           v-if="hayAccesosSeleccionados"
@@ -364,10 +374,62 @@ function cerrarPantallaGracias() {
 }
 
 .promo-imagen {
-  width: 100%;
-  max-width: 280px;
+  position: relative;
+  z-index: 1;
+  width: min(100%, 300px);
+  border-radius: 28px;
   display: block;
   justify-self: center;
+  filter: drop-shadow(16px 18px 0 color-mix(in srgb, var(--esclat-theme-color, #004fff) 72%, transparent));
+}
+
+.promo-regalo {
+  position: relative;
+  justify-self: center;
+  width: min(100%, 340px);
+  padding: 28px 18px 18px;
+  transform: rotate(-4deg);
+  transition: transform 220ms ease;
+}
+
+.promo-regalo:hover {
+  transform: rotate(3deg) translateY(-10px) scale(1.04);
+}
+
+.promo-regalo::before {
+  content: "";
+  position: absolute;
+  inset: 42px 0 10px;
+  border: 3px solid var(--esclat-theme-color, #004fff);
+  border-radius: 34px;
+  transform: rotate(7deg);
+}
+
+.promo-etiqueta {
+  position: absolute;
+  z-index: 2;
+  display: inline-block;
+  border: 2px solid currentColor;
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--esclat-theme-color, #004fff);
+  padding: 0.3rem 0.7rem;
+  font-size: clamp(18px, 2vw, 28px);
+  font-weight: 700;
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+
+.promo-etiqueta-arriba {
+  top: 0;
+  left: 0;
+  transform: rotate(11deg);
+}
+
+.promo-etiqueta-abajo {
+  right: -0.25rem;
+  bottom: 0;
+  transform: rotate(-7deg);
 }
 
 .resumen-seleccion {
@@ -534,7 +596,12 @@ function cerrarPantallaGracias() {
   }
 
   .promo-imagen {
-    max-width: 220px;
+    width: min(100%, 240px);
+  }
+
+  .promo-regalo {
+    width: min(100%, 280px);
+    padding-top: 22px;
   }
 
   .boton-comprar {

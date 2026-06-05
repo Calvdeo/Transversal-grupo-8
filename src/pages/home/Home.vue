@@ -24,6 +24,7 @@ import videoInicioNaranjaMp4 from '@/assets/videos/Secuencia 01 naranja.mp4'
 import videoInicioRosaMp4 from '@/assets/videos/Secuencia 01 rosa.mp4'
 import videoInicioVerdeMp4 from '@/assets/videos/Secuencia 01 verde.mp4'
 import entradaAbono from '@/assets/entradas/entrada-1.jpg'
+import toteBagImagen from '@/assets/entradas/totebag.png'
 
 import texturaCeraGrande from '@/assets/texturas/ceraazul.png'
 import texturaPixelGrande from '@/assets/texturas/pixelazul.png'
@@ -418,10 +419,10 @@ function prepararLienzo() {
   )
 
   contexto.fillRect(
-    textoIzquierdaX + 140,
-    fechaY1 + 40,
+    textoIzquierdaX + 141,
+    fechaY1 + 39,
     360,
-    4
+    6
   )
 
   contexto.textAlign = 'right'
@@ -1031,6 +1032,22 @@ onBeforeUnmount(() => {
               {{ entrada.descripcion }}
             </p>
           </RouterLink>
+
+          <RouterLink
+            to="/entradas"
+            class="home-tote-regalo"
+            aria-label="Tote bag de regalo con tus entradas"
+          >
+            <span class="home-tote-etiqueta home-tote-etiqueta-arriba">Regalo</span>
+
+            <img
+              :src="toteBagImagen"
+              alt="Tote bag de regalo"
+              class="home-tote-imagen"
+            >
+
+            <span class="home-tote-etiqueta home-tote-etiqueta-abajo">con tus entradas</span>
+          </RouterLink>
         </div>
       </section>
     </section>
@@ -1077,7 +1094,7 @@ onBeforeUnmount(() => {
         </h1>
 
         <p class="studio-text">
-          Compartelo y disfruta conociendo otras texturas
+          Compártelo y disfruta conociendo otras texturas
         </p>
       </div>
 
@@ -1515,9 +1532,9 @@ onBeforeUnmount(() => {
   margin: 0 auto;
   padding: 28px 24px 12px;
   display: grid;
-  grid-template-columns: minmax(0, 680px);
+  grid-template-columns: minmax(0, 620px) minmax(220px, 340px);
   gap: 32px 24px;
-  align-items: start;
+  align-items: center;
   justify-content: center;
   justify-items: center;
 }
@@ -1553,6 +1570,65 @@ onBeforeUnmount(() => {
 
 .home-entrada-item:hover .home-entrada-descripcion {
   opacity: 1;
+}
+
+.home-tote-regalo {
+  position: relative;
+  width: min(100%, 340px);
+  padding: 28px 18px 18px;
+  color: var(--color-tema);
+  text-decoration: none;
+  transform: rotate(-4deg);
+  transition: transform 220ms ease;
+}
+
+.home-tote-regalo:hover {
+  transform: rotate(3deg) translateY(-10px) scale(1.04);
+}
+
+.home-tote-regalo::before {
+  content: "";
+  position: absolute;
+  inset: 42px 0 10px;
+  border: 3px solid var(--color-tema);
+  border-radius: 34px;
+  transform: rotate(7deg);
+}
+
+.home-tote-imagen {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 300px);
+  border-radius: 28px;
+  display: block;
+  filter: drop-shadow(16px 18px 0 color-mix(in srgb, var(--color-tema) 72%, transparent));
+}
+
+.home-tote-etiqueta {
+  position: absolute;
+  z-index: 2;
+  display: inline-block;
+  border: 2px solid currentColor;
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--color-tema);
+  padding: 0.3rem 0.7rem;
+  font-size: clamp(18px, 2vw, 28px);
+  font-weight: 700;
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+
+.home-tote-etiqueta-arriba {
+  top: 0;
+  left: 0;
+  transform: rotate(11deg);
+}
+
+.home-tote-etiqueta-abajo {
+  right: -0.25rem;
+  bottom: 0;
+  transform: rotate(-7deg);
 }
 
 @keyframes deslizar-cinta {
@@ -2146,6 +2222,15 @@ onBeforeUnmount(() => {
 
   .home-entrada-item {
     width: min(100%, 520px);
+  }
+
+  .home-tote-regalo {
+    width: min(100%, 280px);
+    padding-top: 22px;
+  }
+
+  .home-tote-imagen {
+    width: min(100%, 240px);
   }
 
   .home-entrada-descripcion {

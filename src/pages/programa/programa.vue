@@ -227,7 +227,7 @@ const eventos: Evento[] = [
     dia: 'viernes',
     fecha: '23.10.26',
     hora: '11h',
-    titulo: 'Manipulamos o nos manipulan - Diego Alvarez',
+    titulo: 'Manipulamos o nos manipulan - Diego Álvarez',
     descripcion: 'Quien manipula y quien es manipulado.',
     categoria: 'charla',
     espacio: 'Sala de Exposiciones'

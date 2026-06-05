@@ -14,6 +14,7 @@ type Pregunta = {
   id: number
   pregunta: string
   respuesta: string
+  respuestaLista?: string[]
   enlaceTexto?: string
   enlaceRuta?: string
 }
@@ -35,9 +36,9 @@ const preguntas: Pregunta[] = [
   },
   {
     id: 2,
-    pregunta: '¿Cómo funcionan las entradas?',
+    pregunta: '¿Habrá actividades con aforo reducido?',
     respuesta:
-      'Puedes seleccionar tus entradas desde la sección de entradas. Allí verás las modalidades disponibles y podrás descargar los accesos.'
+      'Sí. Algunos talleres y encuentros tienen plazas limitadas, así que conviene llegar con antelación y consultar la programación para organizar tu ruta.'
   },
   {
     id: 3,
@@ -53,13 +54,20 @@ const preguntas: Pregunta[] = [
   },
   {
     id: 5,
-    pregunta: '¿Habrá actividades con aforo reducido?',
-    respuesta:
-      'Sí. Algunos talleres y encuentros tienen plazas limitadas, así que conviene llegar con antelación y consultar la programación para organizar tu ruta.'
+    pregunta: 'Normas',
+    respuesta: '',
+    respuestaLista: [
+      'Escucha y respeta las experiencias de las demás personas.',
+      'Participa con curiosidad y actitud abierta.',
+      'Cuida los espacios que hacen posible el festival.',
+      'Mantén un comportamiento libre de violencia, discriminación o acoso.',
+      'Comparte el conocimiento, no interrumpas el de los demás.',
+      'Disfruta de la música, los talleres y las conversaciones desde el respeto mutuo.'
+    ]
   }
 ]
 
-const preguntaAbierta = ref<number>(4)
+const preguntaAbierta = ref<number>(0)
 const texturaCeraActual = ref(texturaCeraGrande)
 const texturaPixelActual = ref(texturaPixelGrande)
 
@@ -203,9 +211,10 @@ onMounted(() => {
           v-for="item in preguntas"
           :key="item.id"
           class="faq-item"
-          :class="{ 'is-open': preguntaAbierta === item.id }"
+          :class="{ 'is-open': preguntaAbierta === item.id || item.id === 5 }"
         >
           <button
+            v-if="item.id !== 5"
             class="faq-trigger"
             type="button"
             :aria-expanded="preguntaAbierta === item.id"
@@ -218,12 +227,19 @@ onMounted(() => {
           </button>
 
           <div
-            v-if="preguntaAbierta === item.id"
+            v-else
+            class="faq-trigger faq-trigger-static"
+          >
+            <span class="faq-question">{{ item.pregunta }}</span>
+          </div>
+
+          <div
+            v-if="preguntaAbierta === item.id || item.id === 5"
             class="faq-answer"
             :class="{ 'has-map': item.id === 1 }"
           >
             <div class="faq-answer-copy">
-              <p>
+              <p v-if="item.respuesta">
                 {{ item.respuesta }}
                 <RouterLink
                   v-if="item.enlaceTexto && item.enlaceRuta"
@@ -233,6 +249,18 @@ onMounted(() => {
                   {{ item.enlaceTexto }}
                 </RouterLink>
               </p>
+
+              <ul
+                v-if="item.respuestaLista"
+                class="faq-answer-list"
+              >
+                <li
+                  v-for="norma in item.respuestaLista"
+                  :key="norma"
+                >
+                  {{ norma }}
+                </li>
+              </ul>
             </div>
 
             <div v-if="item.id === 1" class="faq-map-frame">
@@ -339,6 +367,10 @@ onMounted(() => {
   cursor: pointer;
 }
 
+.faq-trigger-static {
+  cursor: default;
+}
+
 .faq-question {
   font-size: clamp(1.55rem, 2.5vw, 2.3rem);
   line-height: 1.05;
@@ -375,6 +407,16 @@ onMounted(() => {
   color: color-mix(in srgb, var(--esclat-theme-color, #004fff) 74%, white);
   font-size: clamp(1rem, 1.45vw, 1.35rem);
   line-height: 1.7;
+}
+
+.faq-answer-list {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0;
+  padding-left: 1.2rem;
+  color: color-mix(in srgb, var(--esclat-theme-color, #004fff) 74%, white);
+  font-size: clamp(1rem, 1.45vw, 1.35rem);
+  line-height: 1.45;
 }
 
 .faq-map-frame {
