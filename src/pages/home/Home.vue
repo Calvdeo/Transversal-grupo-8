@@ -88,7 +88,6 @@ type TemaVisual = {
 type EntradaInicio = {
   id: number
   nombre: string
-  precio: number
   imagen: string
   descripcion: string
   color: string
@@ -176,8 +175,7 @@ const artistasInicio: ArtistaInicio[] = [
 const entradasInicio: EntradaInicio[] = [
   {
     id: 1,
-    nombre: 'Abono general 3 días',
-    precio: 75,
+    nombre: 'Entrada general 3 días',
     imagen: entradaAbono,
     descripcion: 'Pulsa para conseguir las demás entradas',
     color: '#004fff'
@@ -993,22 +991,22 @@ onBeforeUnmount(() => {
       <section class="home-entradas">
         <div
           class="home-entradas-cinta"
-          aria-label="Aviso de descuento"
+          aria-label="Promoción de entradas"
         >
           <div class="home-entradas-cinta-pista">
             <div class="home-entradas-cinta-grupo">
-              <span>Con el código ESCLAT consigue un 25% de descuento en tus entradas.</span>
-              <span>Con el código ESCLAT consigue un 25% de descuento en tus entradas.</span>
-              <span>Con el código ESCLAT consigue un 25% de descuento en tus entradas.</span>
+              <span>Si adquieres ahora tus entradas llévate una tote bag de regalo</span>
+              <span>Si adquieres ahora tus entradas llévate una tote bag de regalo</span>
+              <span>Si adquieres ahora tus entradas llévate una tote bag de regalo</span>
             </div>
 
             <div
               class="home-entradas-cinta-grupo"
               aria-hidden="true"
             >
-              <span>Con el código ESCLAT consigue un 25% de descuento en tus entradas.</span>
-              <span>Con el código ESCLAT consigue un 25% de descuento en tus entradas.</span>
-              <span>Con el código ESCLAT consigue un 25% de descuento en tus entradas.</span>
+              <span>Si adquieres ahora tus entradas llévate una tote bag de regalo</span>
+              <span>Si adquieres ahora tus entradas llévate una tote bag de regalo</span>
+              <span>Si adquieres ahora tus entradas llévate una tote bag de regalo</span>
             </div>
           </div>
         </div>

@@ -386,7 +386,7 @@ const texturaActiva = computed(() => {
 <template>
   <main class="programa-page" :class="claseTemaUI">
     <section class="programa-header">
-      <p class="programa-kicker">ESCLAT 2026</p>
+     
       <h1>Programa</h1>
       <div class="textura-esquina">
         <img :src="texturaActiva.imagen" :alt="texturaActiva.alt">

@@ -37,7 +37,7 @@ const preguntas: Pregunta[] = [
     id: 2,
     pregunta: '¿Cómo funcionan las entradas?',
     respuesta:
-      'Puedes comprar tus entradas desde la sección de entradas. Allí verás las modalidades disponibles.'
+      'Puedes seleccionar tus entradas desde la sección de entradas. Allí verás las modalidades disponibles y podrás descargar los accesos.'
   },
   {
     id: 3,

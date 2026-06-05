@@ -10,21 +10,18 @@ import graciasImagen from '@/assets/entradas/gracias.png'
 type Entrada = {
   id: number
   nombre: string
-  precio: number
   imagen: string
   descripcion: string
   rotacion: string
   color: string
 }
 
-const codigoPromocional = ref('')
 const mostrarPantallaGracias = ref(false)
 
 const entradas = ref<Entrada[]>([
   {
     id: 1,
-    nombre: 'Abono general 3 días',
-    precio: 75,
+    nombre: 'Entrada general 3 días',
     imagen: entradaAbono,
     descripcion: 'Esta entrada incluye acceso a todas las actividades de los tres días.',
     rotacion: '-rotate-6',
@@ -33,7 +30,6 @@ const entradas = ref<Entrada[]>([
   {
     id: 2,
     nombre: 'Entrada día 23.10.26',
-    precio: 40,
     imagen: entradaDia23,
     descripcion: 'Esta entrada incluye acceso a todas las actividades del día 23.10.26.',
     rotacion: 'rotate-6',
@@ -42,7 +38,6 @@ const entradas = ref<Entrada[]>([
   {
     id: 3,
     nombre: 'Entrada día 24.10.26',
-    precio: 40,
     imagen: entradaDia24,
     descripcion: 'Esta entrada incluye acceso a todas las actividades del día 24.10.26.',
     rotacion: 'rotate-3',
@@ -51,7 +46,6 @@ const entradas = ref<Entrada[]>([
   {
     id: 4,
     nombre: 'Entrada día 25.10.26',
-    precio: 40,
     imagen: entradaDia25,
     descripcion: 'Esta entrada incluye acceso a todas las actividades del día 25.10.26.',
     rotacion: '-rotate-6',
@@ -66,30 +60,20 @@ const cantidades = ref<Record<number, number>>({
   4: 0
 })
 
-const subtotal = computed(() => {
-  return entradas.value.reduce((suma, entrada) => {
-    return suma + entrada.precio * (cantidades.value[entrada.id] ?? 0)
-  }, 0)
-})
-
-const descuento = computed(() => {
-  if (codigoPromocional.value.trim().toLowerCase() === 'esclat') {
-    return subtotal.value * 0.25
-  }
-
-  return 0
-})
-
-const total = computed(() => {
-  return subtotal.value - descuento.value
-})
-
-const hayCompra = computed(() => total.value > 0)
-
 const entradasSeleccionadas = computed(() => {
   return entradas.value.filter((entrada) => {
     return (cantidades.value[entrada.id] ?? 0) > 0
   })
+})
+
+const hayAccesosSeleccionados = computed(() => {
+  return entradasSeleccionadas.value.length > 0
+})
+
+const totalEntradasSeleccionadas = computed(() => {
+  return entradasSeleccionadas.value.reduce((total, entrada) => {
+    return total + (cantidades.value[entrada.id] ?? 0)
+  }, 0)
 })
 
 function descargarImagen(url: string, nombreArchivo: string) {
@@ -101,7 +85,7 @@ function descargarImagen(url: string, nombreArchivo: string) {
   enlace.click()
 }
 
-function comprarEntradas() {
+function descargarAccesos() {
   entradasSeleccionadas.value.forEach((entrada) => {
     const cantidad = cantidades.value[entrada.id] ?? 0
 
@@ -120,7 +104,6 @@ function comprarEntradas() {
     4: 0
   }
 
-  codigoPromocional.value = ''
   mostrarPantallaGracias.value = true
 }
 
@@ -133,22 +116,22 @@ function cerrarPantallaGracias() {
   <main class="entradas-page">
     <section
       class="cinta-descuento"
-      aria-label="Aviso de descuento"
+      aria-label="Promoción de entradas"
     >
       <div class="cinta-descuento-pista">
         <div class="cinta-descuento-grupo">
-          <span>Con el código ESCLAT consigue un 25% de descuento en tus entradas.</span>
-          <span>Con el código ESCLAT consigue un 25% de descuento en tus entradas.</span>
-          <span>Con el código ESCLAT consigue un 25% de descuento en tus entradas.</span>
+          <span>Si adquieres ahora tus entradas llévate una tote bag de regalo</span>
+          <span>Si adquieres ahora tus entradas llévate una tote bag de regalo</span>
+          <span>Si adquieres ahora tus entradas llévate una tote bag de regalo</span>
         </div>
 
         <div
           class="cinta-descuento-grupo"
           aria-hidden="true"
         >
-          <span>Con el código ESCLAT consigue un 25% de descuento en tus entradas.</span>
-          <span>Con el código ESCLAT consigue un 25% de descuento en tus entradas.</span>
-          <span>Con el código ESCLAT consigue un 25% de descuento en tus entradas.</span>
+          <span>Si adquieres ahora tus entradas llévate una tote bag de regalo</span>
+          <span>Si adquieres ahora tus entradas llévate una tote bag de regalo</span>
+          <span>Si adquieres ahora tus entradas llévate una tote bag de regalo</span>
         </div>
       </div>
     </section>
@@ -197,37 +180,42 @@ function cerrarPantallaGracias() {
       </div>
 
       <section class="resumen-compra">
-        <div class="codigo">
-          <label for="codigo">Código promocional</label>
-
-          <input
-            id="codigo"
-            v-model="codigoPromocional"
-            type="text"
-            placeholder="Código"
-          >
-        </div>
+        <img
+          :src="entradaAbono"
+          alt=""
+          class="promo-imagen"
+        >
 
         <div
-          v-if="hayCompra"
-          class="precio"
+          v-if="hayAccesosSeleccionados"
+          class="resumen-seleccion"
         >
-          <p
-            v-if="descuento > 0"
-            class="descuento"
-          >
-            Descuento aplicado: -{{ descuento.toFixed(2) }}€
+          <p class="resumen-titulo">
+            Has seleccionado {{ totalEntradasSeleccionadas }} entrada{{ totalEntradasSeleccionadas === 1 ? '' : 's' }}
           </p>
 
-          <p>{{ total.toFixed(2) }}€</p>
+          <ul class="resumen-lista">
+            <li
+              v-for="entrada in entradasSeleccionadas"
+              :key="entrada.id"
+            >
+              {{ cantidades[entrada.id] }} x {{ entrada.nombre }}
+            </li>
+          </ul>
 
           <button
             class="boton-comprar"
-            @click="comprarEntradas"
+            @click="descargarAccesos"
           >
-            Comprar
+            Descargar accesos
           </button>
         </div>
+        <p
+          v-else
+          class="aviso-accesos"
+        >
+          Selecciona la cantidad de entradas que quieres descargar.
+        </p>
       </section>
     </section>
 
@@ -235,7 +223,7 @@ function cerrarPantallaGracias() {
       v-if="mostrarPantallaGracias"
       type="button"
       class="pantalla-gracias"
-      aria-label="Cerrar mensaje de compra y volver a entradas"
+      aria-label="Cerrar mensaje de entradas y volver"
       @click="cerrarPantallaGracias"
     >
       <div class="pantalla-gracias-inner">
@@ -366,53 +354,64 @@ function cerrarPantallaGracias() {
 
 .resumen-compra {
   margin: 90px auto 0;
-  max-width: 760px;
+  max-width: 920px;
   border-top: 8px solid #004fff;
   padding-top: 20px;
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: minmax(180px, 0.8fr) minmax(0, 1fr);
   gap: 24px;
-  align-items: end;
+  align-items: start;
 }
 
-.codigo {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+.promo-imagen {
+  width: 100%;
+  max-width: 280px;
+  display: block;
+  justify-self: center;
 }
 
-.codigo label {
-  font-size: 16px;
-}
-
-.codigo input {
-  width: 180px;
-  border: 2px solid #004fff;
+.resumen-seleccion {
+  display: grid;
+  gap: 14px;
   color: #004fff;
-  padding: 6px 8px;
-  outline: none;
 }
 
-.precio {
-  text-align: right;
-  font-size: 42px;
+.resumen-titulo {
+  margin: 0;
+  font-size: clamp(24px, 3.4vw, 42px);
+  font-weight: 700;
+  line-height: 0.95;
+}
+
+.resumen-lista {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: clamp(16px, 2vw, 24px);
+  font-weight: 700;
+  line-height: 1.05;
+}
+
+.aviso-accesos {
+  margin: 0;
+  color: #004fff;
+  font-size: clamp(20px, 3vw, 34px);
+  font-weight: 700;
   line-height: 1;
-}
-
-.descuento {
-  margin-bottom: 8px;
-  font-size: 16px;
+  text-align: center;
 }
 
 .boton-comprar {
-  margin-top: 16px;
   background: #004fff;
   color: white;
   border: none;
-  padding: 8px 14px;
-  font-size: 42px;
+  padding: 10px 18px;
+  font-size: clamp(28px, 4vw, 42px);
   font-weight: 700;
   cursor: pointer;
+  line-height: 0.95;
 }
 
 .pantalla-gracias {
@@ -488,14 +487,6 @@ function cerrarPantallaGracias() {
     margin-top: 72px;
     gap: 18px;
   }
-
-  .precio {
-    font-size: 36px;
-  }
-
-  .boton-comprar {
-    font-size: 34px;
-  }
 }
 
 @media (max-width: 700px) {
@@ -539,21 +530,15 @@ function cerrarPantallaGracias() {
     grid-template-columns: 1fr;
     margin-top: 48px;
     gap: 16px;
-    align-items: start;
+    justify-content: stretch;
   }
 
-  .codigo input {
-    width: 100%;
-    max-width: 280px;
-  }
-
-  .precio {
-    text-align: left;
-    font-size: 30px;
+  .promo-imagen {
+    max-width: 220px;
   }
 
   .boton-comprar {
-    font-size: 26px;
+    width: 100%;
   }
 
   .pantalla-gracias {
