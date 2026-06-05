@@ -2003,35 +2003,35 @@ onBeforeUnmount(() => {
   }
 
   .hero-sub-logo {
-    left: 5%;
-    top: 7%;
-    width: 68%;
+    left: 2%;
+    top: 10%;
+    width: 70%;
     height: auto;
     max-width: none;
     object-fit: contain;
   }
 
   .hero-texture-cera {
-    left: 10%;
-    top: 2%;
-    width: 95%;
+    left: 1%;
+    top: 3%;
+    width: 100%;
     height: auto;
     object-fit: contain;
     transform: rotate(40deg);
   }
 
   .hero-texture-pixel {
-    left: -5%;
-    top: 18%;
-    width: 85%;
+    left: 1%;
+    top: 30%;
+    width: 75%;
     height: auto;
     object-fit: contain;
-    transform: rotate(0deg);
+    transform: rotate(-1deg);
   }
 
   .hero-texture-subrayador {
     left: 35%;
-    top: 7%;
+    top: 10%;
     width: 70%;
     height: auto;
     object-fit: contain;
@@ -2040,20 +2040,20 @@ onBeforeUnmount(() => {
 
   .hero-texture-posca {
     left: 10%;
-    top: 31%;
+    top: 35%;
     width: 60%;
     height: auto;
     object-fit: contain;
-    transform: rotate(66deg);
+    transform: rotate(69deg);
   }
 
   .hero-date {
-    left: 5%;
-    top: 85%;
-    bottom: auto;
+    left: 4%;
+    top: 87%;
+    bottom: 18%;
     width: auto;
     height: auto;
-    font-size: clamp(28px, 8vw, 42px);
+    font-size: clamp(28px, 18vw, 32px);
     line-height: 0.9;
     letter-spacing: 0;
   }
@@ -2067,21 +2067,21 @@ onBeforeUnmount(() => {
   }
 
   .hero-line {
-    left: 17%;
-    top: 87%;
+    left: 18%;
+    top: 89%;
     bottom: auto;
-    width: 30%;
-    height: clamp(3px, 1vw, 5px);
+    width: 29%;
+    height: clamp(2px, 1vw, 3px);
   }
 
   .hero-place {
     left: auto;
-    right: 5%;
-    top: 87%;
+    right: 2%;
+    top: 89%;
     bottom: auto;
     width: 40%;
     height: auto;
-    font-size: clamp(28px, 10vw, 30px);
+    font-size: clamp(18px, 8vw, 25px);
     line-height: 0.92;
   }
 
@@ -2244,91 +2244,6 @@ onBeforeUnmount(() => {
 
   .brush-thumb {
     height: clamp(58px, 18vw, 86px);
-  }
-
-}
-
-@media (orientation: portrait) and (max-width: 430px) {
-  .hero-poster {
-    aspect-ratio: 210 / 297;
-    height: auto;
-    min-height: 0;
-    padding: 0;
-  }
-
-  .hero-sub-logo {
-    left: 5%;
-    top: 7%;
-    width: 68%;
-    height: auto;
-    max-width: none;
-    object-fit: contain;
-  }
-
-  .hero-texture-cera {
-    left: 8%;
-    top: 11%;
-    width: 118%;
-    height: auto;
-    object-fit: contain;
-    transform: rotate(48deg);
-  }
-
-  .hero-texture-pixel {
-    left: -12%;
-    top: 33%;
-    width: 92%;
-    height: auto;
-    object-fit: contain;
-    transform: rotate(-4deg);
-  }
-
-  .hero-texture-subrayador {
-    left: 31%;
-    top: 13%;
-    width: 82%;
-    height: auto;
-    object-fit: contain;
-    transform: rotate(62deg);
-  }
-
-  .hero-texture-posca {
-    left: 10%;
-    top: 37%;
-    width: 84%;
-    height: auto;
-    object-fit: contain;
-    transform: rotate(58deg);
-  }
-
-  .hero-date {
-    left: 5%;
-    top: 83%;
-    bottom: auto;
-    width: auto;
-    height: auto;
-    font-size: clamp(38px, 12vw, 58px);
-    line-height: 0.9;
-    letter-spacing: 0;
-  }
-
-  .hero-line {
-    left: 17%;
-    top: 85.2%;
-    bottom: auto;
-    width: 32%;
-    height: clamp(3px, 1vw, 5px);
-  }
-
-  .hero-place {
-    left: auto;
-    right: 5%;
-    top: 83.6%;
-    bottom: auto;
-    width: 44%;
-    height: auto;
-    font-size: clamp(18px, 5.8vw, 30px);
-    line-height: 0.92;
   }
 
 }

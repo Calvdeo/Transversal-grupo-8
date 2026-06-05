@@ -1,6 +1,24 @@
 ﻿<script setup lang="ts">
 import { ref } from 'vue'
 
+import artistaBelen from '@/assets/artistas/art-05.jpg'
+import artistaSilvana from '@/assets/artistas/art-06.jpg'
+import artistaKanka from '@/assets/artistas/art-07.jpg'
+import artistaValeria from '@/assets/artistas/art-08.jpg'
+import artistaOques from '@/assets/artistas/art-11.jpg'
+import artistaLaPaloma from '@/assets/artistas/art-12.jpg'
+import artistaShego from '@/assets/artistas/art-13.jpg'
+import artistaCorte from '@/assets/artistas/art-14.jpg'
+import artistaEscandaloso from '@/assets/artistas/art-15.jpg'
+import artistaMalaGestion from '@/assets/artistas/art-16.jpg'
+import artistaAiko from '@/assets/artistas/art-17.jpg'
+import artistaArielPink from '@/assets/artistas/art-18.jpg'
+import artistaFiga from '@/assets/artistas/art-19.jpg'
+import artistaLaFumiga from '@/assets/artistas/art-20.jpg'
+import artistaPunsetes from '@/assets/artistas/art-21.jpg'
+import artistaPetunias from '@/assets/artistas/art-22.jpg'
+import artistaAmorLiquido from '@/assets/artistas/art-23.jpg'
+
 type Cantante = {
   id: number
   nombre: string
@@ -17,15 +35,6 @@ const COLORES_ARTISTAS = [
   '#05d181'
 ] as const
 
-const imagenesArtistas = import.meta.glob(
-  '../../assets/artistas/*.{jpg,jpeg,png,webp}',
-  { eager: true, import: 'default' }
-) as Record<string, string>
-
-function obtenerImagenArtista(nombreArchivo: string) {
-  return imagenesArtistas[`../../assets/artistas/${nombreArchivo}`] ?? null
-}
-
 const cantantes = ref<Cantante[]>([
   {
     id: 1,
@@ -33,7 +42,7 @@ const cantantes = ref<Cantante[]>([
     hora: 'Dia 24, 17h',
     escenario: 'Patio 2',
     descripcion: 'Pop emocional con letras intimas y estribillos potentes.',
-    rutaImagen: obtenerImagenArtista('art-05.jpg')
+    rutaImagen: artistaBelen
   },
   {
     id: 2,
@@ -41,7 +50,7 @@ const cantantes = ref<Cantante[]>([
     hora: 'Dia 25, 19h',
     escenario: 'Patio 2',
     descripcion: 'Folk latino de voz delicada y arreglos acusticos organicos.',
-    rutaImagen: obtenerImagenArtista('art-06.jpg')
+    rutaImagen: artistaSilvana
   },
   {
     id: 3,
@@ -49,7 +58,7 @@ const cantantes = ref<Cantante[]>([
     hora: 'Dia 24, 21h',
     escenario: 'Patio 2',
     descripcion: 'Cancion de autor con humor, cercania y mucho carisma en directo.',
-    rutaImagen: obtenerImagenArtista('art-07.jpg')
+    rutaImagen: artistaKanka
   },
   {
     id: 4,
@@ -57,7 +66,7 @@ const cantantes = ref<Cantante[]>([
     hora: 'Dia 25, 20h15',
     escenario: 'Patio 2',
     descripcion: 'Pop de raiz con sensibilidad vocal y atmosfera cinematica.',
-    rutaImagen: obtenerImagenArtista('art-08.jpg')
+    rutaImagen: artistaValeria
   },
   {
     id: 5,
@@ -65,7 +74,7 @@ const cantantes = ref<Cantante[]>([
     hora: 'Dia 25, 21h',
     escenario: 'Patio 2',
     descripcion: 'Ritmos urbanos y fiesta mediterranea con energia joven.',
-    rutaImagen: obtenerImagenArtista('art-19.jpg')
+    rutaImagen: artistaFiga
   },
   {
     id: 6,
@@ -73,7 +82,7 @@ const cantantes = ref<Cantante[]>([
     hora: 'Dia 25, 21h45',
     escenario: 'Patio 2',
     descripcion: 'Mestizaje pop y electronica con himnos para cantar en grupo.',
-    rutaImagen: obtenerImagenArtista('art-11.jpg')
+    rutaImagen: artistaOques
   }
 ])
 
@@ -84,7 +93,7 @@ const cantantesSecundarios = ref<Cantante[]>([
     hora: 'Dia 23, 16h',
     escenario: 'Patio 1',
     descripcion: 'Rock alternativo con guitarras tensas y pulso post punk.',
-    rutaImagen: obtenerImagenArtista('art-12.jpg')
+    rutaImagen: artistaLaPaloma
   },
   {
     id: 113,
@@ -92,7 +101,7 @@ const cantantesSecundarios = ref<Cantante[]>([
     hora: 'Dia 23, 11h',
     escenario: 'Patio 1',
     descripcion: 'Garage punk directo, ironico y lleno de actitud.',
-    rutaImagen: obtenerImagenArtista('art-13.jpg')
+    rutaImagen: artistaShego
   },
   {
     id: 114,
@@ -100,7 +109,7 @@ const cantantesSecundarios = ref<Cantante[]>([
     hora: 'Dia 23, 19h',
     escenario: 'Patio 1',
     descripcion: 'Post punk crudo y melodias rapidas para no parar de saltar.',
-    rutaImagen: obtenerImagenArtista('art-14.jpg')
+    rutaImagen: artistaCorte
   },
   {
     id: 115,
@@ -108,7 +117,7 @@ const cantantesSecundarios = ref<Cantante[]>([
     hora: 'Dia 23, 12h30',
     escenario: 'Patio 1',
     descripcion: 'Rap narrativo con metales, groove y mucha presencia escenica.',
-    rutaImagen: obtenerImagenArtista('art-15.jpg')
+    rutaImagen: artistaEscandaloso
   },
   {
     id: 116,
@@ -116,7 +125,7 @@ const cantantesSecundarios = ref<Cantante[]>([
     hora: 'Dia 24, 16h',
     escenario: 'Patio 1',
     descripcion: 'Indie pop fresco con estribillos pegadizos y actitud DIY.',
-    rutaImagen: obtenerImagenArtista('art-16.jpg')
+    rutaImagen: artistaMalaGestion
   },
   {
     id: 117,
@@ -124,7 +133,7 @@ const cantantesSecundarios = ref<Cantante[]>([
     hora: 'Dia 24, 12h30',
     escenario: 'Patio 1',
     descripcion: 'Punk pop afilado, divertido y sin filtros.',
-    rutaImagen: obtenerImagenArtista('art-17.jpg')
+    rutaImagen: artistaAiko
   },
   {
     id: 118,
@@ -132,7 +141,7 @@ const cantantesSecundarios = ref<Cantante[]>([
     hora: 'Dia 25, 16h',
     escenario: 'Patio 1',
     descripcion: 'Pop lo fi psicodelico con sonidos retro y raros encantadores.',
-    rutaImagen: obtenerImagenArtista('art-18.jpg')
+    rutaImagen: artistaArielPink
   },
   {
     id: 120,
@@ -140,7 +149,7 @@ const cantantesSecundarios = ref<Cantante[]>([
     hora: 'Dia 25, 17h30',
     escenario: 'Patio 1',
     descripcion: 'Brass pop festivo con letras cercanas y ritmo contagioso.',
-    rutaImagen: obtenerImagenArtista('art-20.jpg')
+    rutaImagen: artistaLaFumiga
   },
   {
     id: 121,
@@ -148,7 +157,7 @@ const cantantesSecundarios = ref<Cantante[]>([
     hora: 'Dia 25, 18h15',
     escenario: 'Patio 1',
     descripcion: 'Indie rock mordaz con guitarras secas y humor negro.',
-    rutaImagen: obtenerImagenArtista('art-21.jpg')
+    rutaImagen: artistaPunsetes
   },
   {
     id: 122,
@@ -156,7 +165,7 @@ const cantantesSecundarios = ref<Cantante[]>([
     hora: 'Dia 25, 19h',
     escenario: 'Patio 1',
     descripcion: 'Punk pop irreverente con melodias simples y mucha chispa.',
-    rutaImagen: obtenerImagenArtista('art-22.jpg')
+    rutaImagen: artistaPetunias
   },
   {
     id: 123,
@@ -164,7 +173,7 @@ const cantantesSecundarios = ref<Cantante[]>([
     hora: 'Dia 25, 19h45',
     escenario: 'Patio 1',
     descripcion: 'Electro pop experimental con capas de voz y texturas densas.',
-    rutaImagen: obtenerImagenArtista('art-23.jpg')
+    rutaImagen: artistaAmorLiquido
   }
 ])
 
